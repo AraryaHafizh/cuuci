@@ -21,7 +21,10 @@ function Info() {
 
       <div className="mt-15 grid grid-cols-3 gap-5">
         {outletData.outlets.map((outlet, i) => (
-          <div className="group relative h-85 w-full overflow-hidden rounded-2xl">
+          <div
+            key={i}
+            className="group relative h-85 w-full overflow-hidden rounded-2xl"
+          >
             <img
               src={outlet.thumbnail}
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
