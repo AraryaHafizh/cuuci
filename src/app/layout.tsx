@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { SessionProvider } from "next-auth/react";
-import { ThemeProvider } from "next-themes";
 import { Stack_Sans_Text } from "next/font/google";
-
-import QueryProvider from "@/providers/query-provider";
 import "./globals.css";
+import { ClientLayout } from "./client-layout";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 const stack = Stack_Sans_Text({
   variable: "--font-Stack_Sans_Text",
+  fallback: ["Arial", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -21,16 +21,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${stack.className} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem={true}
-        ></ThemeProvider>
-        <SessionProvider>
-          <QueryProvider>{children}</QueryProvider>
-        </SessionProvider>
+        <ClientLayout>
+          <Navbar />
+          {children}
+          <Footer />
+        </ClientLayout>
       </body>
     </html>
   );
