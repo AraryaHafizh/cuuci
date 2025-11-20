@@ -1,4 +1,4 @@
-import SectionInfo from "@/components/section-info";
+import SectionInfo from "@/components/SectionInfo";
 import { Form } from "./Form";
 
 interface ResetPasswordProps {
@@ -10,7 +10,7 @@ async function page(props: ResetPasswordProps) {
   return (
     <main
       className="flex min-h-screen flex-col items-center justify-center bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/auth4.svg')" }}
+      style={{ backgroundImage: "url('auth4.svg')" }}
     >
       <section className="bg-background h-[55%] w-[30%] rounded-2xl p-15">
         <SectionInfo

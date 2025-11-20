@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Stack_Sans_Text } from "next/font/google";
-import "./globals.css";
 import { ClientLayout } from "./client-layout";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
+import "./globals.css";
 
 const stack = Stack_Sans_Text({
   variable: "--font-Stack_Sans_Text",
@@ -24,9 +22,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${stack.className} antialiased`}>
         <ClientLayout>
-          <Navbar />
+          {/* <Navbar /> */}
           {children}
-          <Footer />
+          {/* <Footer /> */}
         </ClientLayout>
       </body>
     </html>

@@ -68,7 +68,7 @@ export const Form = () => {
             )}
           />
           <Link
-            href={"/auth/forgot-password"}
+            href={"/forgot-password"}
             className="w-fit text-sm opacity-50 transition duration-300 hover:opacity-100"
           >
             Forget password?
@@ -77,7 +77,7 @@ export const Form = () => {
           <p className="text-center text-sm">
             <span className="opacity-50">New to cuuci? </span>
             <Link
-              href="/auth/signup"
+              href="/signup"
               className="underline opacity-50 transition duration-300 hover:opacity-100"
             >
               Sign up

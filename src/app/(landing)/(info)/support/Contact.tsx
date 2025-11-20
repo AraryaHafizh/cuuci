@@ -7,7 +7,7 @@ export function Contact() {
       <p className="mt-2 mb-5 opacity-50">{supportData.contact.description}</p>
 
       {supportData.contact.data.map((item, i) => (
-        <div className="mt-5 flex gap-5">
+        <div key={i} className="mt-5 flex gap-5">
           {item.icon}
           <div>
             <p>{item.title}</p>

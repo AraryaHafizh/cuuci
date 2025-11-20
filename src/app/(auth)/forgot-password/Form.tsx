@@ -52,7 +52,7 @@ export const Form = () => {
           <p className="text-center text-sm">
             <span className="opacity-50">Already have account? </span>
             <Link
-              href="/auth/signin"
+              href="/signin"
               className="underline opacity-50 transition duration-300 hover:opacity-100"
             >
               Sign in

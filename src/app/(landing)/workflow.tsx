@@ -1,4 +1,4 @@
-import SectionInfo from "@/components/section-info";
+import SectionInfo from "@/components/SectionInfo";
 import { workflowData } from "./data";
 
 export default function Workflow() {

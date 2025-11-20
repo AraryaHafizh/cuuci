@@ -1,4 +1,4 @@
-import SectionInfo from "@/components/section-info";
+import SectionInfo from "@/components/SectionInfo";
 import { supportData } from "./data";
 import { Question } from "./Faq";
 import { Contact } from "./Contact";
