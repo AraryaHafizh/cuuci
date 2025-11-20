@@ -1,6 +1,65 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { formatDistanceToNow, parseISO } from "date-fns";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
+}
+
+export function formatTime(isoDate: string): string {
+  const date = parseISO(isoDate);
+  return formatDistanceToNow(date, { addSuffix: true });
+}
+
+export function formatDate(
+  dateString: string,
+  mode: "all" | "date" | "time" = "all",
+) {
+  const date = new Date(dateString);
+
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = date.toLocaleString("en-US", { month: "short" });
+  const year = date.getFullYear();
+
+  const datePart = `${day} ${month} ${year}`;
+
+  const timePart = date.toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  if (mode === "date") return datePart;
+  if (mode === "time") return timePart;
+
+  return `${datePart} - ${timePart}`;
+}
+
+export function formatOrderStatus(status: string): string {
+  return status
+    .toLowerCase()
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+export function getDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number,
+): string {
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const R = 6371;
+
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+
+  const distance = 2 * R * Math.asin(Math.sqrt(a));
+
+  return `${distance.toFixed(2)} km`;
 }

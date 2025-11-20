@@ -1,13 +1,11 @@
-import Footer from "@/components/footer";
-import Navbar from "@/components/navbar/LandingNavbar";
+import DashboardNavbar from "@/components/navbar/DashboardNavbar";
 import { ReactNode } from "react";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div>
-      <Navbar />
-      {children}
-      <Footer />
+      <DashboardNavbar />
+      <div className="container mx-auto">{children}</div>
     </div>
   );
 }

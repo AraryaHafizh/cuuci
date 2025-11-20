@@ -1,13 +1,12 @@
 import {
   CalendarCheck,
   Clock,
-  icons,
   MapPin,
   Package,
   ShoppingBasket,
   Sprout,
   Truck,
-  WashingMachine,
+  WashingMachine
 } from "lucide-react";
 
 export const greetingData = {

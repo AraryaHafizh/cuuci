@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { Separator } from "./ui/separator";
 
-const Footer = () => {
+export default function Footer() {
   return (
-    <section className="container mx-auto mt-20 mb-25 space-y-10 font-light">
+    <section className="container mx-auto mt-20 mb-10 space-y-10 font-light">
       <Separator />
       <div className="flex justify-between">
         <p className="opacity-50">© 2025 cuuci. All Rights Reserved.</p>
@@ -32,6 +32,4 @@ const Footer = () => {
       </div>
     </section>
   );
-};
-
-export default Footer;
+}

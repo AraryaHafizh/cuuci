@@ -1,11 +1,11 @@
 import Footer from "@/components/footer";
-import Navbar from "@/components/navbar/LandingNavbar";
+import LandingNavbar from "@/components/navbar/LandingNavbar";
 import { ReactNode } from "react";
 
 export default function LandingLayout({ children }: { children: ReactNode }) {
   return (
     <div>
-      <Navbar />
+      <LandingNavbar />
       {children}
       <Footer />
     </div>
