@@ -11,7 +11,7 @@ export default function Account() {
   return (
     <main className="pt-50">
       <Greeting />
-      <section className="mt-20 flex gap-10">
+      <section className="mt-20 flex gap-5">
         <div className="flex-1 space-y-5">
           <ProfilePicture />
           <AccountMenu />

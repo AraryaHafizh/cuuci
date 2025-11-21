@@ -68,7 +68,7 @@ function RecentActivity() {
   return (
     <section className="flex-1 space-y-5">
       <p className="text-2xl font-bold">Recent Activity</p>
-      <div className="space-y-5 rounded-2xl border bg-(--container-bg) p-7">
+      <div className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
         {recentActivity.map((activity: any, i: number) => {
           const StatusIcon = orderStatusIcons[activity.status];
           const iconColor = orderStatusColors[activity.status];

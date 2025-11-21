@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import { MapPin, Motorbike } from "lucide-react";
 import { renderToString } from "react-dom/server";
@@ -13,9 +13,14 @@ interface MapProps {
 }
 
 export default function Map({ lat1, lng1, lat2, lng2 }: MapProps) {
+  const mapRef = useRef<any>(null);
+
   useEffect(() => {
     import("leaflet").then((L) => {
+      if (mapRef.current) return;
+
       const map = L.map("map").setView([lat1, lng1], 13);
+      mapRef.current = map;
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
@@ -23,7 +28,7 @@ export default function Map({ lat1, lng1, lat2, lng2 }: MapProps) {
 
       const driverIcon = L.divIcon({
         html: renderToString(
-          <div className="rounded-full bg-blue-500 p-2 text-white">
+          <div className="bg-primary rounded-full p-2 text-white">
             <Motorbike size={24} />
           </div>,
         ),
@@ -35,7 +40,7 @@ export default function Map({ lat1, lng1, lat2, lng2 }: MapProps) {
 
       const userIcon = L.divIcon({
         html: renderToString(
-          <div className="rounded-full bg-green-500 p-2 text-white">
+          <div className="bg-primary rounded-full p-2 text-white">
             <MapPin size={24} />
           </div>,
         ),
@@ -45,27 +50,20 @@ export default function Map({ lat1, lng1, lat2, lng2 }: MapProps) {
         popupAnchor: [0, -35],
       });
 
-      const markerDriver = L.marker([lat1, lng1], {
-        icon: driverIcon,
-      })
+      const markerDriver = L.marker([lat1, lng1], { icon: driverIcon })
         .addTo(map)
         .bindPopup("Driver");
       const markerUser = L.marker([lat2, lng2], { icon: userIcon })
         .addTo(map)
         .bindPopup("User");
 
-      L.polyline(
-        [
-          [lat1, lng1],
-          [lat2, lng2],
-        ],
-        { color: "blue", weight: 4, opacity: 0.7, dashArray: "5,10" },
-      ).addTo(map);
-
       const group = L.featureGroup([markerDriver, markerUser]);
       map.fitBounds(group.getBounds(), { padding: [50, 50] });
 
-      return () => map.remove();
+      return () => {
+        map.remove(); // cleanup saat unmount
+        mapRef.current = null;
+      };
     });
   }, [lat1, lng1, lat2, lng2]);
 
