@@ -51,7 +51,7 @@ export default function TaskCard(data: TaskProps) {
       <div>
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-2xl font-bold">{data.id}</p>
+            <p className="text-xl font-bold">{data.id}</p>
             <p className="font-light opacity-50">{data.userName}</p>
           </div>
           <div

@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { taskHistory } from "./data";
+import { taskHistory } from "../../worker/tasks/data";
 
 export default function Task() {
   return (

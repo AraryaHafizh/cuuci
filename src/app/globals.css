@@ -128,8 +128,7 @@
 }
 
 .scroll-hidden {
-  overflow-x: auto;
-  overflow-y: auto;
+  overflow: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }

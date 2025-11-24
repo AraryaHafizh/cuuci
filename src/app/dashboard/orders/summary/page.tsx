@@ -1,6 +1,13 @@
 import SectionInfo from "@/components/SectionInfo";
-import { Clock, House, TextAlignStart, WashingMachine } from "lucide-react";
-import { InfoCard } from "./InfoCard";
+import { Button } from "@/components/ui/button";
+import {
+  Clock,
+  House,
+  Phone,
+  TextAlignStart,
+  WashingMachine,
+} from "lucide-react";
+import { InfoCard } from "../../../../components/InfoCard";
 import Map from "./Map";
 
 export default function Summary() {
@@ -42,6 +49,14 @@ function DriverDetail() {
           <span className="font-medium">John Doe</span>
           <span className="text-sm opacity-50">ETA: 15 minutes</span>
         </div>
+
+        <Button
+          className="ml-auto rounded-full"
+          variant={"ghost"}
+          size={"icon-lg"}
+        >
+          <Phone className="text-primary fill-current" />
+        </Button>
       </div>
     </section>
   );

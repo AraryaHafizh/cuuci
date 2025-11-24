@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
-import { MapPin, Motorbike } from "lucide-react";
+import { LocateFixed, MapPin, Motorbike } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { renderToString } from "react-dom/server";
 
 interface MapProps {
@@ -60,8 +60,31 @@ export default function Map({ lat1, lng1, lat2, lng2 }: MapProps) {
       const group = L.featureGroup([markerDriver, markerUser]);
       map.fitBounds(group.getBounds(), { padding: [50, 50] });
 
+      const focusControl = L.Control.extend({
+        options: { position: "bottomright" },
+        onAdd: function () {
+          const container = L.DomUtil.create(
+            "div",
+            "leaflet-bar p-2 rounded bg-white shadow-lg cursor-pointer",
+          );
+
+          L.DomEvent.disableClickPropagation(container);
+
+          container.innerHTML = renderToString(<LocateFixed size={20} />);
+
+          container.onclick = () => {
+            const group = L.featureGroup([markerDriver, markerUser]);
+            map.fitBounds(group.getBounds(), { padding: [10, 10] });
+          };
+
+          return container;
+        },
+      });
+
+      map.addControl(new focusControl());
+
       return () => {
-        map.remove(); // cleanup saat unmount
+        map.remove();
         mapRef.current = null;
       };
     });
