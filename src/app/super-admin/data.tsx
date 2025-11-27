@@ -1,0 +1,572 @@
+export const topData = {
+  totalRevenue: {
+    label: "Total Revenue",
+    data: 128450000,
+    growth: 12.4,
+    period: "month",
+  },
+  totalOrders: {
+    label: "Total Orders Today",
+    data: 87,
+    growth: -5.2,
+    period: "month",
+  },
+  totalOutlets: {
+    label: "Total Outlets",
+    data: 12,
+    growth: 0,
+    period: "month",
+  },
+  totalCustomers: {
+    label: "Total Customers",
+    data: 142,
+    growth: 18.9,
+    period: "month",
+  },
+  totalDrivers: {
+    label: "Total Drivers",
+    data: 90,
+    growth: 1,
+    period: "month",
+  },
+  totalWorkers: {
+    label: "Total Workers",
+    data: 140,
+    growth: 2,
+    period: "month",
+  },
+};
+
+export const dummyData = {
+  summary: {
+    revenueThisMonth: {
+      label: "Revenue This Month",
+      data: 248500000,
+      growth: 11.3,
+      period: "month",
+    },
+    totalOutlets: {
+      label: "Total Outlets",
+      data: 8,
+      growth: 3.2,
+      period: "month",
+    },
+    totalCustomers: {
+      label: "Total Customers",
+      data: 1540,
+      growth: 8.7,
+      period: "month",
+    },
+    totalDrivers: {
+      label: "Total Drivers",
+      data: 33,
+      growth: 1.5,
+      period: "month",
+    },
+    totalWorkers: {
+      label: "Total Workers",
+      data: 54,
+      growth: 0,
+      period: "month",
+    },
+    ordersToday: {
+      label: "Orders Today",
+      data: 216,
+      growth: -10,
+      period: "day",
+    },
+  },
+
+  orderStatusOverview: [
+    { label: "CANCELLED", value: 0 },
+    { label: "WAITING_FOR_PICKUP", value: 12 },
+    { label: "LAUNDRY_ON_THE_WAY", value: 8 },
+    { label: "ARRIVED_AT_OUTLET", value: 15 },
+    { label: "WASHING", value: 20 },
+    { label: "IRONING", value: 18 },
+    { label: "PACKING", value: 10 },
+    { label: "WAITING_FOR_PAYMENT", value: 7 },
+    { label: "READY_FOR_DELIVERY", value: 11 },
+    { label: "DELIVERY_ON_THE_WAY", value: 6 },
+    { label: "COMPLETED", value: 89 },
+    { label: "TOTAL", value: 216 },
+  ],
+
+  outletPerformance: [
+    {
+      outletId: 1,
+      outletName: "Laundry Express - Bandung Timur",
+      totalOrders: 420,
+      activeWorkers: 7,
+      activeDrivers: 3,
+      complaints: 2,
+    },
+    {
+      outletId: 2,
+      outletName: "Laundry Express - Bandung Utara",
+      totalOrders: 385,
+      activeWorkers: 6,
+      activeDrivers: 4,
+      complaints: 1,
+    },
+    {
+      outletId: 3,
+      outletName: "Laundry Express - Cimahi",
+      totalOrders: 298,
+      activeWorkers: 5,
+      activeDrivers: 3,
+      complaints: 3,
+    },
+    {
+      outletId: 4,
+      outletName: "Laundry Express - Cibiru",
+      totalOrders: 254,
+      activeWorkers: 6,
+      activeDrivers: 2,
+      complaints: 0,
+    },
+  ],
+
+  activeDrivers: [
+    {
+      driverId: 101,
+      name: "Budi Santoso",
+      status: "Pickup",
+      location: { lat: -6.9213, lng: 107.6134 },
+    },
+    {
+      driverId: 102,
+      name: "Roni Firmansyah",
+      status: "Delivery",
+      location: { lat: -6.9158, lng: 107.608 },
+    },
+    {
+      driverId: 110,
+      name: "Hendra Pratama",
+      status: "Idle",
+      location: { lat: -6.9081, lng: 107.6111 },
+    },
+  ],
+
+  todayActivity: [
+    { id: "#LA12339", status: "CANCELLED", date: "2025-11-18T10:30:00Z" },
+    {
+      id: "#LA12340",
+      status: "WAITING_FOR_PICKUP",
+      date: "2025-11-17T15:45:00Z",
+    },
+    {
+      id: "#LA12341",
+      status: "LAUNDRY_ON_THE_WAY",
+      date: "2025-11-16T09:20:00Z",
+    },
+    {
+      id: "#LA12342",
+      status: "ARRIVED_AT_OUTLET",
+      date: "2025-11-15T13:10:00Z",
+    },
+    { id: "#LA12343", status: "WASHING", date: "2025-11-14T08:00:00Z" },
+    { id: "#LA12344", status: "IRONING", date: "2025-11-13T12:00:00Z" },
+    { id: "#LA12345", status: "PACKING", date: "2025-11-12T09:30:00Z" },
+    {
+      id: "#LA12346",
+      status: "WAITING_FOR_PAYMENT",
+      date: "2025-11-11T14:15:00Z",
+    },
+    {
+      id: "#LA12347",
+      status: "READY_FOR_DELIVERY",
+      date: "2025-11-10T10:45:00Z",
+    },
+    {
+      id: "#LA12348",
+      status: "DELIVERY_ON_THE_WAY",
+      date: "2025-11-09T16:20:00Z",
+    },
+    { id: "#LA12349", status: "COMPLETED", date: "2025-11-08T08:50:00Z" },
+  ],
+
+  complaintsSnapshot: {
+    pending: 4,
+    resolvedToday: 3,
+    latest: [
+      {
+        complaintId: 3001,
+        customerName: "Dewi Rahma",
+        orderId: "ORD-2024992",
+        issue: "Baju hilang 1 pcs",
+        status: "Pending",
+      },
+      {
+        complaintId: 3002,
+        customerName: "Agus Putra",
+        orderId: "ORD-2024980",
+        issue: "Hasil setrika kurang rapi",
+        status: "Pending",
+      },
+    ],
+  },
+
+  pickupRequests: {
+    pending: 7,
+    ongoing: 5,
+    latest: [
+      {
+        requestId: "PCK-7128",
+        customerName: "Aulia Hana",
+        distanceKm: 3.2,
+        requestedAt: "09:10",
+      },
+      {
+        requestId: "PCK-7125",
+        customerName: "Riko Wibowo",
+        distanceKm: 1.8,
+        requestedAt: "09:02",
+      },
+    ],
+  },
+};
+
+export const dummyOutlets = [
+  {
+    outletId: "RFA21",
+    outletName: "Laundry Express - Bandung Timur",
+    address: "Jl. Soekarno Hatta No. 123, Bandung",
+    totalOrders: 420,
+    activeWorkers: 7,
+    activeDrivers: 3,
+    serviceRadius: "10 km",
+    status: "Active",
+  },
+  {
+    outletId: "BGN35",
+    outletName: "QuickClean Laundry - Jakarta Pusat",
+    address: "Jl. MH Thamrin No. 45, Jakarta",
+    totalOrders: 350,
+    activeWorkers: 5,
+    activeDrivers: 2,
+    serviceRadius: "8 km",
+    status: "Active",
+  },
+  {
+    outletId: "POP92",
+    outletName: "BrightWash - Surabaya Selatan",
+    address: "Jl. Raya Darmo No. 77, Surabaya",
+    totalOrders: 280,
+    activeWorkers: 4,
+    activeDrivers: 2,
+    serviceRadius: "12 km",
+    status: "Inactive",
+  },
+  {
+    outletId: "A4TSM",
+    outletName: "Speedy Laundry - Medan Barat",
+    address: "Jl. Gatot Subroto No. 22, Medan",
+    totalOrders: 150,
+    activeWorkers: 3,
+    activeDrivers: 1,
+    serviceRadius: "7 km",
+    status: "Active",
+  },
+  {
+    outletId: "12RFC",
+    outletName: "EcoClean Laundry - Bali Kuta",
+    address: "Jl. Legian No. 10, Kuta, Bali",
+    totalOrders: 200,
+    activeWorkers: 4,
+    activeDrivers: 2,
+    serviceRadius: "9 km",
+    status: "Active",
+  },
+];
+
+export const dummyUsers = [
+  {
+    id: "CUS-001",
+    name: "Rafi Pratama",
+    email: "rafi.customer@example.com",
+    role: "CUSTOMER",
+    phone: "+628123456001",
+    outlet: null,
+    profilePictureUrl: "https://example.com/pp/customer1.jpg",
+    addresses: [
+      {
+        label: "Home",
+        address: "Jl. Melati No. 22, Jakarta",
+        lat: -6.201,
+        lng: 106.816,
+      },
+    ],
+    createdAt: "2024-05-10T10:00:00Z",
+    outletId: null,
+    orders: [
+      { orderId: "ORD-1001", status: "DONE" },
+      { orderId: "ORD-1033", status: "IN_PROGRESS" },
+    ],
+    attendances: null,
+  },
+  {
+    id: "CUS-002",
+    name: "Budi Setiawan",
+    email: "budi.customer@example.com",
+    role: "CUSTOMER",
+    phone: "+628123456002",
+    outlet: null,
+    profilePictureUrl: "https://example.com/pp/customer2.jpg",
+    addresses: [
+      {
+        label: "Apartment",
+        address: "Apartemen Green Park Tower B, Bandung",
+        lat: -6.917,
+        lng: 107.618,
+      },
+    ],
+    createdAt: "2024-04-12T08:30:00Z",
+    outletId: null,
+    orders: [{ orderId: "ORD-2011", status: "DELIVERED" }],
+    attendances: null,
+  },
+  {
+    id: "WRK-101",
+    name: "Siti Lestari",
+    email: "siti.washing@example.com",
+    role: "WORKER",
+    phone: "+628123456101",
+    outlet: "Outlet Tebet",
+    profilePictureUrl: "https://example.com/pp/worker1.jpg",
+    addresses: null,
+    createdAt: "2024-03-01T07:00:00Z",
+    outletId: "OUTLET-01",
+    orders: [],
+    attendances: [
+      { date: "2024-05-01", present: true },
+      { date: "2024-05-02", present: true },
+    ],
+    workerType: "WASHING",
+  },
+  {
+    id: "WRK-102",
+    name: "Dewi Anggraini",
+    email: "dewi.ironing@example.com",
+    role: "WORKER",
+    phone: "+628123456102",
+    outlet: "Outlet Tebet",
+    profilePictureUrl: "https://example.com/pp/worker2.jpg",
+    addresses: null,
+    createdAt: "2024-03-05T09:30:00Z",
+    outletId: "OUTLET-01",
+    orders: [],
+    attendances: [
+      { date: "2024-05-01", present: true },
+      { date: "2024-05-02", present: false },
+    ],
+    workerType: "IRONING",
+  },
+  {
+    id: "DRV-201",
+    name: "Andi Saputra",
+    email: "andi.driver@example.com",
+    role: "DRIVER",
+    phone: "+628123456201",
+    outlet: "Outlet Kemang",
+    profilePictureUrl: "https://example.com/pp/driver1.jpg",
+    addresses: null,
+    createdAt: "2024-02-10T11:15:00Z",
+    outletId: "OUTLET-02",
+    orders: [],
+    attendances: [
+      { date: "2024-05-01", present: true },
+      { date: "2024-05-02", present: true },
+    ],
+    vehicle: "Motorcycle",
+  },
+  {
+    id: "DRV-202",
+    name: "Rama Kurnia",
+    email: "rama.driver@example.com",
+    role: "DRIVER",
+    phone: "+628123456202",
+    outlet: "Outlet Kelapa Gading",
+    profilePictureUrl: "https://example.com/pp/driver2.jpg",
+    addresses: null,
+    createdAt: "2024-02-11T14:00:00Z",
+    outletId: "OUTLET-03",
+    orders: [],
+    attendances: [{ date: "2024-05-01", present: false }],
+    vehicle: "Motorcycle",
+  },
+  {
+    id: "ADM-301",
+    name: "Irwan Nugroho",
+    email: "irwan.admin@example.com",
+    role: "OUTLET_ADMIN",
+    phone: "+628123456301",
+    outlet: "Outlet Tebet",
+    profilePictureUrl: "https://example.com/pp/admin1.jpg",
+    addresses: null,
+    createdAt: "2024-01-20T09:00:00Z",
+    outletId: "OUTLET-01",
+    orders: [],
+    attendances: [
+      { date: "2024-05-01", present: true },
+      { date: "2024-05-02", present: true },
+    ],
+  },
+  {
+    id: "ADM-302",
+    name: "Nurhalimah",
+    email: "nuri.admin@example.com",
+    role: "OUTLET_ADMIN",
+    phone: "+628123456302",
+    outlet: "Outlet Kemang",
+    profilePictureUrl: "https://example.com/pp/admin2.jpg",
+    addresses: null,
+    createdAt: "2024-02-01T10:45:00Z",
+    outletId: "OUTLET-02",
+    orders: [],
+    attendances: [
+      { date: "2024-05-01", present: true },
+      { date: "2024-05-02", present: true },
+    ],
+  },
+];
+
+// ===================================
+
+export const statusFormatter = {
+  CANCELLED: "Cancelled",
+  WAITING_FOR_PICKUP: "Waiting for Pickup",
+  LAUNDRY_ON_THE_WAY: "Laundry on the Way",
+  ARRIVED_AT_OUTLET: "Arrived at Outlet",
+  WASHING: "Washing",
+  IRONING: "Ironing",
+  PACKING: "Packing",
+  WAITING_FOR_PAYMENT: "Waiting for Payment",
+  READY_FOR_DELIVERY: "Ready for Delivery",
+  DELIVERY_ON_THE_WAY: "Delivery on the Way",
+  COMPLETED: "Completed",
+  TOTAL: "Total",
+};
+
+export const outletTableLabel = [
+  "Outlet",
+  "Total Orders",
+  "Active Drivers",
+  "Active Workers",
+];
+
+export const filterRole = ["Driver", "Worker", "Admin", "All"];
+
+export const userRole = {
+  CUSTOMER: "Customer",
+  WORKER: "Worker",
+  DRIVER: "Driver",
+  OUTLET_ADMIN: "Outlet Admin",
+};
+
+// =======
+
+export const tabKeys = {
+  CUSTOMER: ["address", "orders", "payments"],
+  WORKER: ["tasks", "attendance", "performance", "payroll"],
+  DRIVER: ["deliveries", "attendance", "ratings", "vehicle"],
+  OUTLET_ADMIN: ["attendance", "outlets", "workers"],
+};
+
+export const tableKeys = {
+  CUSTOMER: {
+    address: [
+      "label",
+      "phone",
+      "address",
+      "latitude",
+      "longitude",
+      "isPrimary",
+      "createdAt",
+    ],
+    orders: [
+      "orderId",
+      "status",
+      "totalAmount",
+      "totalWeight",
+      "pickupDate",
+      "deliveryDate",
+      "paymentStatus",
+    ],
+    payments: ["paymentId", "method", "amount", "status", "transactionDate"],
+  },
+  WORKER: {
+    tasks: [
+      "taskId",
+      "title",
+      "status",
+      "assignedAt",
+      "completedAt",
+      "priority",
+    ],
+    attendance: [
+      "attendanceId",
+      "date",
+      "clockIn",
+      "clockOut",
+      "totalHours",
+      "shift",
+    ],
+    performance: ["reviewId", "period", "score", "remarks", "reviewedBy"],
+    payroll: [
+      "payrollId",
+      "period",
+      "basicSalary",
+      "bonus",
+      "deductions",
+      "netSalary",
+      "paidAt",
+    ],
+  },
+  DRIVER: {
+    deliveries: [
+      "deliveryId",
+      "orderId",
+      "status",
+      "pickupTime",
+      "dropoffTime",
+      "distanceKm",
+    ],
+    attendance: [
+      "attendanceId",
+      "date",
+      "clockIn",
+      "clockOut",
+      "totalHours",
+      "shift",
+    ],
+    ratings: ["ratingId", "score", "comment", "ratedBy", "date"],
+    vehicle: [
+      "vehicleId",
+      "plateNumber",
+      "brand",
+      "model",
+      "year",
+      "lastServiceDate",
+    ],
+  },
+  OUTLET_ADMIN: {
+    attendance: [
+      "attendanceId",
+      "date",
+      "clockIn",
+      "clockOut",
+      "totalHours",
+      "shift",
+    ],
+    outlets: [
+      "outletId",
+      "name",
+      "location",
+      "status",
+      "openTime",
+      "closeTime",
+    ],
+    workers: ["workerId", "name", "role", "status", "joinedAt"],
+  },
+};

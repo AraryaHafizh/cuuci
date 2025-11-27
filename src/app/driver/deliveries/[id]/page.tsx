@@ -1,10 +1,9 @@
 import { InfoCard } from "@/components/InfoCard";
-import Map from "@/app/dashboard/orders/summary/Map";
+import Map from "@/components/Map";
 import SectionInfo from "@/components/SectionInfo";
 import { getDistance } from "@/lib/utils";
 import { House, Navigation, TextAlignStart } from "lucide-react";
 import { CustomerButton, EndButton } from "../DeliveryButtons";
-import { DeliveryStage } from "../../data";
 import Status from "./Status";
 
 interface DeliveryDetailProps {

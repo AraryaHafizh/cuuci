@@ -8,7 +8,7 @@ import {
   WashingMachine,
 } from "lucide-react";
 import { InfoCard } from "../../../../components/InfoCard";
-import Map from "./Map";
+import Map from "../../../../components/Map";
 
 export default function Summary() {
   return (
