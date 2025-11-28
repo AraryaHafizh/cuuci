@@ -37,7 +37,7 @@ function Counter({
           {...buttonProps}
           onClick={() => setNumber(number - 1)}
           className={cn(
-            "bg-white pb-[3px] text-2xl font-light text-neutral-950 hover:bg-white/70 dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-950/70",
+            "bg-foreground/10 hover:bg-foreground/20 text-foreground text-lg",
             buttonProps?.className,
           )}
         >
@@ -48,7 +48,7 @@ function Counter({
       <SlidingNumber
         number={number}
         {...slidingNumberProps}
-        className={cn("text-lg", slidingNumberProps?.className)}
+        className={cn("", slidingNumberProps?.className)}
       />
 
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -57,7 +57,7 @@ function Counter({
           {...buttonProps}
           onClick={() => setNumber(number + 1)}
           className={cn(
-            "bg-white pb-[3px] text-2xl font-light text-neutral-950 hover:bg-white/70 dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-950/70",
+            "bg-foreground/10 hover:bg-foreground/20 text-foreground text-lg",
             buttonProps?.className,
           )}
         >
