@@ -1,0 +1,71 @@
+"use client";
+
+import * as React from "react";
+import { motion, type HTMLMotionProps, type Transition } from "motion/react";
+import { SlidingNumber, SlidingNumberProps } from "../sliding-number";
+import { cn } from "@/lib/utils";
+import { Button } from "../../button";
+
+type CounterProps = HTMLMotionProps<"div"> & {
+  number: number;
+  setNumber: (number: number) => void;
+  slidingNumberProps?: Omit<SlidingNumberProps, "number">;
+  buttonProps?: Omit<React.ComponentProps<typeof Button>, "onClick">;
+  transition?: Transition;
+};
+
+function Counter({
+  number,
+  setNumber,
+  className,
+  slidingNumberProps,
+  buttonProps,
+  transition = { type: "spring", bounce: 0, stiffness: 300, damping: 30 },
+  ...props
+}: CounterProps) {
+  return (
+    <motion.div
+      data-slot="counter"
+      layout
+      transition={transition}
+      className={cn("flex items-center gap-x-2 rounded-xl p-1", className)}
+      {...props}
+    >
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <Button
+          size="icon"
+          {...buttonProps}
+          onClick={() => setNumber(number - 1)}
+          className={cn(
+            "bg-foreground/10 hover:bg-foreground/20 text-foreground text-lg",
+            buttonProps?.className,
+          )}
+        >
+          -
+        </Button>
+      </motion.div>
+
+      <SlidingNumber
+        number={number}
+        {...slidingNumberProps}
+        className={cn("", slidingNumberProps?.className)}
+      />
+
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <Button
+          size="icon"
+          {...buttonProps}
+          onClick={() => setNumber(number + 1)}
+          className={cn(
+            "bg-foreground/10 hover:bg-foreground/20 text-foreground text-lg",
+            buttonProps?.className,
+          )}
+        >
+          +
+        </Button>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+export { Counter, type CounterProps };

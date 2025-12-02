@@ -1,0 +1,56 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { formatDate, formatOrderStatus } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { dummyHistory } from "../data";
+import { Info } from "lucide-react";
+
+export function OrderTable() {
+  const route = useRouter();
+
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow className="bg-muted/50 border-none">
+          <TableHead>Order ID</TableHead>
+          <TableHead>Order Date</TableHead>
+          <TableHead>Service Type</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Payment Status</TableHead>
+          <TableHead>Total</TableHead>
+          <TableHead className="w-10"></TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {dummyHistory.map((order) => (
+          <TableRow key={order.orderId} className="border-none">
+            <TableCell className="font-medium">{order.orderId}</TableCell>
+            <TableCell>{formatDate(order.orderDate, "date")}</TableCell>
+            <TableCell>{order.serviceType}</TableCell>
+            <TableCell>{formatOrderStatus(order.status)}</TableCell>
+            <TableCell>{order.paymentStatus}</TableCell>
+            <TableCell>${order.totalAmount}</TableCell>
+            <TableCell className="w-10">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => route.push(`orders/${order.orderId}`)}
+              >
+                <Info />
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
