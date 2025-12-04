@@ -6,6 +6,7 @@ import { LogOut } from "lucide-react";
 import { menuItems } from "./data";
 import { AccountMenuDetail } from "./MenuDetail";
 import { ProfileStore } from "./store";
+import { SignoutConfirmation } from "@/components/popup-confirmation";
 
 export default function Account() {
   return (
@@ -74,14 +75,12 @@ function AccountMenu() {
       {menuItems.map((item, i) => (
         <AccountMenuButton key={i} {...item} />
       ))}
-      <Button
-        variant={"destructive"}
-        className="flex justify-start gap-3"
-        onClick={() => {}}
-      >
-        <LogOut />
-        Sign out
-      </Button>
+      <SignoutConfirmation>
+        <Button variant={"destructive"} className="flex justify-start gap-3">
+          <LogOut />
+          Sign out
+        </Button>
+      </SignoutConfirmation>
     </section>
   );
 }

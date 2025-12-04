@@ -20,7 +20,7 @@ export default function ActionSection() {
     <section className="mt-10 mb-5 flex gap-2">
       <Input placeholder="Search by name, id, email, phone" />
       <SortDropdown />
-      <Button onClick={() => route.push("users/create")}>Create User</Button>
+      <Button onClick={() => route.push("users/create")}>Register User</Button>
     </section>
   );
 }

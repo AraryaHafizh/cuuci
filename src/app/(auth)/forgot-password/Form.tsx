@@ -1,5 +1,6 @@
 "use client";
 
+import { SendLinkConfirmation } from "@/components/popup-confirmation";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -8,24 +9,35 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { LoadingAnimation } from "@/components/ui/loading-animation";
+import { useForgotPassword } from "@/hooks/auth/useForgotPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 
-export const signinSchema = z.object({
+export const forgotPasswordSchema = z.object({
   email: z.email(),
 });
 
 export const Form = () => {
-  const form = useForm<z.infer<typeof signinSchema>>({
-    resolver: zodResolver(signinSchema),
+  const form = useForm<z.infer<typeof forgotPasswordSchema>>({
+    resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
       email: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof signinSchema>) {}
+  const {
+    mutateAsync: forgotPassword,
+    isPending,
+    openDialog,
+    setOpenDialog,
+  } = useForgotPassword();
+
+  function onSubmit(data: z.infer<typeof forgotPasswordSchema>) {
+    forgotPassword(data);
+  }
 
   return (
     <section>
@@ -48,7 +60,9 @@ export const Form = () => {
               </Field>
             )}
           />
-          <Button>Send Reset Link</Button>
+          <Button>
+            {isPending ? <LoadingAnimation /> : "Send reset link"}
+          </Button>
           <p className="text-center text-sm">
             <span className="opacity-50">Already have account? </span>
             <Link
@@ -60,6 +74,7 @@ export const Form = () => {
           </p>
         </FieldGroup>
       </form>
+      <SendLinkConfirmation open={openDialog} onOpenChange={setOpenDialog} />
     </section>
   );
 };
