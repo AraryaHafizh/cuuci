@@ -1,5 +1,6 @@
 "use client";
 
+import { SuparAdminConfirmation } from "@/components/popup-confirmation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Combobox } from "@/components/ui/combobox";
@@ -10,17 +11,15 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { LoadingAnimation } from "@/components/ui/loading-animation";
+import { useSignup } from "@/hooks/auth/useSignup";
+import { formatPhoneDisplay } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { Controller, useForm, UseFormReturn } from "react-hook-form";
-import { toast } from "sonner";
-import * as z from "zod";
-import { roles, outlets } from "../data";
-import { formatPhoneDisplay } from "@/lib/utils";
-import { useSignup } from "@/hooks/auth/useSignup";
 import { useEffect } from "react";
-import { LoadingAnimation } from "@/components/ui/loading-animation";
-import { SuparAdminConfirmation } from "@/components/popup-confirmation";
+import { Controller, useForm, UseFormReturn } from "react-hook-form";
+import * as z from "zod";
+import { outlets, roles } from "../data";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
