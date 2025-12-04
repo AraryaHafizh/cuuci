@@ -3,7 +3,7 @@ import { workflowData } from "./data";
 
 export default function Workflow() {
   return (
-    <section className="flex gap-20">
+    <section className="gap-20 space-y-15 md:flex md:space-y-0">
       <Info />
       <Steps />
     </section>
@@ -15,7 +15,7 @@ function Info() {
     <SectionInfo
       title={workflowData.title}
       description={workflowData.description}
-      className="flex flex-1 flex-col justify-center"
+      className="flex flex-1 flex-col items-center justify-center text-center"
     />
   );
 }
@@ -31,7 +31,9 @@ function Steps() {
           </div>
           <div>
             <p className="font-semibol text-lg">{step.title}</p>
-            <p className="font-light opacity-50">{step.description}</p>
+            <p className="text-sm font-light opacity-50 md:text-base">
+              {step.description}
+            </p>
           </div>
         </div>
       ))}

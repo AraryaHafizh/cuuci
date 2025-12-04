@@ -5,7 +5,7 @@ import Workflow from "./workflow";
 
 export default function Landing() {
   return (
-    <main className="container mx-auto">
+    <main className="container px-5 md:mx-auto xl:px-0">
       <Greeting />
       <Workflow />
       <Outlet />
