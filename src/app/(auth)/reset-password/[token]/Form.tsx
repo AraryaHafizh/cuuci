@@ -1,5 +1,6 @@
 "use client";
 
+import { PasswordChangeConfirmation } from "@/components/popup-confirmation";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -8,23 +9,34 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { LoadingAnimation } from "@/components/ui/loading-animation";
+import { useResetPassword } from "@/hooks/auth/useResetPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 
-export const signinSchema = z.object({
+export const resetPasswordSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters long."),
 });
 
-export const Form = () => {
-  const form = useForm<z.infer<typeof signinSchema>>({
-    resolver: zodResolver(signinSchema),
+export const Form = ({ token }: { token: string }) => {
+  const form = useForm<z.infer<typeof resetPasswordSchema>>({
+    resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
       password: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof signinSchema>) {}
+  const {
+    mutateAsync: newPassword,
+    isPending,
+    openDialog,
+    setOpenDialog,
+  } = useResetPassword(token);
+
+  function onSubmit(data: z.infer<typeof resetPasswordSchema>) {
+    newPassword(data);
+  }
 
   return (
     <section>
@@ -39,6 +51,7 @@ export const Form = () => {
                 <Input
                   {...field}
                   id="signin-form"
+                  type="password"
                   aria-invalid={fieldState.invalid}
                 />
                 {fieldState.invalid && (
@@ -47,9 +60,15 @@ export const Form = () => {
               </Field>
             )}
           />
-          <Button>Reset Password</Button>
+          <Button>
+            {isPending ? <LoadingAnimation /> : "Change password"}
+          </Button>
         </FieldGroup>
       </form>
+      <PasswordChangeConfirmation
+        open={openDialog}
+        onOpenChange={setOpenDialog}
+      />
     </section>
   );
 };

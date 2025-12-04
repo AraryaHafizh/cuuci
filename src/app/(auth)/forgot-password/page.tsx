@@ -12,7 +12,7 @@ export default function ForgotPassword() {
         <SectionInfo
           title="Forgot Ur Password?"
           description="Don’t worry, we’ll help you recover your account."
-          className="mb-15 text-center"
+          className="mb-15 flex flex-col items-center text-center"
         />
         <Form />
         <Logo />
