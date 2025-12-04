@@ -12,7 +12,7 @@ export default function Signup() {
         <SectionInfo
           title="Hello New User!"
           description="Ready to simplify your laundry routine?"
-          className="mb-15 text-center"
+          className="mb-15 flex flex-col items-center text-center"
         />
         <Form />
         <Logo />

@@ -12,7 +12,7 @@ export default function Signin() {
         <SectionInfo
           title="Welcome Back!"
           description="Let's get your laundry sorted."
-          className="mb-15 text-center"
+          className="mb-15 flex flex-col items-center text-center"
         />
         <Form />
         <Logo />
