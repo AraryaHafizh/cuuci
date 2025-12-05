@@ -12,10 +12,10 @@ import Map from "../../../../components/Map";
 
 export default function Summary() {
   return (
-    <main className="mt-50">
+    <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
-      <section className="mt-20 grid grid-cols-[1fr_2fr] gap-10">
-        <div className="space-y-10">
+      <section className="mt-10 grid gap-5 lg:grid-cols-[1fr_2fr]">
+        <div className="space-y-5">
           <DriverDetail />
           <OrderSummary />
         </div>
@@ -51,7 +51,7 @@ function DriverDetail() {
         </div>
 
         <Button
-          className="ml-auto rounded-full"
+          className="bg-primary/30 ml-auto rounded-full"
           variant={"ghost"}
           size={"icon-lg"}
         >

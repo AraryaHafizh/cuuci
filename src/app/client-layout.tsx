@@ -7,9 +7,9 @@ import QueryProvider from "@/providers/query-provider";
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system">
-      {/* <SessionProvider> */}
+      <SessionProvider>
       <QueryProvider>{children}</QueryProvider>
-      {/* </SessionProvider> */}
+      </SessionProvider>
     </ThemeProvider>
   );
 }
