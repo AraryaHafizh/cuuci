@@ -6,7 +6,7 @@ export const Logo = () => {
   return (
     <Link
       href="/"
-      className="text-primary flex justify-center pt-10 text-3xl font-black"
+      className="text-primary flex justify-center pt-10 text-xl font-black 2xl:text-3xl"
     >
       cuuci
     </Link>

@@ -70,7 +70,9 @@ export default function Map({ lat1, lng1, lat2, lng2 }: MapProps) {
 
           L.DomEvent.disableClickPropagation(container);
 
-          container.innerHTML = renderToString(<LocateFixed size={20} />);
+          container.innerHTML = renderToString(
+            <LocateFixed size={20} className="text-black" />,
+          );
 
           container.onclick = () => {
             const group = L.featureGroup([markerDriver, markerUser]);
@@ -118,7 +120,7 @@ export function MapSelect({ centerLat, centerLng, onSelect }: MapSelectProps) {
         html: renderToString(
           <div className="bg-primary rounded-full p-2 text-white">
             <MapPin size={24} />
-          </div>
+          </div>,
         ),
         className: "",
         iconSize: [40, 40],
@@ -158,11 +160,13 @@ export function MapSelect({ centerLat, centerLng, onSelect }: MapSelectProps) {
         onAdd: function () {
           const container = L.DomUtil.create(
             "div",
-            "leaflet-bar p-2 rounded bg-white shadow-lg cursor-pointer"
+            "leaflet-bar p-2 rounded bg-white shadow-lg cursor-pointer",
           );
 
           L.DomEvent.disableClickPropagation(container);
-          container.innerHTML = renderToString(<LocateFixed size={20} />);
+          container.innerHTML = renderToString(
+            <LocateFixed size={20} className="text-black" />,
+          );
 
           container.onclick = () => {
             map.setView([centerLat, centerLng], 13);

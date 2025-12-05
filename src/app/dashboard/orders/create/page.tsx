@@ -15,9 +15,9 @@ import { outletLocation } from "./data";
 export default function Create() {
   const route = useRouter();
   return (
-    <main className="mt-50">
+    <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
-      <section className="mt-20 flex gap-10">
+      <section className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 2xl:flex 2xl:gap-5 2xl:space-y-0">
         <SelectAddress />
         <SelectDateTime />
         <SelectOutlet />
@@ -46,7 +46,7 @@ function Greeting() {
 function SelectAddress() {
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p>Where to Pick Up?</p>
+      <p className="font-medium">Where to Pick Up?</p>
       <div className="space-y-5">
         {Array.from({ length: 3 }).map((_, i) => (
           <PickupAddressCard key={i} {...userAddress[i]} />
@@ -63,12 +63,12 @@ function SelectDateTime() {
 
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p>When to Arrive?</p>
+      <p className="font-medium">When to Arrive?</p>
       <Calendar
         mode="single"
         selected={date}
         onSelect={setDate}
-        className="rounded-md border shadow-sm"
+        className="w-full rounded-md border shadow-sm"
         captionLayout="dropdown"
         startMonth={today}
         endMonth={maxDate}
@@ -90,7 +90,7 @@ function SelectDateTime() {
 function SelectOutlet() {
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p>Select Outlet Location</p>
+      <p className="font-medium">Select Outlet Location</p>
       {outletLocation.map((outlet, i) => (
         <OutletAddressCard
           key={i}
@@ -106,11 +106,10 @@ function SelectOutlet() {
 function UserNote() {
   return (
     <div className="w-full space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p>User Note</p>
+      <p className="font-medium">User Note</p>
       <Textarea
-        placeholder="e.g., Please use the side door.
-Watch out for the dog."
-        className="h-[90%]"
+        placeholder="e.g., Please use the side door. Watch out for the dog."
+        className="h-40 md:h-[90%]"
       />
     </div>
   );

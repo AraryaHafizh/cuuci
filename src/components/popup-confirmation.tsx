@@ -118,8 +118,8 @@ export const SignoutConfirmation = ({ children }: { children: ReactNode }) => {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            onClick={async () => {
-              await signOut({ redirect: false });
+            onClick={() => {
+              signOut({ redirect: false });
               redirect("/");
             }}
             className="bg-transparant hover:bg-destructive active:bg-destructive border-destructive text-destructive border hover:text-white active:text-white"
