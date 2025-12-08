@@ -11,12 +11,13 @@ import {
 } from "./data";
 import { formatOrderStatus, formatTime } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { SectionTitle } from "@/components/ui/section-title";
 
 export default function Dashboard() {
   return (
     <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
-      <section className="mt-10 gap-5 space-y-5 lg:flex xl:mt-20">
+      <section className="mt-10 gap-5 space-y-5 lg:flex lg:space-y-0 xl:mt-20">
         <ActiveOrders />
         <RecentActivity />
       </section>
@@ -43,7 +44,7 @@ function Greeting() {
 function ActiveOrders() {
   return (
     <section className="flex-3 space-y-5">
-      <p className="font-medium">Your Active Orders</p>
+      <SectionTitle title="Your Active Orders" />
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
         {activeOrder.map((order: any, i: number) => {
           const StatusIcon = orderStatusIcons[order.status];
@@ -70,7 +71,8 @@ function ActiveOrders() {
 function RecentActivity() {
   return (
     <section className="flex-1 space-y-5">
-      <p className="font-medium">Recent Activity</p>
+      <SectionTitle title="Recent Activity" />
+
       <div className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
         {recentActivity.map((activity: any, i: number) => {
           const StatusIcon = orderStatusIcons[activity.status];

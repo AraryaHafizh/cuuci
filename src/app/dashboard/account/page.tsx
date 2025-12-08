@@ -6,7 +6,7 @@ import { LogOut } from "lucide-react";
 import { menuItems } from "./data";
 import { AccountMenuDetail } from "./MenuDetail";
 import { ProfileStore } from "./store";
-import { SignoutConfirmation } from "@/components/popup-confirmation";
+import { SignoutConfirmation } from "@/components/popupConfirmation";
 import { useSession } from "next-auth/react";
 import { LoadingScreen } from "@/components/ui/loading-animation";
 
@@ -23,7 +23,7 @@ export default function Account() {
           <ProfilePicture session={session} />
           <AccountMenu />
         </div>
-        <AccountMenuDetail session={session}/>
+        <AccountMenuDetail session={session} />
       </section>
     </main>
   );

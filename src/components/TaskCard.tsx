@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
+import { Button } from "./ui/button";
 
 type ProgressState = "pending" | "in_progress";
 
@@ -29,25 +29,29 @@ interface TaskProps {
 }
 
 export const StatusMap = {
-  pending: {
-    label: "New",
-    textColor: "text-blue-700",
-    bgColor: "bg-blue-700/15",
+  washing: {
+    textColor: "text-primary",
+    bgColor: "bg-primary/20",
   },
-  in_progress: {
-    label: "In Progress",
-    textColor: "text-foreground",
-    bgColor: "bg-foreground/15",
+  ironing: {
+    textColor: "text-amber-600",
+    bgColor: "bg-amber-500/20",
+  },
+  packing: {
+    textColor: "text-emerald-600",
+    bgColor: "bg-emerald-600/20",
   },
 };
 
 export default function TaskCard(data: TaskProps) {
   const route = useRouter();
+  const status = data.status;
+  const statusData = StatusMap[data.status as keyof typeof StatusMap];
+  const progress =
+    data.stationProgress[status as keyof typeof data.stationProgress];
 
-  const statusData =
-    StatusMap[data.stationProgress[data.role as keyof StationProgress]];
   return (
-    <div className="flex min-h-85 flex-col justify-between rounded-2xl border bg-(--container-bg) p-5">
+    <div className="flex min-h-65 flex-col justify-between rounded-2xl border bg-(--container-bg) p-5 lg:min-h-70 2xl:min-h-85">
       <div>
         <div className="flex items-center justify-between">
           <div>
@@ -55,23 +59,30 @@ export default function TaskCard(data: TaskProps) {
             <p className="font-light opacity-50">{data.userName}</p>
           </div>
           <div
-            className={`px-4 py-1 ${statusData.bgColor} rounded-2xl ${statusData.textColor} text-sm font-light`}
+            className={`rounded-2xl px-3 py-1 text-xs font-light 2xl:text-sm ${statusData.bgColor} ${statusData.textColor}`}
           >
-            {statusData.label}
+            {status}
           </div>
         </div>
-        <Separator className="my-5" />
-        <p>Order items:</p>
-        {data.items.map((item, i) => (
-          <p key={i} className="font-light opacity-50">
-            {item.qty}x {item.name}
-          </p>
-        ))}
+        <Separator className="my-2 2xl:my-5" />
+
+        <p className="text-sm 2xl:text-base">Order items:</p>
+        <div className="mt-2 grid grid-cols-2">
+          {data.items.map((item, i) => (
+            <div
+              key={i}
+              className="text-sm font-light opacity-50 2xl:text-base"
+            >
+              {item.qty}x {item.name}
+            </div>
+          ))}
+        </div>
       </div>
-      {statusData.label === "New" && <Button>Start {data.role}</Button>}
-      {statusData.label === "In Progress" && (
+      <div className="mt-3 lg:mt-0"></div>
+      {progress === "pending" && <Button>Start {status}</Button>}
+      {progress === "in_progress" && (
         <Button onClick={() => route.push(`worker/tasks/${data.id}/review`)}>
-          Finish {data.role}
+          Finish {status}
         </Button>
       )}
     </div>

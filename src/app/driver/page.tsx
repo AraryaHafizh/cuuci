@@ -1,33 +1,28 @@
 "use client";
 
-import SectionInfo from "@/components/SectionInfo";
-import { userStatus } from "../worker/data";
-import { Button } from "@/components/ui/button";
-import {
-  availableDeliveriesData,
-  buttonLabel,
-  DeliveryStage,
-  ongoingDeliveryData,
-} from "./data";
 import { DeliveryCard } from "@/app/driver/deliveries/DeliveryCard";
-import { Info } from "lucide-react";
+import SectionInfo from "@/components/SectionInfo";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
+import { userStatus } from "../worker/data";
+import { availableDeliveriesData, ongoingDeliveryData } from "./data";
+import { SectionTitle } from "@/components/ui/section-title";
 
 const driverStatus = "inactive";
 
 export default function Driver() {
   return (
-    <main className="mt-50">
+    <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
-      <div className="mt-20 flex gap-10">
+      <section className="mt-10 gap-5 space-y-5 lg:flex lg:space-y-0 xl:mt-20">
         <Attendance />
         <TaskWidget />
-      </div>
-      <div className="mt-20 flex gap-10">
-        <AvailableDeliveries />
+      </section>
+      <section className="mt-10 flex-row-reverse gap-5 space-y-5 xl:mt-20 xl:flex">
         {ongoingDeliveryData && <OngoingDelivery />}
-      </div>
+        <AvailableDeliveries />
+      </section>
     </main>
   );
 }
@@ -45,9 +40,9 @@ function Greeting() {
 
 function Attendance() {
   return (
-    <section className="flex-1 space-y-5 rounded-2xl border bg-(--container-bg) p-5">
+    <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5 lg:flex-1">
       <div className="flex justify-between">
-        <p className="">Current Status</p>
+        <SectionTitle title="Current Status" />
 
         <span
           className={`flex items-center gap-1 ${userStatus[driverStatus].textColor}`}
@@ -75,20 +70,21 @@ function Attendance() {
 function TaskWidget() {
   function Widget({ title, data }: any) {
     return (
-      <div className="bg-background flex w-full flex-col items-center justify-center space-y-3 rounded-2xl border p-10">
-        <p className="text-5xl font-black">{data}</p>
-        <p className="text-sm font-light opacity-50">{title}</p>
+      <div className="bg-background flex w-full flex-col items-center justify-center space-y-3 rounded-2xl border py-5 lg:py-10 2xl:p-10">
+        <p className="text-3xl font-black lg:text-4xl 2xl:text-5xl">{data}</p>
+        <p className="text-xs font-light opacity-50 lg:text-sm">{title}</p>
       </div>
     );
   }
 
   return (
-    <section className="flex-2 rounded-2xl border bg-(--container-bg) p-5">
-      <p>Today Activity</p>
+    <section className="rounded-2xl border bg-(--container-bg) p-5 lg:flex-2">
+      <SectionTitle title="Today Activity" />
+
       <div className="mt-5 flex gap-5">
-        <Widget title="Available Requests" data="10" />
-        <Widget title="Active Job" data="1" />
-        <Widget title="Completed Jobs" data="10" />
+        <Widget title="To Wash" data="10" />
+        <Widget title="In Progress" data="10" />
+        <Widget title="Completed" data="10" />
       </div>
     </section>
   );
@@ -97,8 +93,9 @@ function TaskWidget() {
 function AvailableDeliveries() {
   return (
     <section className="flex-3 space-y-5">
-      <p>Available Deliveries</p>
-      <div className="grid grid-cols-3 gap-5">
+      <SectionTitle title="Available Deliveries" />
+
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
         {availableDeliveriesData.map((delivery: any, i) => (
           <DeliveryCard key={i} {...delivery} />
         ))}
@@ -113,8 +110,9 @@ function OngoingDelivery() {
 
   return (
     <section className="h-min flex-1 space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p>Ongoing Delivery</p>
-      <p className="text-xl font-bold">
+      <SectionTitle title="Ongoing Activity" />
+
+      <p className="text-lg font-bold lg:text-xl">
         {data.status === "pickup"
           ? `Pickup from ${data.username}`
           : `Delivery to ${data.username}`}
@@ -132,18 +130,13 @@ function OngoingDelivery() {
         <p>{data.address}</p>
       </div>
 
-      <div className="flex gap-2">
-        <Button className="flex-1">
-          {buttonLabel[data.currentStatus as DeliveryStage]}
-        </Button>
-        <Button
-          variant={"outline"}
-          size={"icon"}
-          onClick={() => route.push(`driver/deliveries/${data.orderId}`)}
-        >
-          <Info />
-        </Button>
-      </div>
+      <Button
+        variant={"secondary"}
+        onClick={() => route.push(`driver/deliveries/${data.orderId}`)}
+        className="w-full"
+      >
+        See details
+      </Button>
     </section>
   );
 }

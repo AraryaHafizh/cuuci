@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { userAddress } from "../../account/data";
 import { outletLocation } from "./data";
+import { SectionTitle } from "@/components/ui/section-title";
 
 export default function Create() {
   const route = useRouter();
@@ -46,7 +47,8 @@ function Greeting() {
 function SelectAddress() {
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p className="font-medium">Where to Pick Up?</p>
+      <SectionTitle title="Where to Pick Up?" />
+
       <div className="space-y-5">
         {Array.from({ length: 3 }).map((_, i) => (
           <PickupAddressCard key={i} {...userAddress[i]} />
@@ -63,7 +65,8 @@ function SelectDateTime() {
 
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p className="font-medium">When to Arrive?</p>
+      <SectionTitle title="When to Arrive?" />
+
       <Calendar
         mode="single"
         selected={date}
@@ -90,7 +93,8 @@ function SelectDateTime() {
 function SelectOutlet() {
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p className="font-medium">Select Outlet Location</p>
+      <SectionTitle title="Select Outlet Location" />
+
       {outletLocation.map((outlet, i) => (
         <OutletAddressCard
           key={i}
@@ -106,7 +110,8 @@ function SelectOutlet() {
 function UserNote() {
   return (
     <div className="w-full space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p className="font-medium">User Note</p>
+      <SectionTitle title="User Note" />
+
       <Textarea
         placeholder="e.g., Please use the side door. Watch out for the dog."
         className="h-40 md:h-[90%]"

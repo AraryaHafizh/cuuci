@@ -1,6 +1,6 @@
 "use client";
 
-import { CreateAccountConfirmation } from "@/components/popup-confirmation";
+import { CreateAccountConfirmation } from "@/components/popupConfirmation";
 import { Button } from "@/components/ui/button";
 import {
   Field,

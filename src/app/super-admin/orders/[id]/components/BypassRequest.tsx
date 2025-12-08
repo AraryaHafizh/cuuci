@@ -17,9 +17,9 @@ import { dummyBypass } from "../../data";
 export function BypassRequest() {
   const [index, setIndex] = useState<number | null>(null);
   return (
-    <section className="rounded-2xl border bg-(--container-bg) p-5">
+    <section className="max-w-full rounded-2xl border bg-(--container-bg) p-5">
       <p>Bypass Requests</p>
-      <section className="flex gap-5">
+      <section className="scroll-hidden flex w-full gap-5 overflow-x-auto">
         <BypassTable />
         {index !== null && <BypassDetail />}
       </section>

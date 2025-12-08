@@ -15,7 +15,7 @@ export function AccountMenuDetail({ session }: { session: any }) {
     return (
       <div className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
         <div>
-          <p className="font-medium">Profile Setting</p>
+          <p>Profile Setting</p>
           <p className="text-sm font-light opacity-50">
             View and manage your personal information and account details.
           </p>
@@ -37,7 +37,7 @@ export function AccountMenuDetail({ session }: { session: any }) {
   function Password() {
     return (
       <div className="rounded-2xl border bg-(--container-bg) p-5">
-        <p className="font-medium">Update Password</p>
+        <p>Update Password</p>
         <p className="text-sm font-light opacity-50">
           Update your account password to keep your profile secure.
         </p>
@@ -65,7 +65,7 @@ export function AccountMenuDetail({ session }: { session: any }) {
       <div className="rounded-2xl border bg-(--container-bg) p-5">
         <div className="items-center justify-between md:flex">
           <div>
-            <p className="font-medium">Manage My Address</p>
+            <p>Manage My Address</p>
             <p className="text-sm font-light opacity-50">
               Add, edit, or remove your saved addresses for faster checkout.
             </p>
