@@ -29,7 +29,7 @@ export function SummaryButton() {
   const router = useRouter();
 
   return (
-    <div className="flex gap-5">
+    <div className="flex gap-2">
       <Button
         className="flex-1"
         variant={"outline"}

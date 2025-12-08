@@ -2,10 +2,11 @@ import SectionInfo from "@/components/SectionInfo";
 import { Separator } from "@/components/ui/separator";
 import { formatDate } from "@/lib/utils";
 import { Check, CircleDashed } from "lucide-react";
-import { dummyLog, filterStatus, statusRouteOrder } from "../data";
+import { dummyLog, filterStatus } from "../data";
+import { BypassRequest } from "./components/BypassRequest";
 import { ItemTable } from "./components/ItemTable";
 import { OrderLogs } from "./components/OrderLogs";
-import { BypassRequest } from "./components/BypassRequest";
+import { SectionTitle } from "@/components/ui/section-title";
 
 interface OrderDetailProps {
   params: Promise<{ id: string }>;
@@ -15,10 +16,10 @@ async function OrderDetail(props: OrderDetailProps) {
   const { id } = await props.params;
 
   return (
-    <main className="mt-50">
+    <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
       <OrderLog />
-      <section className="mt-5 flex gap-5">
+      <section className="mt-10 gap-5 space-y-5 lg:flex lg:space-y-0 xl:mt-20">
         <div className="flex-4 space-y-5 overflow-x-auto">
           <ItemTable />
           <BypassRequest />
@@ -51,7 +52,8 @@ export default OrderDetail;
 function OrderLog() {
   return (
     <section className="mt-15 space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p>Order Logs</p>
+      <SectionTitle title="Order Logs" />
+
       <div className="scroll-hidden flex gap-5 overflow-x-auto">
         {dummyLog.map((log, i) => {
           const Icon = log.assigned ? Check : CircleDashed;
@@ -88,7 +90,8 @@ function OrderLog() {
 function CustomerDetail() {
   return (
     <section className="h-fit rounded-2xl border bg-(--container-bg) p-5">
-      <p>Customer & Order Details</p>
+      <SectionTitle title="Customer & Order Details" className="mb-5" />
+
       <HorizontalDetail label="Customer" data="John Doe" />
       <HorizontalDetail label="Contact" data="+62 812 3456 7890" />
       <HorizontalDetail
@@ -102,7 +105,8 @@ function CustomerDetail() {
 function AddressDetail() {
   return (
     <section className="flex-1 rounded-2xl border bg-(--container-bg) p-5">
-      <p>Addresses</p>
+      <SectionTitle title="Address" className="mb-5" />
+
       <VerticalDetail label="Customer" data="John Doe" />
       <VerticalDetail label="Contact" data="+62 812 3456 7890" />
       <VerticalDetail
@@ -116,7 +120,8 @@ function AddressDetail() {
 function AssignmentDetail() {
   return (
     <section className="flex-1 rounded-2xl border bg-(--container-bg) p-5">
-      <p>Assignments</p>
+      <SectionTitle title="Assignments" className="mb-5" />
+
       <HorizontalDetail label="Outlet" data="Outlet A" />
       <HorizontalDetail label="Outlet Admin" data="Jonathan" />
       <HorizontalDetail label="Driver" data="John Doe" />
@@ -127,7 +132,8 @@ function AssignmentDetail() {
 function PaymentDetail() {
   return (
     <section className="h-fit rounded-2xl border bg-(--container-bg) p-5">
-      <p>Payment Summary</p>
+      <SectionTitle title="Payment Summary" className="mb-5" />
+
       <HorizontalDetail label="Subtotal" data="$30.50" />
       <HorizontalDetail label="Tax (5%)" data="$2.50" />
       <HorizontalDetail label="Delivery Fee" data="$5.00" />

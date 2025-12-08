@@ -11,9 +11,9 @@ async function UserDetail(props: UserDetailProps) {
   const userData = dummyUsers[2];
 
   return (
-    <main className="mt-50">
+    <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
-      <section className="mt-20 flex gap-5">
+      <section className="mt-10 gap-5 space-y-5 lg:flex lg:space-y-0 xl:mt-20">
         <UserInfo />
         <UserStats />
       </section>
@@ -52,9 +52,9 @@ async function UserDetail(props: UserDetailProps) {
   function UserStats() {
     function Widget({ title, data }: any) {
       return (
-        <div className="bg-foreground/3 flex w-full flex-col items-center justify-center space-y-3 rounded-lg border p-10">
-          <p className="text-5xl font-black">{data}</p>
-          <p className="text-sm font-light opacity-50">{title}</p>
+        <div className="bg-foreground/3 flex w-full flex-col items-center justify-center space-y-3 rounded-lg border py-5 text-center lg:py-10 2xl:p-10">
+          <p className="text-3xl font-black lg:text-4xl 2xl:text-5xl">{data}</p>
+          <p className="text-xs font-light opacity-50 lg:text-sm">{title}</p>
         </div>
       );
     }

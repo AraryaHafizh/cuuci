@@ -31,7 +31,7 @@ export function AddressCard(data: AddressProps) {
     >
       <div className="flex justify-between">
         <div className="w-[70%]">
-          <p className="font-medium">{data.label}</p>
+          <p>{data.label}</p>
           <p className="line-clamp-2 opacity-50">{data.address}</p>
         </div>
         {!data.isDefault && (

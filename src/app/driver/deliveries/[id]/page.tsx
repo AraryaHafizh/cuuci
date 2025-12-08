@@ -5,6 +5,7 @@ import { getDistance } from "@/lib/utils";
 import { House, Navigation, TextAlignStart } from "lucide-react";
 import { CustomerButton, EndButton } from "../DeliveryButtons";
 import Status from "./Status";
+import { SectionTitle } from "@/components/ui/section-title";
 
 interface DeliveryDetailProps {
   params: Promise<{ id: string }>;
@@ -16,21 +17,21 @@ async function DeliveryDetail(props: DeliveryDetailProps) {
   const userCoor = [-6.2653, 106.7819];
 
   return (
-    <main className="mt-50">
+    <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
-      <section className="mt-20 grid grid-cols-[1fr_2fr] gap-10">
-        <div className="space-y-10">
-          <CustomerDetail />
-          <Status />
-          <DeliverySummary />
-          <EndButton orderId={id} />
-        </div>
+      <section className="mt-10 flex-row-reverse gap-5 space-y-5 xl:mt-20 xl:flex">
         <Map
           lat1={driverCoor[0]}
           lng1={driverCoor[1]}
           lat2={userCoor[0]}
           lng2={userCoor[1]}
         />
+        <div className="flex-1/2 space-y-5">
+          <CustomerDetail />
+          <Status />
+          <DeliverySummary />
+          <EndButton orderId={id} />
+        </div>
       </section>
     </main>
   );
@@ -52,9 +53,10 @@ function CustomerDetail() {
   const userCoor = [-6.2653, 106.7819];
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p>Customer Details</p>
+      <SectionTitle title="Customer Details" />
+
       <div className="flex items-center gap-4">
-        <div className="bg-foreground/10 flex h-20 w-20 items-center justify-center rounded-full text-2xl">
+        <div className="bg-foreground/10 flex h-15 w-15 items-center justify-center rounded-full lg:h-20 lg:w-20 lg:text-2xl">
           JD
         </div>
 
@@ -81,7 +83,8 @@ function DeliverySummary() {
 
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p>Delivery Details</p>
+      <SectionTitle title="Delivery Details" />
+
       <InfoCard
         icon={<House />}
         label="Delivery Address"

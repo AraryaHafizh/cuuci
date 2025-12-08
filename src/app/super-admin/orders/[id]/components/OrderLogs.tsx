@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { dummyLog, filterStatus, oderTabKey } from "../../data";
-import { formatDate } from "@/lib/utils";
-import { Check, CircleDashed } from "lucide-react";
+import { oderTabKey } from "../../data";
 
 export function OrderLogs() {
   const [index, setIndex] = useState<number>(0);
@@ -11,7 +9,7 @@ export function OrderLogs() {
 
   return (
     <section className="rounded-2xl border bg-(--container-bg) p-5">
-      <div className="bg-foreground/3 mb-5 flex w-fit gap-3 rounded-xl p-2">
+      <div className="bg-foreground/3 mb-5 flex w-fit gap-3 rounded-xl p-2 text-sm lg:text-base">
         {oderTabKey.map((key, i) => (
           <p
             key={i}

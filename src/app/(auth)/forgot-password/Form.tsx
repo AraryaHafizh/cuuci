@@ -1,6 +1,6 @@
 "use client";
 
-import { SendLinkConfirmation } from "@/components/popup-confirmation";
+import { SendLinkConfirmation } from "@/components/popupConfirmation";
 import { Button } from "@/components/ui/button";
 import {
   Field,
