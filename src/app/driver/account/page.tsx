@@ -9,9 +9,9 @@ import { Lock, LogOut } from "lucide-react";
 
 export default function Account() {
   return (
-    <main className="pt-50">
+    <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
-      <section className="mt-20 flex gap-5">
+      <section className="mt-10 mb-5 flex-1 gap-5 space-y-5 md:mb-0 md:flex xl:mt-20">
         <AccountMenu />
         <Password />
       </section>
@@ -45,7 +45,7 @@ function Greeting() {
 
 function AccountMenu() {
   return (
-    <section className="flex flex-1 flex-col space-y-2 rounded-2xl border bg-(--container-bg) p-5">
+    <section className="scroll-hidden flex flex-1 gap-1 overflow-x-auto rounded-lg border bg-(--container-bg) p-2 select-none md:flex-col md:gap-0 md:space-y-2 md:rounded-2xl md:p-5">
       <Button
         variant="ghost"
         className="bg-foreground/10 flex justify-start gap-3"
@@ -69,19 +69,19 @@ function AccountMenu() {
 function Password() {
   return (
     <div className="flex-2 rounded-2xl border bg-(--container-bg) p-5">
-      <p className="text-xl font-bold">Update Password</p>
-      <p className="font-light opacity-50">
+      <p>Update Password</p>
+      <p className="text-sm font-light opacity-50">
         Update your account password to keep your profile secure.
       </p>
       <Separator className="my-5" />
-      <div className="mb-5 flex gap-10">
+      <div className="mb-5 gap-10 space-y-5 md:flex">
         <div className="w-full space-y-4">
           <Label>Old Password</Label>
-          <Input></Input>
+          <Input placeholder="****"></Input>
         </div>
         <div className="w-full space-y-4">
           <Label>New Password</Label>
-          <Input></Input>
+          <Input placeholder="****"></Input>
         </div>
       </div>
 

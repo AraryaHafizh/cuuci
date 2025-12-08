@@ -1,6 +1,7 @@
 import ItemCounter from "@/components/Counter";
 import SectionInfo from "@/components/SectionInfo";
 import { Button } from "@/components/ui/button";
+import { SectionTitle } from "@/components/ui/section-title";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { CircleAlert, Image } from "lucide-react";
@@ -20,12 +21,15 @@ async function TaskReview(props: TaskReviewProps) {
   const { id } = await props.params;
 
   return (
-    <main className="mt-50">
+    <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting id={id} />
       <Caution />
-      <section className="mb-20 flex items-start gap-10">
+      <section className="mt-10 gap-5 space-y-5 lg:flex lg:space-y-0 xl:mt-20">
         <Items />
-        <Action />
+        <div className="flex-1 space-y-5">
+          <Action />
+          <Button className="w-full py-5">Finish task</Button>
+        </div>
       </section>
     </main>
   );
@@ -38,7 +42,6 @@ function Greeting({ id }: { id: string }) {
       <SectionInfo
         title={`Task ${id} Review`}
         description="Confirm the laundry items and report any mismatches before moving to the next stage."
-        role="washing"
       />
     </section>
   );
@@ -47,11 +50,11 @@ function Greeting({ id }: { id: string }) {
 function Caution() {
   return (
     <section className="my-10">
-      <div className="flex items-center gap-5 rounded-2xl border border-yellow-400 bg-yellow-400/20 p-5 text-yellow-300">
+      <div className="flex items-center gap-5 rounded-2xl border-2 border-amber-400 bg-amber-200/30 p-5 text-amber-400">
         <CircleAlert size={40} />
         <div>
           <p className="text-xl font-bold">Attention Before Submitting</p>
-          <p className="text-foreground/90 font-light">
+          <p className="text-foreground/60 font-light">
             Verify every item and ensure the total count is accurate. Any
             discrepancy must be reported and submitted for admin bypass.
           </p>
@@ -64,13 +67,15 @@ function Caution() {
 function Items() {
   return (
     <section className="flex-2 rounded-2xl border bg-(--container-bg) p-5">
-      <p className="mb-5">Order items</p>
+      <SectionTitle title="Available Deliveries" className="mb-5" />
       {items.map((item, i) => (
         <div key={i}>
           <div className="flex justify-between">
             <div className="w-full">
-              <p className="text-xl font-bold">{item.item}</p>
-              <p className="font-light opacity-50">Expected: {item.qty}</p>
+              <p className="font-bold md:text-xl">{item.item}</p>
+              <p className="text-sm font-light opacity-50 md:text-base">
+                Expected: {item.qty}
+              </p>
             </div>
             <ItemCounter initialData={item.qty} />
           </div>
@@ -83,10 +88,9 @@ function Items() {
 
 function Action() {
   return (
-    <section className="h-fit flex-1 rounded-2xl border bg-(--container-bg) p-5">
-      <p>Actions</p>
-      <Button className="mt-3 mb-5 w-full">Finish task</Button>
-      <p>Request Bypass</p>
+    <section className="h-fit rounded-2xl border bg-(--container-bg) p-5">
+      <SectionTitle title="Request Bypass" />
+
       <Textarea
         className="my-3 h-[20vh]"
         placeholder="Reason for bypass..."
@@ -95,7 +99,7 @@ function Action() {
         <Image size={70} className="opacity-50" />
         <p className="opacity-50">Upload proof</p>
       </div>
-      <Button className="mt-5 w-full" variant={"outline"}>
+      <Button className="mt-5 w-full" variant={"destructive"}>
         Request Bypass
       </Button>
     </section>

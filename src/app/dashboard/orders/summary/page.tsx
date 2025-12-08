@@ -9,17 +9,18 @@ import {
 } from "lucide-react";
 import { InfoCard } from "../../../../components/InfoCard";
 import Map from "../../../../components/Map";
+import { SectionTitle } from "@/components/ui/section-title";
 
 export default function Summary() {
   return (
     <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
-      <section className="mt-10 grid gap-5 lg:grid-cols-[1fr_2fr]">
-        <div className="space-y-5">
+      <section className="mt-10 flex-row-reverse gap-5 space-y-5 xl:mt-20 xl:flex">
+        <Map lat1={-6.2} lng1={106.8166} lat2={-6.2653} lng2={106.7819} />
+        <div className="flex-1/2 space-y-5">
           <DriverDetail />
           <OrderSummary />
         </div>
-        <Map lat1={-6.2} lng1={106.8166} lat2={-6.2653} lng2={106.7819} />
       </section>
     </main>
   );
@@ -39,9 +40,10 @@ function Greeting() {
 function DriverDetail() {
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p className="font-medium">Driver Details</p>
+      <SectionTitle title="Driver Details" />
+
       <div className="flex items-center gap-4">
-        <div className="bg-foreground/10 flex h-20 w-20 items-center justify-center rounded-full text-2xl">
+        <div className="bg-foreground/10 flex h-15 w-15 items-center justify-center rounded-full lg:h-20 lg:w-20 lg:text-2xl">
           JD
         </div>
 
@@ -65,7 +67,8 @@ function DriverDetail() {
 function OrderSummary() {
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <p className="font-medium">Order Details</p>
+      <SectionTitle title="Order Details" />
+
       <InfoCard
         icon={<House />}
         label="Pickup Location"

@@ -16,7 +16,7 @@ const SectionInfo = ({
       <div className="flex items-center gap-5">
         <h2 className="text-2xl font-bold lg:text-3xl 2xl:text-5xl">{title}</h2>
         {role != "" && (
-          <p className="bg-primary/20 text-primary rounded-2xl px-4 py-1 text-xl">
+          <p className="bg-primary/20 text-primary rounded-2xl px-3 py-1 text-sm lg:text-base 2xl:text-xl">
             {role}
           </p>
         )}

@@ -24,7 +24,7 @@ export function InfoCard({
       {icon}
       <div>
         <p className="text-xs opacity-50 md:text-sm">{label}</p>
-        <p className="font-medium">{title}</p>
+        <p>{title}</p>
         <p>{value}</p>
       </div>
       {endButtonIcon && (
@@ -55,7 +55,7 @@ export function SummaryInfoCard({
     <div className="flex items-center gap-4 font-light">
       {icon}
       <div>
-        <p className="font-medium">{title}</p>
+        <p>{title}</p>
         <p className="text-sm opacity-50">{value}</p>
       </div>
       {endButtonIcon && (

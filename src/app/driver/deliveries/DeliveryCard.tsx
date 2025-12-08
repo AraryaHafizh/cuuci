@@ -22,7 +22,7 @@ export function DeliveryCard(data: AvailableDeliveryProps) {
   return (
     <div className="flex min-h-65 flex-col justify-between rounded-2xl border bg-(--container-bg) p-5">
       <div>
-        <p className="text-xl font-bold">
+        <p className="text-lg font-bold lg:text-xl">
           {data.status === "pickup"
             ? `Pickup from ${data.username}`
             : `Delivery to ${data.username}`}
@@ -46,7 +46,7 @@ export function DeliveryCard(data: AvailableDeliveryProps) {
           </span>
         </div>
 
-        <p className="mt-5 line-clamp-2">{data.address}</p>
+        <p className="mt-5 line-clamp-2 font-light">{data.address}</p>
       </div>
 
       <Button onClick={() => router.push(`/driver/deliveries/${data.orderId}`)}>

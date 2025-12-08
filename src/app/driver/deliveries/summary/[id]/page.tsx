@@ -2,6 +2,7 @@ import { SummaryInfoCard } from "@/components/InfoCard";
 import SectionInfo from "@/components/SectionInfo";
 import { History, Image, Package } from "lucide-react";
 import { EndButton, SummaryButton } from "../../DeliveryButtons";
+import { SectionTitle } from "@/components/ui/section-title";
 
 interface SummaryProps {
   params: Promise<{ id: string }>;
@@ -11,14 +12,14 @@ async function Summary(props: SummaryProps) {
   const { id } = await props.params;
 
   return (
-    <main className="mt-50">
+    <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
-      <section className="mt-20 grid grid-cols-[1fr_2fr] gap-10">
-        <div className="space-y-10">
+      <section className="mt-10 flex-row-reverse gap-5 space-y-5 xl:mt-20 xl:flex">
+        <UploadProof />
+        <div className="space-y-5">
           <DeliverySummary />
           <SummaryButton />
         </div>
-        <UploadProof />
       </section>
     </main>
   );
@@ -39,7 +40,8 @@ async function Summary(props: SummaryProps) {
 
     return (
       <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-        <p className="font-medium">Delivery Summary</p>
+        <SectionTitle title="Delivery Summary" />
+
         <SummaryInfoCard
           icon={<Package />}
           title={`Order ID ${id}`}
@@ -56,7 +58,7 @@ async function Summary(props: SummaryProps) {
 
   function UploadProof() {
     return (
-      <section>
+      <section className="flex-2">
         <div className="bg-input/30 hover:bg-foreground/15 border-input flex h-[50vh] w-full cursor-pointer flex-col items-center justify-center rounded-lg border-3 border-dashed transition duration-300">
           <Image size={70} className="opacity-50" />
           <p className="opacity-50">Upload proof</p>

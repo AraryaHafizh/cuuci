@@ -1,6 +1,6 @@
 "use client";
 
-import { SuparAdminConfirmation } from "@/components/popup-confirmation";
+import { SuparAdminConfirmation } from "@/components/popupConfirmation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Combobox } from "@/components/ui/combobox";
@@ -69,7 +69,7 @@ export function UserCreateInput() {
 
   return (
     <section>
-      <div className="mt-10 flex gap-5">
+      <div className="mt-10 gap-5 space-y-5 lg:flex lg:space-y-0">
         <BasicInfo form={form} />
         <UserRole form={form} />
       </div>

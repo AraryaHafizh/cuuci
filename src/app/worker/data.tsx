@@ -24,6 +24,10 @@ export const tasks = [
       { name: "T-Shirt", qty: 3 },
       { name: "Shorts", qty: 2 },
       { name: "Socks", qty: 5 },
+      { name: "Dress", qty: 1 },
+      { name: "Jeans", qty: 3 },
+      { name: "Scarf", qty: 1 },
+      { name: "Socks", qty: 4 },
     ],
     status: "washing",
     stationProgress: {
