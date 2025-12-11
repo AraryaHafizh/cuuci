@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { SignoutConfirmation } from "../popupConfirmation";
+import { Button } from "../ui/button";
+import { LogOut } from "lucide-react";
 
 const SuperAdminNavbar = () => {
   return (
@@ -9,10 +12,20 @@ const SuperAdminNavbar = () => {
         <Link href="/super-admin" className="text-xl font-black md:text-4xl">
           cuuci
         </Link>
-        <section className="space-x-5">
+        <section className="flex items-center space-x-5">
           <Link href={"/super-admin/outlets"}>Outlets</Link>
           <Link href={"/super-admin/users"}>Users</Link>
           <Link href={"/super-admin/orders"}>Orders</Link>
+          <SignoutConfirmation>
+            <Button
+              size={"sm"}
+              variant={"destructive"}
+              className="flex justify-start gap-1"
+            >
+              <LogOut />
+              Sign out
+            </Button>
+          </SignoutConfirmation>
         </section>
       </div>
     </nav>

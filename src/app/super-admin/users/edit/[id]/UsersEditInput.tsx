@@ -1,5 +1,6 @@
 "use client";
 
+import { OutletProps } from "@/app/super-admin/outlets/props";
 import { SuparAdminConfirmation } from "@/components/popupConfirmation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,49 +15,43 @@ import { Input } from "@/components/ui/input";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { useAdminSignup } from "@/hooks/auth/useSignup";
 import { useOutlets } from "@/hooks/outlet/useOutlet";
+import { useUsers } from "@/hooks/user/useUser";
 import { formatPhoneDisplay } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { Controller, useForm, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
-import { roles } from "../data";
-import { OutletProps } from "../../outlets/props";
+import { roles } from "../../data";
+import { UserProps } from "../../props";
 
-export const createUserSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.email(),
-  password: z.string(),
-  phoneNumber: z.string().min(10),
-  role: z.string().min(1, "Role is required"),
-  outletId: z.string().min(1, "Outlet ID is required"),
+export const editUserSchema = z.object({
+  name: z.string().optional(),
+  email: z.email().optional(),
+  password: z.string().optional(),
+  phoneNumber: z.string().optional(),
+  role: z.string().optional(),
+  outletId: z.string().optional(),
 });
 
-type OutletFormValues = z.infer<typeof createUserSchema>;
+type OutletFormValues = z.infer<typeof editUserSchema>;
 
-export function UserCreateInput() {
+export function UserEditInput({ id }: { id: string }) {
+  const { data } = useUsers();
+  const userData = data?.find((user: UserProps) => user.id === id);
+  const isCustomer = userData?.role === "CUSTOMER";
+
   const router = useRouter();
   const form = useForm<OutletFormValues>({
-    resolver: zodResolver(createUserSchema),
+    resolver: zodResolver(editUserSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      name: userData?.name,
+      email: userData?.email,
       password: "",
-      phoneNumber: "",
-      role: "",
-      outletId: "",
+      phoneNumber: userData?.phoneNumber,
+      role: userData?.role,
+      outletId: userData?.outletId ?? "",
     },
   });
-
-  useEffect(() => {
-    const name = form.getValues("name");
-    const outlet = form.getValues("outletId");
-
-    if (name && outlet) {
-      const generated = `${name.replace(/\s+/g, "-")}-${outlet.slice(0, 3)}`;
-      form.setValue("password", generated, { shouldValidate: true });
-    }
-  }, [form.watch("name"), form.watch("outletId")]);
 
   const {
     mutateAsync: signup,
@@ -65,20 +60,26 @@ export function UserCreateInput() {
     setOpenDialog,
   } = useAdminSignup();
 
-  function onSubmit(data: OutletFormValues) {
-    const final = {
-      ...data,
-      phoneNumber: "+62" + data.phoneNumber,
-    };
+  function onSubmit(data: any) {
+    const filtered = Object.fromEntries(
+      Object.entries(data).filter(
+        ([_, v]) => v !== "" && v !== undefined && v !== null,
+      ),
+    );
 
-    signup(final);
+    if (filtered.phoneNumber) {
+      filtered.phoneNumber = "+62" + filtered.phoneNumber;
+    }
+
+    console.log(filtered);
+    // signup(filtered)
   }
 
   return (
     <section>
       <div className="mt-10 gap-5 space-y-5 lg:flex lg:space-y-0">
         <BasicInfo form={form} />
-        <UserRole form={form} />
+        <UserRole form={form} isCustomer={isCustomer} />
       </div>
       <div className="mt-5 flex justify-end gap-2">
         <Button variant={"outline"} onClick={() => router.back()}>
@@ -185,7 +186,13 @@ function BasicInfo({ form }: { form: UseFormReturn<OutletFormValues> }) {
   );
 }
 
-function UserRole({ form }: { form: UseFormReturn<OutletFormValues> }) {
+function UserRole({
+  form,
+  isCustomer,
+}: {
+  form: UseFormReturn<OutletFormValues>;
+  isCustomer: boolean;
+}) {
   const { data } = useOutlets();
 
   const outlets = (data || []).map((outlet: OutletProps) => ({
@@ -212,6 +219,7 @@ function UserRole({ form }: { form: UseFormReturn<OutletFormValues> }) {
                   value={field.value}
                   onChange={field.onChange}
                   placeholder="Select Role"
+                  disabled={isCustomer}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -230,6 +238,7 @@ function UserRole({ form }: { form: UseFormReturn<OutletFormValues> }) {
                   value={field.value}
                   onChange={field.onChange}
                   placeholder="Select Store"
+                  disabled={isCustomer}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />

@@ -1,5 +1,6 @@
 "use client";
 
+import { getLocation } from "@/lib/utils";
 import "leaflet/dist/leaflet.css";
 import { LocateFixed, MapPin, Motorbike } from "lucide-react";
 import { useEffect, useRef } from "react";
@@ -99,9 +100,15 @@ interface MapSelectProps {
   centerLat: number;
   centerLng: number;
   onSelect: (lat: number, lng: number, address: string) => void;
+  isEdit?: boolean;
 }
 
-export function MapSelect({ centerLat, centerLng, onSelect }: MapSelectProps) {
+export function MapSelect({
+  centerLat,
+  centerLng,
+  onSelect,
+  isEdit = false,
+}: MapSelectProps & { isEdit?: boolean }) {
   const mapRef = useRef<any>(null);
   const markerRef = useRef<any>(null);
 
@@ -109,7 +116,10 @@ export function MapSelect({ centerLat, centerLng, onSelect }: MapSelectProps) {
     import("leaflet").then(async (L) => {
       if (mapRef.current) return;
 
-      const map = L.map("map-select").setView([centerLat, centerLng], 13);
+      const map = L.map("map-select").setView(
+        [centerLat, centerLng],
+        isEdit ? 16 : 13,
+      );
       mapRef.current = map;
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -128,33 +138,34 @@ export function MapSelect({ centerLat, centerLng, onSelect }: MapSelectProps) {
         popupAnchor: [0, -35],
       });
 
-      // Handle map click
+      if (isEdit && centerLat && centerLng) {
+        const initialMarker = L.marker([centerLat, centerLng], {
+          icon: pinIcon,
+        }).addTo(map);
+        markerRef.current = initialMarker;
+      }
+
       map.on("click", async (e: any) => {
         const { lat, lng } = e.latlng;
 
-        // Remove previous marker
         if (markerRef.current) map.removeLayer(markerRef.current);
 
-        // Add new marker
         const newMarker = L.marker([lat, lng], { icon: pinIcon }).addTo(map);
         markerRef.current = newMarker;
 
-        // Reverse geocode
         const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
-
         let address = "Unknown location";
         try {
           const res = await fetch(url);
           const data = await res.json();
           address = data.display_name ?? "Unknown location";
-        } catch (e) {
-          console.error("Reverse geocoding failed:", e);
+        } catch (err) {
+          console.error("Reverse geocoding failed:", err);
         }
 
         onSelect(lat, lng, address);
       });
 
-      // Keep your focus control
       const focusControl = L.Control.extend({
         options: { position: "bottomright" },
         onAdd: function () {
@@ -168,8 +179,33 @@ export function MapSelect({ centerLat, centerLng, onSelect }: MapSelectProps) {
             <LocateFixed size={20} className="text-black" />,
           );
 
-          container.onclick = () => {
-            map.setView([centerLat, centerLng], 13);
+          container.onclick = async () => {
+            try {
+              const { lat, lng } = await getLocation();
+              map.setView([lat, lng], 16);
+
+              if (markerRef.current) map.removeLayer(markerRef.current);
+
+              const newMarker = L.marker([lat, lng], { icon: pinIcon }).addTo(
+                map,
+              );
+              markerRef.current = newMarker;
+
+              const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+              let address = "Unknown location";
+
+              try {
+                const res = await fetch(url);
+                const data = await res.json();
+                address = data.display_name ?? "Unknown location";
+              } catch (err) {
+                console.error("Reverse geocode fail:", err);
+              }
+
+              onSelect(lat, lng, address);
+            } catch (e) {
+              console.error("Gagal ambil lokasi:", e);
+            }
           };
 
           return container;
@@ -185,7 +221,7 @@ export function MapSelect({ centerLat, centerLng, onSelect }: MapSelectProps) {
         mapRef.current = null;
       }
     };
-  }, [centerLat, centerLng, onSelect]);
+  }, [centerLat, centerLng, onSelect, isEdit]);
 
   return <div id="map-select" className="h-[50vh] w-full rounded-2xl"></div>;
 }

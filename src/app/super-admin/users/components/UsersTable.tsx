@@ -1,7 +1,21 @@
 "use client";
 
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
+import {
+  LoadingAnimation,
+  LoadingScreen,
+} from "@/components/ui/loading-animation";
 import {
   Pagination,
   PaginationContent,
@@ -18,59 +32,57 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Info } from "lucide-react";
-import { dummyUsers } from "../../data";
+import { useUsers } from "@/hooks/user/useUser";
+import { Info, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { UserProps } from "../props";
+import { ReactNode } from "react";
+import { useRemove } from "@/hooks/outlet/useRemove";
 
 export default function UsersTable() {
-  const route = useRouter();
+  const router = useRouter();
+  const { data, isPending } = useUsers();
+
+  if (isPending)
+    return (
+      <div className="h-[560px]">
+        <LoadingScreen isDashboard={true} />
+      </div>
+    );
+
+  if (!data || data.length === 0)
+    return (
+      <div className="flex h-[560px] items-center justify-center rounded-2xl border">
+        <p className="opacity-50">no data...</p>
+      </div>
+    );
 
   return (
     <Table>
       <TableHeader>
         <TableRow className="bg-muted/50 border-none">
           <TableHead>No</TableHead>
-          <TableHead>Profile</TableHead>
           <TableHead>Name</TableHead>
           <TableHead>Email</TableHead>
           <TableHead>Phone</TableHead>
           <TableHead>Role</TableHead>
-          <TableHead>Outlet ID</TableHead>
           <TableHead>Outlet Name</TableHead>
-          <TableHead>Total Orders</TableHead>
-          <TableHead>Attendances</TableHead>
           <TableHead>Created At</TableHead>
-          <TableHead></TableHead>
+          <TableHead className="w-20"></TableHead>
         </TableRow>
       </TableHeader>
 
       <TableBody>
-        {dummyUsers.map((user, i) => (
+        {data.map((user: UserProps, i: number) => (
           <TableRow key={user.email} className="border-none">
             <TableCell className="font-medium">{i + 1}</TableCell>
 
-            <TableCell>
-              <img
-                src={user.profilePictureUrl}
-                alt={user.name}
-                className="h-10 w-10 rounded-full object-cover"
-              />
-            </TableCell>
-
             <TableCell>{user.name}</TableCell>
             <TableCell>{user.email}</TableCell>
-            <TableCell>{user.phone}</TableCell>
+            <TableCell>{user.phoneNumber}</TableCell>
             <TableCell>{user.role}</TableCell>
 
-            <TableCell>{user.outletId ?? "-"}</TableCell>
-
-            <TableCell>{user.outlet ?? "-"}</TableCell>
-
-            <TableCell>
-              {user.orders.length == 0 ? "-" : user.orders.length}
-            </TableCell>
-
-            <TableCell>{user.attendances?.length ?? "-"}</TableCell>
+            <TableCell>{user.outletName ?? "-"}</TableCell>
 
             <TableCell>
               {new Date(user.createdAt).toLocaleDateString("en-GB")}
@@ -79,18 +91,24 @@ export default function UsersTable() {
             <TableCell>
               <ButtonGroup>
                 <Button
+                  size={"sm"}
                   variant="outline"
-                  onClick={() => route.push(`users/edit/${user.id}`)}
+                  onClick={() => router.push(`users/edit/${user.id}`)}
                 >
                   Edit
                 </Button>
                 <Button
+                  size={"icon-sm"}
                   variant="outline"
-                  size="icon"
-                  onClick={() => route.push(`users/${user.id}`)}
+                  onClick={() => router.push(`users/${user.id}`)}
                 >
                   <Info />
                 </Button>
+                <DeleteConfirmation id={user.id}>
+                  <Button variant={"destructive"} size={"icon-sm"}>
+                    <Trash />
+                  </Button>
+                </DeleteConfirmation>
               </ButtonGroup>
             </TableCell>
           </TableRow>
@@ -117,3 +135,43 @@ export function PaginationUsers() {
     </Pagination>
   );
 }
+
+const DeleteConfirmation = ({
+  id,
+  children,
+}: {
+  id: string;
+  children: ReactNode;
+}) => {
+  const { mutateAsync: remove, isPending } = useRemove();
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete Outlet?</AlertDialogTitle>
+          <AlertDialogDescription>
+            You’re about to delete outlet. This action cannot be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <Button
+            disabled={isPending}
+            onClick={async () => {
+              await remove({ id });
+              document.dispatchEvent(
+                new KeyboardEvent("keydown", { key: "Escape" }),
+              );
+            }}
+            variant={"outlineDestructive"}
+          >
+            {isPending ? <LoadingAnimation /> : "Delete"}
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};

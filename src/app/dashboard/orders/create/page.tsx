@@ -14,7 +14,7 @@ import { outletLocation } from "./data";
 import { SectionTitle } from "@/components/ui/section-title";
 
 export default function Create() {
-  const route = useRouter();
+  const router = useRouter();
   return (
     <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
@@ -25,7 +25,7 @@ export default function Create() {
         <UserNote />
       </section>
       <section className="mt-10 flex justify-end">
-        <Button onClick={() => route.push("/dashboard/orders/summary")}>
+        <Button onClick={() => router.push("/dashboard/orders/summary")}>
           Schedule Pickup
         </Button>
       </section>

@@ -28,10 +28,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   session: {
     strategy: "jwt",
-    maxAge: 2 * 60 * 60,
+    maxAge: 60 * 60 * 12,
+  },
+  jwt: {
+    maxAge: 60 * 60 * 12,
   },
   pages: {
-    signIn: "/login",
+    signIn: "/signin",
   },
   callbacks: {
     async signIn() {

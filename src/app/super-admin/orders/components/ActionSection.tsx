@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { filterStatus } from "../data";
 
 export default function ActionSection() {
-  const route = useRouter();
+  const router = useRouter();
   return (
     <section className="mt-10 mb-5 flex gap-2">
       <Input placeholder="Search by name, id, email, phone" />

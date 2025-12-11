@@ -106,7 +106,7 @@ function AvailableDeliveries() {
 
 function OngoingDelivery() {
   const data = ongoingDeliveryData;
-  const route = useRouter();
+  const router = useRouter();
 
   return (
     <section className="h-min flex-1 space-y-5 rounded-2xl border bg-(--container-bg) p-5">
@@ -132,7 +132,7 @@ function OngoingDelivery() {
 
       <Button
         variant={"secondary"}
-        onClick={() => route.push(`driver/deliveries/${data.orderId}`)}
+        onClick={() => router.push(`driver/deliveries/${data.orderId}`)}
         className="w-full"
       >
         See details

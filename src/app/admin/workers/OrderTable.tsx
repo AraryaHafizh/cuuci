@@ -15,7 +15,7 @@ import { dummyHistory } from "../data";
 import { Info } from "lucide-react";
 
 export function OrderTable() {
-  const route = useRouter();
+  const router = useRouter();
 
   return (
     <Table>
@@ -43,7 +43,7 @@ export function OrderTable() {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => route.push(`orders/${order.orderId}`)}
+                onClick={() => router.push(`orders/${order.orderId}`)}
               >
                 <Info />
               </Button>

@@ -12,62 +12,61 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
-import { useCreate } from "@/hooks/outlet/useCreate";
+import { useEdit } from "@/hooks/outlet/useEdit";
+import { useOutlets } from "@/hooks/outlet/useOutlet";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Controller, useForm, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
+import { OutletProps } from "../../props";
 
-export const createOutletSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  address: z.string().min(1, "Address is required"),
-  latitude: z
-    .string()
-    .min(1, "Latitude is required")
-    .refine(
-      (val) => !isNaN(parseFloat(val)),
-      "Latitude must be a valid number",
-    ),
-  longitude: z
-    .string()
-    .min(1, "Longitude is required")
-    .refine(
-      (val) => !isNaN(parseFloat(val)),
-      "Longitude must be a valid number",
-    ),
+export const editOutletSchema = z.object({
+  name: z.string().optional(),
+  address: z.string().optional(),
+  latitude: z.string().optional(),
+  longitude: z.string().optional(),
 });
 
-type OutletFormValues = z.infer<typeof createOutletSchema>;
+type OutletFormValues = z.infer<typeof editOutletSchema>;
 
-export function OutletCreateInput() {
+export function OutletEditInput({ id }: { id: string }) {
+  const { data } = useOutlets();
+  const outletData = data?.find((user: OutletProps) => user.id === id);
+
   const router = useRouter();
   const form = useForm<OutletFormValues>({
-    resolver: zodResolver(createOutletSchema),
+    resolver: zodResolver(editOutletSchema),
     defaultValues: {
-      name: "",
-      address: "",
-      latitude: "",
-      longitude: "",
+      name: outletData?.name,
+      address: outletData?.address,
+      latitude: outletData?.latitude,
+      longitude: outletData?.longitude,
     },
   });
 
-  const { mutateAsync: create, isPending } = useCreate();
+  const { mutateAsync: edit, isPending } = useEdit();
 
   function onSubmit(data: OutletFormValues) {
-    create(data);
+    console.log(data);
+
+    // edit(data);
   }
 
   return (
     <section className="mt-10 gap-5 space-y-5">
       <BasicInfo form={form} />
-      <SelectLocation form={form} />
+      <SelectLocation
+        form={form}
+        latitude={outletData?.latitude}
+        longitude={outletData?.longitude}
+      />
 
       <div className="flex justify-end gap-5">
         <Button variant={"outline"} onClick={() => router.back()}>
           Cancel
         </Button>
         <Button onClick={form.handleSubmit(onSubmit)}>
-          {isPending ? <LoadingAnimation /> : "Create Outlet"}
+          {isPending ? <LoadingAnimation /> : "Edit Outlet"}
         </Button>
       </div>
     </section>
@@ -106,7 +105,15 @@ function BasicInfo({ form }: { form: UseFormReturn<OutletFormValues> }) {
   );
 }
 
-function SelectLocation({ form }: { form: UseFormReturn<OutletFormValues> }) {
+function SelectLocation({
+  form,
+  latitude,
+  longitude,
+}: {
+  form: UseFormReturn<OutletFormValues>;
+  latitude: number;
+  longitude: number;
+}) {
   const handleSelect = (lat: number, lng: number, address: string) => {
     form.setValue("address", address);
     form.setValue("latitude", String(lat));
@@ -142,9 +149,10 @@ function SelectLocation({ form }: { form: UseFormReturn<OutletFormValues> }) {
         <div className="mt-5 space-y-5 overflow-hidden rounded-lg">
           <Label>Select Location</Label>
           <MapSelect
-            centerLat={-6.2} // default coordinate (change later)
-            centerLng={106.8}
+            centerLat={latitude}
+            centerLng={longitude}
             onSelect={handleSelect}
+            isEdit={true}
           />
         </div>
       </CardContent>

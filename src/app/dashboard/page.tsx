@@ -26,7 +26,7 @@ export default function Dashboard() {
 }
 
 function Greeting() {
-  const route = useRouter();
+  const router = useRouter();
 
   return (
     <section className="space-y-10">
@@ -34,7 +34,7 @@ function Greeting() {
         title="Hello, User!"
         description="Here's a summary of your laundry activities."
       />
-      <Button onClick={() => route.push("/dashboard/orders/create")}>
+      <Button onClick={() => router.push("/dashboard/orders/create")}>
         Schedule a New Pickup
       </Button>
     </section>

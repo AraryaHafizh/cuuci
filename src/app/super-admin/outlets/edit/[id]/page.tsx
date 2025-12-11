@@ -1,28 +1,28 @@
 import SectionInfo from "@/components/SectionInfo";
-import { UserEditInput } from "./UsersEditInput";
+import { OutletEditInput } from "./OutletEditInput";
 
-interface UserEditProps {
+interface OutletEditProps {
   params: Promise<{ id: string }>;
 }
 
-async function UserEdit(props: UserEditProps) {
+async function OutletEdit(props: OutletEditProps) {
   const { id } = await props.params;
 
   return (
     <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
-      <UserEditInput id={id} />
+      <OutletEditInput id={id} />
     </main>
   );
 
   function Greeting() {
     return (
       <SectionInfo
-        title={`Edit User ${id}`}
+        title={`Edit Outlet ${id}`}
         description="Edit details and settings for an existing worker, driver, or outlet admin."
       />
     );
   }
 }
 
-export default UserEdit;
+export default OutletEdit;
