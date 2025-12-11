@@ -9,12 +9,10 @@ export const useUsers = () => {
   const token = session?.user?.accessToken;
 
   return useQuery({
-    queryKey: ["super-admin-users"],
+    queryKey: ["super-admin-users", token],
     queryFn: async () => {
       const res = await cuuciApi.get("/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       return res.data.data;
     },

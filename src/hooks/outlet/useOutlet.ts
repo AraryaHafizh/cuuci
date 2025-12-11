@@ -9,7 +9,7 @@ export const useOutlets = () => {
   const token = session?.user?.accessToken;
 
   return useQuery({
-    queryKey: ["super-admin-outlets"],
+    queryKey: ["super-admin-outlets", token],
     queryFn: async () => {
       const res = await cuuciApi.get("/outlets", {
         headers: {

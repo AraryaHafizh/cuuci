@@ -25,7 +25,7 @@ export const useCreate = () => {
       return data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["outlets"] });
+      queryClient.invalidateQueries({ queryKey: ["super-admin-outlets"] });
       toast(data.message);
 
       router.back();

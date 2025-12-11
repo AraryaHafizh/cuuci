@@ -150,9 +150,9 @@ const DeleteConfirmation = ({
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete Outlet?</AlertDialogTitle>
+          <AlertDialogTitle>Delete User?</AlertDialogTitle>
           <AlertDialogDescription>
-            You’re about to delete outlet. This action cannot be undone.
+            You’re about to delete user account. This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
 

@@ -14,19 +14,18 @@ import { Input } from "@/components/ui/input";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { useAdminSignup } from "@/hooks/auth/useSignup";
 import { useOutlets } from "@/hooks/outlet/useOutlet";
-import { formatPhoneDisplay } from "@/lib/utils";
+import { formatPhoneDisplay, generatePassword } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { Controller, useForm, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
-import { roles } from "../data";
 import { OutletProps } from "../../outlets/props";
+import { roles } from "../data";
 
 export const createUserSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.email(),
-  password: z.string(),
+  password: z.string().min(8, "Password must be at least 8 characters long."),
   phoneNumber: z.string().min(10),
   role: z.string().min(1, "Role is required"),
   outletId: z.string().min(1, "Outlet ID is required"),
@@ -47,16 +46,6 @@ export function UserCreateInput() {
       outletId: "",
     },
   });
-
-  useEffect(() => {
-    const name = form.getValues("name");
-    const outlet = form.getValues("outletId");
-
-    if (name && outlet) {
-      const generated = `${name.replace(/\s+/g, "-")}-${outlet.slice(0, 3)}`;
-      form.setValue("password", generated, { shouldValidate: true });
-    }
-  }, [form.watch("name"), form.watch("outletId")]);
 
   const {
     mutateAsync: signup,
@@ -172,7 +161,19 @@ function BasicInfo({ form }: { form: UseFormReturn<OutletFormValues> }) {
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>Password</FieldLabel>
-                <Input {...field} />
+                <div className="flex gap-2">
+                  <Input {...field} />
+                  <Button
+                    variant={"secondary"}
+                    onClick={() =>
+                      form.setValue("password", generatePassword(), {
+                        shouldValidate: true,
+                      })
+                    }
+                  >
+                    generate
+                  </Button>
+                </div>
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}

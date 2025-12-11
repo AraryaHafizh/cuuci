@@ -23,7 +23,7 @@ export const useRemove = () => {
       return data;
     },
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["outlets"] });
+      queryClient.invalidateQueries({ queryKey: ["super-admin-outlets"] });
       toast(data.message);
     },
     onError: (error: AxiosError<{ message: string }>) => {
