@@ -13,7 +13,7 @@ import { formatDate, formatOrderStatus } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { dummyHistory } from "../data";
 import { Info } from "lucide-react";
-import { useAdminUsers } from "@/hooks/user/useUser";
+import { useUsers } from "@/hooks/user/useUser";
 import { useSession } from "next-auth/react";
 import { LoadingScreen } from "@/components/ui/loading-animation";
 
@@ -21,7 +21,7 @@ export function WorkerTable() {
   const { data: session, status } = useSession();
 
   const router = useRouter();
-  const { data, isPending } = useAdminUsers({
+  const { data, isPending } = useUsers({
     params: { outletId: session!.user.outletId },
   });
 

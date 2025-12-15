@@ -11,6 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useQueryClient } from "@tanstack/react-query";
 import { signOut } from "next-auth/react";
 import { redirect, useRouter } from "next/navigation";
 import { ReactNode } from "react";
@@ -103,6 +104,8 @@ export const SendLinkConfirmation = ({
 };
 
 export const SignoutConfirmation = ({ children }: { children: ReactNode }) => {
+  const queryClient = useQueryClient();
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -119,6 +122,7 @@ export const SignoutConfirmation = ({ children }: { children: ReactNode }) => {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => {
+              queryClient.clear();
               signOut({ redirect: false });
               redirect("/");
             }}

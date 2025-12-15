@@ -82,7 +82,7 @@ export default function OutletsTable() {
             <TableCell className="max-w-32 truncate">
               {outlet.address}
             </TableCell>
-            <TableCell>{outlet.adminId ?? "unassign"}</TableCell>
+            <TableCell>{outlet.admin.name ?? "unassign"}</TableCell>
             <TableCell>{outlet.orders.length}</TableCell>
             <TableCell>{outlet.workers.length}</TableCell>
             <TableCell>{outlet.drivers.length}</TableCell>

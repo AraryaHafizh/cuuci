@@ -9,6 +9,7 @@ export interface OutletProps {
   updatedAt: string;
   deletedAt: string | null;
   adminId: string | null;
+  admin: any;
   orders: any[];
   workers: any[];
   drivers: any[];

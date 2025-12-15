@@ -9,7 +9,7 @@ export const useOutlets = () => {
   const token = session?.user?.accessToken;
 
   return useQuery({
-    queryKey: ["super-admin-outlets", token],
+    queryKey: ["get_outlets", token],
     queryFn: async () => {
       const res = await cuuciApi.get("/outlets", {
         headers: {
@@ -23,7 +23,5 @@ export const useOutlets = () => {
     enabled: !!token,
     staleTime: 1000 * 60 * 30, // fresh selama 30 menit
     refetchOnWindowFocus: false, // refetch saat tab fokus
-    refetchOnMount: false, // refetch saat komponen mount
-    refetchOnReconnect: true, // refetch saat reconnect
   });
 };

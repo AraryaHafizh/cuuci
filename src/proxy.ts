@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
-export const middleware = auth((req) => {
+export const proxy = auth((req) => {
   if (!req.auth) {
     return NextResponse.redirect(new URL("/", req.url));
   }

@@ -32,16 +32,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useSuperAdminUsers } from "@/hooks/user/useUser";
+import { useUsers } from "@/hooks/user/useUser";
 import { Info, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { UserProps } from "../props";
 import { ReactNode } from "react";
-import { useRemove } from "@/hooks/outlet/useRemove";
+import { useRemove } from "@/hooks/user/useRemove";
 
 export default function UsersTable() {
   const router = useRouter();
-  const { data, isPending } = useSuperAdminUsers();
+  const { data, isPending } = useUsers();
 
   if (isPending)
     return (
@@ -80,7 +80,7 @@ export default function UsersTable() {
             <TableCell>{user.name}</TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>{user.phoneNumber}</TableCell>
-            <TableCell>{user.role}</TableCell>
+            <TableCell>{normalizeRole(user.role)}</TableCell>
 
             <TableCell>{user.outletName ?? "-"}</TableCell>
 
@@ -134,6 +134,10 @@ export function PaginationUsers() {
       </PaginationContent>
     </Pagination>
   );
+}
+
+function normalizeRole(role: string): string {
+  return role.toLowerCase().replace(/_/g, " ");
 }
 
 const DeleteConfirmation = ({

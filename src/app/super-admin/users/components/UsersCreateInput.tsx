@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { Controller, useForm, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
 import { OutletProps } from "../../outlets/props";
-import { roles } from "../data";
+import { roles, shifts } from "../data";
 
 export const createUserSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -29,6 +29,7 @@ export const createUserSchema = z.object({
   phoneNumber: z.string().min(10),
   role: z.string().min(1, "Role is required"),
   outletId: z.string().min(1, "Outlet ID is required"),
+  shift: z.string(),
 });
 
 type OutletFormValues = z.infer<typeof createUserSchema>;
@@ -44,6 +45,7 @@ export function UserCreateInput() {
       phoneNumber: "",
       role: "",
       outletId: "",
+      shift: "",
     },
   });
 
@@ -55,12 +57,19 @@ export function UserCreateInput() {
   } = useAdminSignup();
 
   function onSubmit(data: OutletFormValues) {
-    const final = {
-      ...data,
+    const { role, shift, ...rest } = data;
+
+    const payload: any = {
+      ...rest,
+      role,
       phoneNumber: "+62" + data.phoneNumber,
     };
 
-    signup(final);
+    if (role === "WORKER") {
+      payload.shift = shift;
+    }
+
+    signup(payload);
   }
 
   return (
@@ -188,6 +197,7 @@ function BasicInfo({ form }: { form: UseFormReturn<OutletFormValues> }) {
 
 function UserRole({ form }: { form: UseFormReturn<OutletFormValues> }) {
   const { data } = useOutlets();
+  const role = form.watch("role");
 
   const outlets = (data || []).map((outlet: OutletProps) => ({
     value: outlet.id,
@@ -238,6 +248,26 @@ function UserRole({ form }: { form: UseFormReturn<OutletFormValues> }) {
               </Field>
             )}
           />
+          {role === "WORKER" && (
+            <Controller
+              name="shift"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Assign Shift</FieldLabel>
+                  <Combobox
+                    options={shifts}
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Select Shift"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          )}
         </FieldGroup>
       </CardContent>
     </Card>

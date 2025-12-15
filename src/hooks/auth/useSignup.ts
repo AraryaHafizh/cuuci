@@ -36,7 +36,7 @@ export const useAdminSignup = () => {
       return data;
     },
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ["super-admin-users"] });
+      queryClient.invalidateQueries({ queryKey: ["get-users"], exact: false });
       setOpenDialog(true);
     },
     onError: (error: AxiosError<{ message: string }>) => {
