@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { useAdminSignup } from "@/hooks/auth/useSignup";
 import { useOutlets } from "@/hooks/outlet/useOutlet";
-import { useUsers } from "@/hooks/user/useUser";
+import { useSuperAdminUsers } from "@/hooks/user/useUser";
 import { formatPhoneDisplay } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -36,7 +36,7 @@ export const editUserSchema = z.object({
 type OutletFormValues = z.infer<typeof editUserSchema>;
 
 export function UserEditInput({ id }: { id: string }) {
-  const { data } = useUsers();
+  const { data } = useSuperAdminUsers();
   const userData = data?.find((user: UserProps) => user.id === id);
   const isCustomer = userData?.role === "CUSTOMER";
 

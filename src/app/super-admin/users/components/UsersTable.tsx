@@ -32,7 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useUsers } from "@/hooks/user/useUser";
+import { useSuperAdminUsers } from "@/hooks/user/useUser";
 import { Info, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { UserProps } from "../props";
@@ -41,7 +41,7 @@ import { useRemove } from "@/hooks/outlet/useRemove";
 
 export default function UsersTable() {
   const router = useRouter();
-  const { data, isPending } = useUsers();
+  const { data, isPending } = useSuperAdminUsers();
 
   if (isPending)
     return (

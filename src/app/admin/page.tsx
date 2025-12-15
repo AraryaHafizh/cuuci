@@ -8,6 +8,7 @@ import { TrendingDown, TrendingUp } from "lucide-react";
 import { statusFormatter } from "../super-admin/data";
 import { userStatus } from "../worker/data";
 import { dummyData, todayActivityKey, workerStatus } from "./data";
+import { useSession } from "next-auth/react";
 
 const adminStatus = "active";
 
@@ -38,6 +39,8 @@ export default function Admin() {
 }
 
 function Greeting() {
+  const { data: session, status } = useSession();
+
   return (
     <section className="space-y-10">
       <SectionInfo

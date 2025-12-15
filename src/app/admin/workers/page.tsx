@@ -8,14 +8,14 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { ActionSection } from "./ActionSection";
-import { OrderTable } from "./OrderTable";
+import { WorkerTable } from "./WorkerTable";
 
 export default function Workers() {
   return (
     <main className="mt-50">
       <Greeting />
       <ActionSection />
-      <OrderTable />
+      <WorkerTable />
       <PaginationHistory />
     </main>
   );
