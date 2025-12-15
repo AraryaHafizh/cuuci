@@ -39,7 +39,7 @@ import { ReactNode } from "react";
 import { OutletProps } from "../props";
 import { useRouter } from "next/navigation";
 
-export default function OutletsTable() {
+export function OutletsTable() {
   const router = useRouter();
   const { data, isPending } = useOutlets();
 
@@ -82,7 +82,7 @@ export default function OutletsTable() {
             <TableCell className="max-w-32 truncate">
               {outlet.address}
             </TableCell>
-            <TableCell>{outlet.admin.name ?? "unassign"}</TableCell>
+            <TableCell>{outlet.admin?.name ?? "unassign"}</TableCell>
             <TableCell>{outlet.orders.length}</TableCell>
             <TableCell>{outlet.workers.length}</TableCell>
             <TableCell>{outlet.drivers.length}</TableCell>

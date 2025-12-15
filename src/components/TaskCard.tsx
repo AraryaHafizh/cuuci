@@ -21,7 +21,6 @@ interface StationProgress {
 
 interface TaskProps {
   id: string;
-  role: string;
   userName: string;
   items: TaskItem[];
   status: TaskStatus;

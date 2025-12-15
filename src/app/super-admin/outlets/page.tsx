@@ -1,6 +1,6 @@
 import SectionInfo from "@/components/SectionInfo";
 import ActionSection from "./components/ActionSection";
-import OutletsTable, { PaginationOutlets } from "./components/OutletsTable";
+import { OutletsTable, PaginationOutlets } from "./components/OutletsTable";
 
 export default function Outlets() {
   return (

@@ -10,7 +10,7 @@ const WorkerNavbar = () => {
           cuuci
         </Link>
         <section className="space-x-5 text-xs md:text-base">
-          <Link href={"/worker/tasks"}>My Tasks</Link>
+          <Link href={"/worker/tasks"}>History</Link>
           <Link href={"/worker/account"}>Account</Link>
         </section>
       </div>

@@ -4,20 +4,18 @@ import { cuuciApi } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
-export const useOutlets = () => {
+export const useTasks = () => {
   const { data: session } = useSession();
   const token = session?.user?.accessToken;
 
   return useQuery({
-    queryKey: ["get_outlets", token],
+    queryKey: ["get_worker_tasks", token],
     queryFn: async () => {
-      const res = await cuuciApi.get("/outlets", {
+      const res = await cuuciApi.get("/workers/jobs", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("jalan");
-
       return res.data.data;
     },
     enabled: !!token,
