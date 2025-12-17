@@ -40,17 +40,17 @@ export const Form = ({ token }: { token: string }) => {
 
   return (
     <section>
-      <form id="signin-form" onSubmit={form.handleSubmit(onSubmit)}>
+      <form id="reset-password-form" onSubmit={form.handleSubmit(onSubmit)}>
         <FieldGroup>
           <Controller
             name="password"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="signin-form">New Password</FieldLabel>
+                <FieldLabel htmlFor="reset-password-form">New Password</FieldLabel>
                 <Input
                   {...field}
-                  id="signin-form"
+                  id="reset-password-form"
                   type="password"
                   aria-invalid={fieldState.invalid}
                 />

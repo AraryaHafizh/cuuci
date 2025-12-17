@@ -24,7 +24,10 @@ export default function Create() {
         <SelectOutlet />
         <UserNote />
       </section>
-      <section className="mt-10 flex justify-end">
+      <section className="mt-10 flex justify-end gap-5">
+        <Button variant={"outline"} onClick={() => router.back()}>
+          Cancel
+        </Button>
         <Button onClick={() => router.push("/dashboard/orders/summary")}>
           Schedule Pickup
         </Button>

@@ -3,6 +3,7 @@ interface SectionProps {
   description: string;
   className?: string;
   role?: string;
+  loading?: boolean;
 }
 
 const SectionInfo = ({
@@ -10,17 +11,26 @@ const SectionInfo = ({
   description,
   className = "",
   role = "",
+  loading = false,
 }: SectionProps) => {
   return (
     <div className={`space-y-2 ${className}`}>
       <div className="flex items-center gap-5">
-        <h2 className="text-2xl font-bold lg:text-3xl 2xl:text-5xl">{title}</h2>
-        {role != "" && (
-          <p className="bg-primary/20 text-primary rounded-2xl px-3 py-1 text-sm lg:text-base 2xl:text-xl">
+        {loading ? (
+          <div className="bg-foreground/10 h-8 w-64 animate-pulse rounded-lg lg:h-10 2xl:h-14" />
+        ) : (
+          <h2 className="text-2xl font-bold lg:text-3xl 2xl:text-5xl">
+            {title}
+          </h2>
+        )}
+
+        {!loading && role !== "" && (
+          <p className="bg-foreground/10 text-primary rounded-2xl px-3 py-1 text-sm lg:text-base 2xl:text-xl">
             {role}
           </p>
         )}
       </div>
+
       <p className="font-light opacity-50 lg:text-lg">{description}</p>
     </div>
   );
