@@ -278,6 +278,56 @@ export const dummyOutlets = [
     serviceRadius: "9 km",
     status: "Active",
   },
+  {
+    outletId: "RFA21",
+    outletName: "Laundry Express - Bandung Timur",
+    address: "Jl. Soekarno Hatta No. 123, Bandung",
+    totalOrders: 420,
+    activeWorkers: 7,
+    activeDrivers: 3,
+    serviceRadius: "10 km",
+    status: "Active",
+  },
+  {
+    outletId: "BGN35",
+    outletName: "QuickClean Laundry - Jakarta Pusat",
+    address: "Jl. MH Thamrin No. 45, Jakarta",
+    totalOrders: 350,
+    activeWorkers: 5,
+    activeDrivers: 2,
+    serviceRadius: "8 km",
+    status: "Active",
+  },
+  {
+    outletId: "POP92",
+    outletName: "BrightWash - Surabaya Selatan",
+    address: "Jl. Raya Darmo No. 77, Surabaya",
+    totalOrders: 280,
+    activeWorkers: 4,
+    activeDrivers: 2,
+    serviceRadius: "12 km",
+    status: "Inactive",
+  },
+  {
+    outletId: "A4TSM",
+    outletName: "Speedy Laundry - Medan Barat",
+    address: "Jl. Gatot Subroto No. 22, Medan",
+    totalOrders: 150,
+    activeWorkers: 3,
+    activeDrivers: 1,
+    serviceRadius: "7 km",
+    status: "Active",
+  },
+  {
+    outletId: "12RFC",
+    outletName: "EcoClean Laundry - Bali Kuta",
+    address: "Jl. Legian No. 10, Kuta, Bali",
+    totalOrders: 200,
+    activeWorkers: 4,
+    activeDrivers: 2,
+    serviceRadius: "9 km",
+    status: "Active",
+  },
 ];
 
 export const dummyUsers = [
@@ -464,7 +514,7 @@ export const userRole = {
   OUTLET_ADMIN: "Outlet Admin",
 };
 
-// =======
+// ===================================
 
 export const tabKeys = {
   CUSTOMER: ["address", "orders", "payments"],

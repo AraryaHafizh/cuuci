@@ -8,7 +8,7 @@ export function VerifyButton({ token }: { token: string }) {
   const { mutate, isPending } = useVerifyAccount(token);
 
   return (
-    <Button onClick={() => mutate()}>
+    <Button onClick={() => mutate()} className="w-full">
       {isPending ? <LoadingAnimation /> : "Verify Account"}
     </Button>
   );

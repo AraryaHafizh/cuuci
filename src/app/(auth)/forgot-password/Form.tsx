@@ -41,17 +41,17 @@ export const Form = () => {
 
   return (
     <section>
-      <form id="signin-form" onSubmit={form.handleSubmit(onSubmit)}>
+      <form id="forgot-password-form" onSubmit={form.handleSubmit(onSubmit)}>
         <FieldGroup>
           <Controller
             name="email"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="signin-form">Email</FieldLabel>
+                <FieldLabel htmlFor="forgot-password-form">Email</FieldLabel>
                 <Input
                   {...field}
-                  id="signin-form"
+                  id="forgot-password-form"
                   aria-invalid={fieldState.invalid}
                 />
                 {fieldState.invalid && (

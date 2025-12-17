@@ -1,5 +1,5 @@
 import SectionInfo from "@/components/SectionInfo";
-import { UserCreateInput } from "../../components/UsersCreateInput";
+import { UserEditInput } from "./UsersEditInput";
 
 interface UserEditProps {
   params: Promise<{ id: string }>;
@@ -9,9 +9,9 @@ async function UserEdit(props: UserEditProps) {
   const { id } = await props.params;
 
   return (
-    <main className="mt-50">
+    <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
-      <UserCreateInput />
+      <UserEditInput id={id} />
     </main>
   );
 

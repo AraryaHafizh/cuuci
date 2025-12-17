@@ -15,12 +15,12 @@ import { useRouter } from "next/navigation";
 import { filterRole } from "../../data";
 
 export default function ActionSection() {
-  const route = useRouter();
+  const router = useRouter();
   return (
     <section className="mt-10 mb-5 flex gap-2">
       <Input placeholder="Search by name, id, email, phone" />
       <SortDropdown />
-      <Button onClick={() => route.push("users/create")}>Register User</Button>
+      <Button onClick={() => router.push("users/create")}>Register User</Button>
     </section>
   );
 }

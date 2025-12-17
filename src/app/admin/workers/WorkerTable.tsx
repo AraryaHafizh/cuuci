@@ -13,9 +13,31 @@ import { formatDate, formatOrderStatus } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { dummyHistory } from "../data";
 import { Info } from "lucide-react";
+import { useUsers } from "@/hooks/user/useUser";
+import { useSession } from "next-auth/react";
+import { LoadingScreen } from "@/components/ui/loading-animation";
 
-export function OrderTable() {
-  const route = useRouter();
+export function WorkerTable() {
+  const { data: session, status } = useSession();
+
+  const router = useRouter();
+  const { data, isPending } = useUsers({
+    params: { outletId: session!.user.outletId },
+  });
+
+  if (isPending)
+    return (
+      <div className="h-[560px]">
+        <LoadingScreen isDashboard={true} />
+      </div>
+    );
+
+  if (!data || data.length === 0)
+    return (
+      <div className="flex h-[560px] items-center justify-center rounded-2xl border">
+        <p className="opacity-50">no data...</p>
+      </div>
+    );
 
   return (
     <Table>
@@ -43,7 +65,7 @@ export function OrderTable() {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => route.push(`orders/${order.orderId}`)}
+                onClick={() => router.push(`orders/${order.orderId}`)}
               >
                 <Info />
               </Button>

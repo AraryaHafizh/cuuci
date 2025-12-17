@@ -24,7 +24,7 @@ import { dummyOrders } from "../data";
 import { formatDate } from "@/lib/utils";
 
 export default function OrdersTable() {
-  const route = useRouter();
+  const router = useRouter();
 
   return (
     <Table>
@@ -61,7 +61,7 @@ export default function OrdersTable() {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => route.push(`orders/${order.orderId}`)}
+                onClick={() => router.push(`orders/${order.orderId}`)}
               >
                 <Info />
               </Button>

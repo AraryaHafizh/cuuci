@@ -1,7 +1,7 @@
 "use client";
 
-import SectionInfo from "@/components/SectionInfo";
-import { Button } from "@/components/ui/button";
+import { SectionTitle } from "@/components/ui/section-title";
+import { formatOrderStatus, formatTime } from "@/lib/utils";
 import {
   activeOrder,
   orderStatusColors,
@@ -9,9 +9,7 @@ import {
   orderStatusMessages,
   recentActivity,
 } from "./data";
-import { formatOrderStatus, formatTime } from "@/lib/utils";
-import { useRouter } from "next/navigation";
-import { SectionTitle } from "@/components/ui/section-title";
+import { Greeting } from "./Greeting";
 
 export default function Dashboard() {
   return (
@@ -25,21 +23,7 @@ export default function Dashboard() {
   );
 }
 
-function Greeting() {
-  const route = useRouter();
 
-  return (
-    <section className="space-y-10">
-      <SectionInfo
-        title="Hello, User!"
-        description="Here's a summary of your laundry activities."
-      />
-      <Button onClick={() => route.push("/dashboard/orders/create")}>
-        Schedule a New Pickup
-      </Button>
-    </section>
-  );
-}
 
 function ActiveOrders() {
   return (

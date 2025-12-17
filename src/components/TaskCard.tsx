@@ -21,7 +21,6 @@ interface StationProgress {
 
 interface TaskProps {
   id: string;
-  role: string;
   userName: string;
   items: TaskItem[];
   status: TaskStatus;
@@ -44,7 +43,7 @@ export const StatusMap = {
 };
 
 export default function TaskCard(data: TaskProps) {
-  const route = useRouter();
+  const router = useRouter();
   const status = data.status;
   const statusData = StatusMap[data.status as keyof typeof StatusMap];
   const progress =
@@ -81,7 +80,7 @@ export default function TaskCard(data: TaskProps) {
       <div className="mt-3 lg:mt-0"></div>
       {progress === "pending" && <Button>Start {status}</Button>}
       {progress === "in_progress" && (
-        <Button onClick={() => route.push(`worker/tasks/${data.id}/review`)}>
+        <Button onClick={() => router.push(`worker/tasks/${data.id}/review`)}>
           Finish {status}
         </Button>
       )}

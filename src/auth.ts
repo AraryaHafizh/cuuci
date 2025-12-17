@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 
 declare module "next-auth" {
@@ -19,6 +20,10 @@ declare module "next-auth" {
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
     Credentials({
       async authorize(user) {
         if (!user) return null;
@@ -26,19 +31,45 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
-    maxAge: 2 * 60 * 60,
+    maxAge: 60 * 60 * 12,
+  },
+  jwt: {
+    maxAge: 60 * 60 * 12,
   },
   pages: {
-    signIn: "/login",
+    signIn: "/signin",
   },
   callbacks: {
     async signIn() {
       return true;
     },
-    async jwt({ token, user }) {
-      if (user) token.user = user;
+    async jwt({ token, account, user }) {
+      if (
+        account?.provider === "google" &&
+        account.access_token &&
+        !token.user
+      ) {
+        const backendUser = await loginWithGoogle(account.access_token);
+
+        token.user = {
+          id: backendUser.id,
+          name: backendUser.name,
+          email: backendUser.email,
+          role: backendUser.role,
+          phoneNumber: backendUser.phoneNumber,
+          profilePictureUrl: backendUser.profilePictureUrl,
+          outletId: backendUser.outletId,
+          accessToken: backendUser.accessToken,
+        };
+      }
+
+      if (account?.provider === "credentials" && user) {
+        token.user = user;
+      }
+
       return token;
     },
     async session({ session, token }: any) {
@@ -47,3 +78,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
 });
+
+async function loginWithGoogle(accessToken: string) {
+  const res = await fetch("http://localhost:8000/auth/google", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ accessToken }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Backend Google login failed");
+  }
+
+  return res.json();
+}

@@ -28,6 +28,7 @@ interface SingleSelectComboboxProps {
   placeholder?: string;
   className?: string;
   buttonClassName?: string;
+  disabled?: boolean;
 }
 
 export function Combobox({
@@ -37,6 +38,7 @@ export function Combobox({
   placeholder = "Select an option...",
   className,
   buttonClassName,
+  disabled = false,
 }: SingleSelectComboboxProps) {
   const [open, setOpen] = useState(false);
 
@@ -51,6 +53,7 @@ export function Combobox({
           role="combobox"
           aria-expanded={open}
           className={cn("w-[200px] justify-between", buttonClassName)}
+          disabled={disabled}
         >
           {selectedLabel}
           <ChevronsUpDown className="opacity-50" />

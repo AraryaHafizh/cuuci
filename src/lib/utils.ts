@@ -76,3 +76,33 @@ export function formatPhoneDisplay(value: string) {
 
   return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 7)} ${cleaned.slice(7, 11)}`;
 }
+
+export const getLocation = () =>
+  new Promise<{ lat: number; lng: number }>((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject("Geolocation tidak didukung");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) =>
+        resolve({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+        }),
+      (err) => reject(err),
+    );
+  });
+
+export function generatePassword(length = 8): string {
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * chars.length);
+    password += chars[randomIndex];
+  }
+  return password;
+}
+
+console.log(generatePassword());

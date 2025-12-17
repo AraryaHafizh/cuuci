@@ -1,13 +1,12 @@
 "use client";
 
 import SectionInfo from "@/components/SectionInfo";
-import { tasks, userStatus } from "./data";
 import { Button } from "@/components/ui/button";
-import TaskCard from "@/components/TaskCard";
 import { SectionTitle } from "@/components/ui/section-title";
+import { userStatus } from "./data";
+import AvailableTasks from "./AvailableTasks";
 
 const workerStatus = "active";
-const role = "washing";
 
 export default function Worker() {
   return (
@@ -17,7 +16,7 @@ export default function Worker() {
         <Attendance />
         <TaskWidget />
       </section>
-      <WorkerTasks />
+      <AvailableTasks />
     </main>
   );
 }
@@ -80,20 +79,6 @@ function TaskWidget() {
         <Widget title="To Wash" data="10" />
         <Widget title="In Progress" data="10" />
         <Widget title="Completed" data="10" />
-      </div>
-    </section>
-  );
-}
-
-function WorkerTasks() {
-  return (
-    <section className="mt-10 space-y-5">
-      <SectionTitle title="Available Tasks" />
-
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        {tasks.map((task: any, i) => (
-          <TaskCard key={i} role={role} {...task} />
-        ))}
       </div>
     </section>
   );
