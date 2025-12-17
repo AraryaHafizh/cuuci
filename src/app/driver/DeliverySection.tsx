@@ -35,7 +35,7 @@ function OngoingDelivery() {
   const router = useRouter();
 
   return (
-    <section className="sticky top-38 z-10 h-fit flex-1 space-y-5 rounded-2xl border bg-(--container-bg) p-5 xl:mt-11">
+    <section className="h-fit flex-1 space-y-5 rounded-2xl border bg-(--container-bg) p-5 md:sticky md:top-38 md:z-10 xl:mt-11">
       <SectionTitle title="Ongoing Activity" />
 
       <p className="text-lg font-bold lg:text-xl">
