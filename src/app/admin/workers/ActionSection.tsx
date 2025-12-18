@@ -1,6 +1,5 @@
 "use client";
 
-import { filterStatus } from "@/app/super-admin/orders/data";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -11,27 +10,51 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Dispatch, SetStateAction } from "react";
 
-export function ActionSection() {
+export const filterRole = {
+  DRIVER: "Driver",
+  WORKER: "Worker",
+  ALL: "All",
+};
+
+export default function ActionSection({
+  setSearch,
+  setRole,
+}: {
+  setSearch: Dispatch<SetStateAction<string>>;
+  setRole: Dispatch<SetStateAction<string>>;
+}) {
   return (
     <section className="mt-10 mb-5 flex gap-2">
-      <Input placeholder="Search by order id" />
-      <SortDropdown />
+      <Input
+        placeholder="Search workers"
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <SortDropdown setRole={setRole} />
     </section>
   );
 }
 
-function SortDropdown() {
+function SortDropdown({
+  setRole,
+}: {
+  setRole: Dispatch<SetStateAction<string>>;
+}) {
+  const handleChange = (value: string) => {
+    setRole(value === "ALL" ? "" : value);
+  };
+
   return (
-    <Select>
+    <Select onValueChange={handleChange}>
       <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Filter by status" />
+        <SelectValue placeholder="Filter by role" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Roles</SelectLabel>
-          {Object.entries(filterStatus).map(([key, value], i) => (
-            <SelectItem key={i} value={value}>
+          {Object.entries(filterRole).map(([key, value], i) => (
+            <SelectItem key={i} value={key}>
               {value}
             </SelectItem>
           ))}

@@ -136,7 +136,7 @@ export function PaginationUsers() {
   );
 }
 
-function normalizeRole(role: string): string {
+export function normalizeRole(role: string): string {
   return role.toLowerCase().replace(/_/g, " ");
 }
 

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, Menu } from "lucide-react";
 import Link from "next/link";
-import { NotificationBadge, NotificationItem } from "../NotificationBandge";
+import { NotificationBadge } from "../NotificationBandge";
 import { SignoutConfirmation } from "../popupConfirmation";
 
 const DashboardNavbar = () => {
@@ -26,7 +26,7 @@ const DashboardNavbar = () => {
             <DesktopNav />
             <MobileNav />
           </div>
-          <NotificationBadge notifications={data} />
+          <NotificationBadge />
         </section>
       </div>
     </nav>
@@ -81,24 +81,3 @@ const MobileNav = () => {
     </div>
   );
 };
-
-const data: NotificationItem[] = [
-  {
-    id: "1",
-    title: "Your call has been confirmed",
-    time: "5 minutes ago",
-    icon: "calendar",
-  },
-  {
-    id: "2",
-    title: "You have a new message",
-    time: "1 minute ago",
-    icon: "inbox",
-  },
-  {
-    id: "3",
-    title: "Your subscription is expiring soon",
-    time: "2 hours ago",
-    icon: "calendar-check",
-  },
-];

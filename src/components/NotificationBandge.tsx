@@ -1,36 +1,27 @@
+"use client";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Bell, Calendar, Inbox, CalendarCheck2 } from "lucide-react";
+import { Bell } from "lucide-react";
+import { useState } from "react";
+import { LoadingAnimation } from "./ui/loading-animation";
+import { useNotification } from "@/hooks/notification/useNotification";
 
-const iconMap = {
-  calendar: Calendar,
-  inbox: Inbox,
-  "calendar-check": CalendarCheck2,
-};
+export function NotificationBadge() {
+  const [open, setOpen] = useState(false);
+  const { data, isPending } = useNotification(open);
 
-export type NotificationItem = {
-  id: string;
-  title: string;
-  time: string;
-  icon: "calendar" | "inbox" | "calendar-check";
-};
-
-interface NotificationBadgeProps {
-  notifications: NotificationItem[];
-}
-
-export function NotificationBadge({ notifications }: NotificationBadgeProps) {
-  const count = notifications.length;
+  const count = data?.length;
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5" />
@@ -44,23 +35,27 @@ export function NotificationBadge({ notifications }: NotificationBadgeProps) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-80 p-4">
-        <DropdownMenuLabel className="mb-2 text-lg font-medium">
+        <DropdownMenuLabel className="text-lg font-medium">
           Notifications
         </DropdownMenuLabel>
 
-        <DropdownMenuSeparator className="my-2" />
+        <DropdownMenuSeparator className="mb-4" />
 
-        {count === 0 ? (
-          <p className="text-muted-foreground text-sm">No notifications</p>
+        {isPending ? (
+          <div className="flex h-35 items-center justify-center">
+            <LoadingAnimation />
+          </div>
+        ) : count === 0 ? (
+          <p className="text-muted-foreground flex h-35 items-center justify-center text-sm">
+            No new notifications
+          </p>
         ) : (
           <div className="space-y-4">
-            {notifications.map((item) => {
-              const Icon = iconMap[item.icon];
-
+            {data.map((item: any, i: number) => {
               return (
-                <div key={item.id} className="flex items-start gap-3">
-                  <div className="bg-primary text-primary-foreground flex h-8 w-8 items-center justify-center rounded-full">
-                    <Icon className="h-5 w-5" />
+                <div key={i} className="flex items-start gap-3">
+                  <div className="bg-primary/20 flex h-10 w-10 items-center justify-center rounded-full">
+                    <Bell className="fill-primary text-primary w-4.5" />
                   </div>
 
                   <div className="flex-1 space-y-1">

@@ -1,6 +1,9 @@
 "use client";
 
+import { normalizeRole } from "@/app/super-admin/users/components/UsersTable";
+import { UserProps } from "@/app/super-admin/users/props";
 import { Button } from "@/components/ui/button";
+import { LoadingScreen } from "@/components/ui/loading-animation";
 import {
   Table,
   TableBody,
@@ -9,21 +12,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatDate, formatOrderStatus } from "@/lib/utils";
-import { useRouter } from "next/navigation";
-import { dummyHistory } from "../data";
 import { Info } from "lucide-react";
-import { useUsers } from "@/hooks/user/useUser";
-import { useSession } from "next-auth/react";
-import { LoadingScreen } from "@/components/ui/loading-animation";
+import { useRouter } from "next/navigation";
 
-export function WorkerTable() {
-  const { data: session, status } = useSession();
-
+export default function WorkerTable({
+  data,
+  isPending,
+}: {
+  data: any;
+  isPending: boolean;
+}) {
   const router = useRouter();
-  const { data, isPending } = useUsers({
-    params: { outletId: session!.user.outletId },
-  });
 
   if (isPending)
     return (
@@ -43,29 +42,38 @@ export function WorkerTable() {
     <Table>
       <TableHeader>
         <TableRow className="bg-muted/50 border-none">
-          <TableHead>Order ID</TableHead>
-          <TableHead>Order Date</TableHead>
-          <TableHead>Service Type</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Payment Status</TableHead>
-          <TableHead>Total</TableHead>
-          <TableHead className="w-10"></TableHead>
+          <TableHead>No</TableHead>
+          <TableHead>Name</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Phone</TableHead>
+          <TableHead>Role</TableHead>
+          <TableHead>Outlet Name</TableHead>
+          <TableHead>Created At</TableHead>
+          <TableHead className="w-15"></TableHead>
         </TableRow>
       </TableHeader>
+
       <TableBody>
-        {dummyHistory.map((order) => (
-          <TableRow key={order.orderId} className="border-none">
-            <TableCell className="font-medium">{order.orderId}</TableCell>
-            <TableCell>{formatDate(order.orderDate, "date")}</TableCell>
-            <TableCell>{order.serviceType}</TableCell>
-            <TableCell>{formatOrderStatus(order.status)}</TableCell>
-            <TableCell>{order.paymentStatus}</TableCell>
-            <TableCell>${order.totalAmount}</TableCell>
-            <TableCell className="w-10">
+        {data.map((user: UserProps, i: number) => (
+          <TableRow key={user.email} className="border-none">
+            <TableCell className="font-medium">{i + 1}</TableCell>
+
+            <TableCell>{user.name}</TableCell>
+            <TableCell>{user.email}</TableCell>
+            <TableCell>{user.phoneNumber}</TableCell>
+            <TableCell>{normalizeRole(user.role)}</TableCell>
+
+            <TableCell>{user.outletName ?? "-"}</TableCell>
+
+            <TableCell>
+              {new Date(user.createdAt).toLocaleDateString("en-GB")}
+            </TableCell>
+
+            <TableCell>
               <Button
+                size={"icon-sm"}
                 variant="outline"
-                size="icon"
-                onClick={() => router.push(`orders/${order.orderId}`)}
+                onClick={() => router.push(`workers/${user.id}`)}
               >
                 <Info />
               </Button>
