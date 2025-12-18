@@ -505,13 +505,6 @@ export const outletTableLabel = [
   "Active Workers",
 ];
 
-export const filterRole = {
-  DRIVER: "Driver",
-  WORKER: "Worker",
-  ADMIN: "Admin",
-  ALL: "All",
-};
-
 export const userRole = {
   CUSTOMER: "Customer",
   WORKER: "Worker",

@@ -8,5 +8,11 @@ export const proxy = auth((req) => {
 });
 
 export const config = {
-  matcher: ["/super-admin/:path*"],
+  matcher: [
+    "/super-admin/:path*",
+    "/admin/:path*",
+    "/dashboard/:path*",
+    "/driver/:path*",
+    "/worker/:path*",
+  ],
 };

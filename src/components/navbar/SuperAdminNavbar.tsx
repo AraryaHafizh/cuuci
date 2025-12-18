@@ -26,7 +26,6 @@ const SuperAdminNavbar = () => {
             <DesktopNav />
             <MobileNav />
           </div>
-          <NotificationBadge />
           <SignoutPopup />
         </section>
       </div>

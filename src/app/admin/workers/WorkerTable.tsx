@@ -1,5 +1,3 @@
-"use client";
-
 import { normalizeRole } from "@/app/super-admin/users/components/UsersTable";
 import { UserProps } from "@/app/super-admin/users/props";
 import { Button } from "@/components/ui/button";

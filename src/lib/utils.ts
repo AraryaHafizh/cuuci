@@ -104,5 +104,3 @@ export function generatePassword(length = 8): string {
   }
   return password;
 }
-
-console.log(generatePassword());

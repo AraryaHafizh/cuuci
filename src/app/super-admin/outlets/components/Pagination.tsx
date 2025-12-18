@@ -7,7 +7,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-export default function WorkerPagination() {
+export default function OutletPagination() {
   return (
     <Pagination className="mt-10">
       <PaginationContent>

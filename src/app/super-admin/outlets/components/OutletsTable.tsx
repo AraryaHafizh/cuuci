@@ -1,5 +1,3 @@
-"use client";
-
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -17,14 +15,6 @@ import {
   LoadingScreen,
 } from "@/components/ui/loading-animation";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
   Table,
   TableBody,
   TableCell,
@@ -35,13 +25,18 @@ import {
 import { useOutlets } from "@/hooks/outlet/useOutlet";
 import { useRemove } from "@/hooks/outlet/useRemove";
 import { Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
 import { OutletProps } from "../props";
-import { useRouter } from "next/navigation";
 
-export function OutletsTable() {
+export default function OutletsTable({
+  data,
+  isPending,
+}: {
+  data: any;
+  isPending: boolean;
+}) {
   const router = useRouter();
-  const { data, isPending } = useOutlets();
 
   if (isPending)
     return (
@@ -106,24 +101,6 @@ export function OutletsTable() {
         ))}
       </TableBody>
     </Table>
-  );
-}
-
-export function PaginationOutlets() {
-  return (
-    <Pagination className="mt-10">
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">1</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
   );
 }
 

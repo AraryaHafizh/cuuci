@@ -12,19 +12,23 @@ export function NewOrders() {
 
   return (
     <section className="mt-10 flex gap-5">
-      <OrderList setIndex={setIndex} />
+      <OrderList index={index} setIndex={setIndex} />
       {index !== null && <OrderDetail index={index} setIndex={setIndex} />}
     </section>
   );
 }
 
 function OrderList({
+  index,
   setIndex,
 }: {
+  index: number | null;
   setIndex: React.Dispatch<React.SetStateAction<number | null>>;
 }) {
   return (
-    <section className={`grid grid-cols-2 gap-5`}>
+    <section
+      className={`grid ${index !== null ? "w-0 md:w-[40vw] md:grid-cols-1 xl:w-fit xl:grid-cols-2" : "md:grid-cols-2 xl:grid-cols-3"} gap-5`}
+    >
       {dummyNew.map((item, i) => (
         <div key={i} className="rounded-2xl border bg-(--container-bg) p-5">
           <div className="flex justify-between">

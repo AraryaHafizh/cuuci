@@ -8,16 +8,15 @@ import { TrendingDown, TrendingUp } from "lucide-react";
 import { statusFormatter } from "../super-admin/data";
 import { userStatus } from "../worker/data";
 import { dummyData, todayActivityKey, workerStatus } from "./data";
-import { useSession } from "next-auth/react";
 
 const adminStatus = "active";
 
 export default function Admin() {
   return (
-    <main className="mt-50">
+    <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
       <Summary />
-      <section className="my-5 flex gap-5">
+      <section className="mt-5 gap-5 space-y-5 lg:flex lg:space-y-0">
         <div className="flex-1 space-y-5">
           <Attendance />
           <OrderOverview />
@@ -39,8 +38,6 @@ export default function Admin() {
 }
 
 function Greeting() {
-  const { data: session, status } = useSession();
-
   return (
     <section className="space-y-10">
       <SectionInfo
@@ -83,7 +80,7 @@ function Attendance() {
 
 function Summary() {
   return (
-    <section className="mt-10 flex gap-5">
+    <section className="scroll-hidden mt-10 flex gap-5 overflow-x-auto">
       {Object.entries(dummyData.summary).map(([key, val]) => {
         const growth = val.growth;
         const growthColor =
@@ -104,7 +101,7 @@ function Summary() {
         return (
           <div
             key={key}
-            className="flex flex-1 flex-col justify-between space-y-2 rounded-2xl border bg-(--container-bg) p-5"
+            className="flex min-w-fit flex-1 flex-col justify-between space-y-2 rounded-2xl border bg-(--container-bg) p-5"
           >
             <div>
               <p>{val.label}</p>
@@ -147,7 +144,7 @@ function WorkerActivity({ label, data }: { label: string; data: any[] }) {
   return (
     <section className="flex-1 rounded-2xl border bg-(--container-bg) p-5">
       <p>{label}</p>
-      <div className="mt-5 grid grid-cols-3 gap-3 text-sm">
+      <div className="mt-5 grid gap-5 text-sm md:grid-cols-2 xl:grid-cols-3">
         {data.map((worker, i) => {
           const selectedStatus =
             workerStatus[worker.status as keyof typeof workerStatus];
@@ -170,14 +167,14 @@ function WorkerActivity({ label, data }: { label: string; data: any[] }) {
 
 function TodayActivities() {
   return (
-    <section className="h-fit flex-3 rounded-2xl border bg-(--container-bg) p-5">
+    <section className="mt-5 h-fit flex-3 rounded-2xl border bg-(--container-bg) p-5">
       <p>Today Activities</p>
-      <div className="mt-5 flex gap-5 text-sm">
+      <div className="scroll-hidden mt-5 flex gap-5 overflow-x-auto text-sm">
         {Object.entries(todayActivityKey).map(([key, val], i) => {
           const activityData: any = dummyData[key as keyof typeof dummyData];
 
           return (
-            <div key={i} className="flex-1">
+            <div key={i} className="min-w-60 flex-1 md:min-w-fit">
               <span className="flex gap-2">
                 {val}: <p className="opacity-50">{activityData.length} items</p>
               </span>

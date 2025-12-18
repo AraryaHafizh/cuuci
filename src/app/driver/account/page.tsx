@@ -1,5 +1,6 @@
 "use client";
 
+import { SignoutConfirmation } from "@/components/popupConfirmation";
 import SectionInfo from "@/components/SectionInfo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,14 +55,12 @@ function AccountMenu() {
         <Lock />
         Password
       </Button>
-      <Button
-        variant={"destructive"}
-        className="flex justify-start gap-3"
-        onClick={() => {}}
-      >
-        <LogOut />
-        Sign out
-      </Button>
+      <SignoutConfirmation>
+        <Button variant={"destructive"} className="flex justify-start gap-3">
+          <LogOut />
+          Sign out
+        </Button>
+      </SignoutConfirmation>
     </section>
   );
 }

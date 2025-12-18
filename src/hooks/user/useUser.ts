@@ -16,10 +16,9 @@ export const useUsers = ({ params }: { params?: any } = {}) => {
         headers: { Authorization: `Bearer ${token}` },
         params,
       });
-      console.log(res.data.data);
       return res.data.data;
     },
-    enabled: !!token && !!params?.outletId,
+    enabled: !!token,
     staleTime: 1000 * 60 * 30,
     refetchOnWindowFocus: false,
   });
