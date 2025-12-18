@@ -9,18 +9,35 @@ export const useUsers = ({ params }: { params?: any } = {}) => {
   const token = session?.user?.accessToken;
 
   return useQuery({
-    queryKey: ["get-users", token],
+    queryKey: ["get-users", token, params],
+
     queryFn: async () => {
       const res = await cuuciApi.get("/users", {
         headers: { Authorization: `Bearer ${token}` },
         params,
       });
-      console.log(res.data.data);
-
       return res.data.data;
     },
     enabled: !!token,
-    staleTime: 1000 * 60 * 30, // fresh selama 30 menit
-    refetchOnWindowFocus: false, // refetch saat tab fokus
+    staleTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useUser = (userId: string) => {
+  const { data: session } = useSession();
+  const token = session?.user?.accessToken;
+
+  return useQuery({
+    queryKey: ["get-user", userId, token],
+    queryFn: async () => {
+      const res = await cuuciApi.get(`/users/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.data.data;
+    },
+    enabled: !!token,
+    staleTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
   });
 };

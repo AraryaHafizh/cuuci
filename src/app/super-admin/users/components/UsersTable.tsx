@@ -1,5 +1,3 @@
-"use client";
-
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -17,14 +15,6 @@ import {
   LoadingScreen,
 } from "@/components/ui/loading-animation";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
   Table,
   TableBody,
   TableCell,
@@ -32,16 +22,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useUsers } from "@/hooks/user/useUser";
+import { useRemove } from "@/hooks/user/useRemove";
 import { Info, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { UserProps } from "../props";
 import { ReactNode } from "react";
-import { useRemove } from "@/hooks/user/useRemove";
+import { UserProps } from "../props";
 
-export default function UsersTable() {
+export default function UsersTable({
+  data,
+  isPending,
+}: {
+  data: any;
+  isPending: boolean;
+}) {
   const router = useRouter();
-  const { data, isPending } = useUsers();
 
   if (isPending)
     return (
@@ -118,25 +112,7 @@ export default function UsersTable() {
   );
 }
 
-export function PaginationUsers() {
-  return (
-    <Pagination className="mt-10">
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">1</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
-  );
-}
-
-function normalizeRole(role: string): string {
+export function normalizeRole(role: string): string {
   return role.toLowerCase().replace(/_/g, " ");
 }
 

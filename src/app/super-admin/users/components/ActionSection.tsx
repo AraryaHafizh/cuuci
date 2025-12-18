@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,31 +10,54 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
-import { filterRole } from "../../data";
+import { Dispatch, SetStateAction } from "react";
 
-export default function ActionSection() {
+const filterRole = {
+  DRIVER: "Driver",
+  WORKER: "Worker",
+  OUTLET_ADMIN: "Admin",
+  ALL: "All",
+};
+
+export default function ActionSection({
+  setSearch,
+  setRole,
+}: {
+  setSearch: Dispatch<SetStateAction<string>>;
+  setRole: Dispatch<SetStateAction<string>>;
+}) {
   const router = useRouter();
   return (
     <section className="mt-10 mb-5 flex gap-2">
-      <Input placeholder="Search by name, id, email, phone" />
-      <SortDropdown />
+      <Input
+        placeholder="Search users"
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <SortDropdown setRole={setRole} />
       <Button onClick={() => router.push("users/create")}>Register User</Button>
     </section>
   );
 }
 
-function SortDropdown() {
+function SortDropdown({
+  setRole,
+}: {
+  setRole: Dispatch<SetStateAction<string>>;
+}) {
+  const handleChange = (value: string) => {
+    setRole(value === "ALL" ? "" : value);
+  };
   return (
-    <Select>
+    <Select onValueChange={handleChange}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Filter by role" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Roles</SelectLabel>
-          {filterRole.map((role, i) => (
-            <SelectItem key={i} value={role}>
-              {role}
+          {Object.entries(filterRole).map(([key, value], i) => (
+            <SelectItem key={i} value={key}>
+              {value}
             </SelectItem>
           ))}
         </SelectGroup>

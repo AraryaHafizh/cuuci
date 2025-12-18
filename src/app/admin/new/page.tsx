@@ -3,7 +3,7 @@ import { NewOrders } from "./OrderList";
 
 export default function Orders() {
   return (
-    <main className="mt-50">
+    <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
       <NewOrders />
     </main>

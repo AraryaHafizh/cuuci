@@ -14,7 +14,7 @@ export function OrderDetail({
   setIndex: React.Dispatch<React.SetStateAction<number | null>>;
 }) {
   return (
-    <section className="sticky top-40 z-10 h-fit flex-1 rounded-2xl border bg-(--container-bg) p-5">
+    <section className="sticky top-25 z-10 h-fit flex-1 rounded-2xl border bg-(--container-bg) p-5 md:top-40">
       <Info index={index} setIndex={setIndex} />
       <Separator className="my-5" />
       <Items />

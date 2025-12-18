@@ -15,11 +15,11 @@ const SectionInfo = ({
 }: SectionProps) => {
   return (
     <div className={`space-y-2 ${className}`}>
-      <div className="flex items-center gap-5">
+      <div className="flex items-center justify-between md:justify-start md:gap-5">
         {loading ? (
           <div className="bg-foreground/10 h-8 w-64 animate-pulse rounded-lg lg:h-10 2xl:h-14" />
         ) : (
-          <h2 className="text-2xl font-bold lg:text-3xl 2xl:text-5xl">
+          <h2 className="w-50 text-2xl font-bold md:w-auto lg:text-3xl 2xl:text-5xl">
             {title}
           </h2>
         )}
