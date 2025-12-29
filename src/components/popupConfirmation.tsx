@@ -123,8 +123,7 @@ export const SignoutConfirmation = ({ children }: { children: ReactNode }) => {
           <AlertDialogAction
             onClick={() => {
               queryClient.clear();
-              signOut({ redirect: false });
-              redirect("/");
+              signOut({ callbackUrl: "/" });
             }}
             className="bg-transparant hover:bg-destructive active:bg-destructive border-destructive text-destructive border hover:text-white active:text-white"
           >
