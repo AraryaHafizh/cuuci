@@ -1,0 +1,36 @@
+"use client";
+
+import { cuuciApi } from "@/lib/axios";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+
+export const useEdit = () => {
+  const { data: session, update } = useSession();
+  const token = session?.user?.accessToken;
+  const id = session?.user?.id;
+
+  return useMutation({
+    mutationFn: async ({ name }: { name: string }) => {
+      const { data } = await cuuciApi.patch(
+        `/users/update/${id}`,
+        { name },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      return data;
+    },
+
+    onSuccess: async (data) => {
+      await update({ reason: "profile-updated" });
+      console.log("update");
+
+      toast(data.message);
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data.message ?? "Oops, something went wrong");
+    },
+  });
+};

@@ -17,6 +17,21 @@ declare module "next-auth" {
   }
 }
 
+type AuthUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  phoneNumber: string;
+  profilePictureUrl: string;
+  outletId: string;
+  accessToken: string;
+};
+
+function hasAuthUser(user: unknown): user is AuthUser {
+  return typeof user === "object" && user !== null && "accessToken" in user;
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
   providers: [
@@ -46,7 +61,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn() {
       return true;
     },
-    async jwt({ token, account, user }) {
+    async jwt({ token, account, user, trigger }) {
       if (
         account?.provider === "google" &&
         account.access_token &&
@@ -70,6 +85,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.user = user;
       }
 
+      if (trigger === "update" && hasAuthUser(token.user)) {
+        console.log("jalan 0000000000x");
+
+        const refreshedUser = await refetch(token.user.accessToken);
+
+        token.user = {
+          id: refreshedUser.id,
+          email: refreshedUser.email,
+          name: refreshedUser.name,
+          role: refreshedUser.role,
+          phoneNumber: refreshedUser.phoneNumber,
+          profilePictureUrl: refreshedUser.profilePictureUrl,
+          outletId: refreshedUser.outletId,
+          accessToken: refreshedUser.accessToken,
+        };
+      }
+
       return token;
     },
     async session({ session, token }: any) {
@@ -90,6 +122,22 @@ async function loginWithGoogle(accessToken: string) {
 
   if (!res.ok) {
     throw new Error("Backend Google login failed");
+  }
+
+  return res.json();
+}
+
+async function refetch(accessToken: string) {
+  const res = await fetch("http://localhost:8000/auth/refetch", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      Accept: "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("refetch user data failed");
   }
 
   return res.json();

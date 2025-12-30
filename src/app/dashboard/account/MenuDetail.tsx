@@ -1,21 +1,30 @@
-import { AddressCard } from "@/components/AddressCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LoadingScreen } from "@/components/ui/loading-animation";
 import { Separator } from "@/components/ui/separator";
 import { useAddress } from "@/hooks/address/useAddress";
-import { Plus } from "lucide-react";
-import { ProfileStore } from "./store";
 import Address from "./AddressMenu";
+import { ProfileStore } from "./store";
+import { useEdit } from "@/hooks/user/useEdit";
+import { LoadingAnimation } from "@/components/ui/loading-animation";
+import { useState } from "react";
+import { useSession } from "next-auth/react";
 
-export function AccountMenuDetail({ session }: { session: any }) {
+export function AccountMenuDetail() {
+  const { data: session } = useSession();
   const index = ProfileStore((state) => state.index);
-  const sessionData = session.user;
+  const sessionData = session!.user;
 
   const { data: addresses, isPending } = useAddress({ index });
 
   function Profile() {
+    const { mutateAsync: edit, isPending } = useEdit();
+    const [name, setName] = useState(sessionData.name ?? "");
+
+    async function onSave() {
+      await edit({ name });
+    }
+
     return (
       <div className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
         <div>
@@ -24,15 +33,18 @@ export function AccountMenuDetail({ session }: { session: any }) {
             View and manage your personal information and account details.
           </p>
         </div>
+
         <Separator />
 
         <div className="w-full space-y-4">
           <Label>Full Name</Label>
-          <Input placeholder={sessionData.name ?? "?"}></Input>
+          <Input value={name} onChange={(e) => setName(e.target.value)} />
         </div>
 
         <div className="flex justify-end">
-          <Button>Save</Button>
+          <Button onClick={onSave} disabled={isPending}>
+            {isPending ? <LoadingAnimation /> : "Save"}
+          </Button>
         </div>
       </div>
     );
