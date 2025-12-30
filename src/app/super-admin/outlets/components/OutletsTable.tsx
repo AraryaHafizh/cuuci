@@ -22,7 +22,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useOutlets } from "@/hooks/outlet/useOutlet";
 import { useRemove } from "@/hooks/outlet/useRemove";
 import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";

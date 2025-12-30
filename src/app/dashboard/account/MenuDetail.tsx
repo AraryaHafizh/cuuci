@@ -2,14 +2,18 @@ import { AddressCard } from "@/components/AddressCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { LoadingScreen } from "@/components/ui/loading-animation";
 import { Separator } from "@/components/ui/separator";
+import { useAddress } from "@/hooks/address/useAddress";
 import { Plus } from "lucide-react";
-import { userAddress } from "./data";
 import { ProfileStore } from "./store";
+import Address from "./AddressMenu";
 
 export function AccountMenuDetail({ session }: { session: any }) {
   const index = ProfileStore((state) => state.index);
   const sessionData = session.user;
+
+  const { data: addresses, isPending } = useAddress({ index });
 
   function Profile() {
     return (
@@ -60,34 +64,15 @@ export function AccountMenuDetail({ session }: { session: any }) {
     );
   }
 
-  function Address() {
-    return (
-      <div className="rounded-2xl border bg-(--container-bg) p-5">
-        <div className="items-center justify-between md:flex">
-          <div>
-            <p>Manage My Address</p>
-            <p className="text-sm font-light opacity-50">
-              Add, edit, or remove your saved addresses for faster checkout.
-            </p>
-          </div>
-          <Button size={"sm"} className="mt-5 w-full text-xs md:mt-0 md:w-fit">
-            <Plus />
-            Add New Address
-          </Button>
-        </div>
-        <Separator className="my-5" />
-        <div className="grid gap-2 lg:grid-cols-2">
-          {userAddress.map((item, i) => (
-            <AddressCard key={i} {...item} />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex-2">
-      {[<Profile />, <Password />, <Address />][index]}
+      {
+        [
+          <Profile />,
+          <Password />,
+          <Address isPending={isPending} addresses={addresses} />,
+        ][index]
+      }
     </div>
   );
 }
