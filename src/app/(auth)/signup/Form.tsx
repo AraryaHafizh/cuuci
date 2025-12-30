@@ -36,6 +36,7 @@ export const Form = () => {
       name: "",
       email: "",
       phoneNumber: "",
+      role: "CUSTOMER",
       password: "",
     },
   });
