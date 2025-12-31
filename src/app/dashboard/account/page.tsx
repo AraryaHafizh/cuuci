@@ -23,7 +23,7 @@ export default function Account() {
           <ProfilePicture session={session} />
           <AccountMenu />
         </div>
-        <AccountMenuDetail session={session} />
+        <AccountMenuDetail />
       </section>
     </main>
   );
