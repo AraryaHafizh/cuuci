@@ -1,6 +1,16 @@
 "use client";
 
 import SectionInfo from "@/components/SectionInfo";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
@@ -8,61 +18,55 @@ import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { SectionTitle } from "@/components/ui/section-title";
 import { Textarea } from "@/components/ui/textarea";
 import { useAddress } from "@/hooks/address/useAddress";
+import { usePickup } from "@/hooks/order/usePickup";
+import { useNearest } from "@/hooks/outlet/useNearest";
 import { addMonths, isAfter, isBefore, startOfDay } from "date-fns";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { AddressProps, PickupAddressCard } from "./PickupAddressCard";
-import { useNearest } from "@/hooks/outlet/useNearest";
+import { ReactNode, useEffect, useState } from "react";
 import OutletCard, { OutletProps } from "./OutletCard";
-import { usePickup } from "@/hooks/order/usePickup";
-
-export type PickupProps = {
-  addressId: string;
-  outletId: string;
-  notes: string | null;
-  pickupTime: Date;
-};
+import { AddressProps, PickupAddressCard } from "./PickupAddressCard";
 
 export default function Create() {
   const router = useRouter();
 
-  const { data: addresses, isPending } = useAddress({ index: 2 });
-  const { data: nearest, isPending: isPending2 } = useNearest();
-  const { mutateAsync: pickup, isPending: isPending3 } = usePickup();
-
   const [outletId, setOutletId] = useState<string>("");
   const [addressId, setAdressId] = useState<string>("");
+  const [lat, setLat] = useState<string>();
+  const [lng, setLng] = useState<string>();
   const [note, setNote] = useState<string>("");
   const [date, setDate] = useState<Date | undefined>(new Date());
-  const [time, setTime] = useState<string>("06:30"); // default jam
+  const [time, setTime] = useState<string>("06:30");
+
+  const { data: addresses, isPending } = useAddress({ index: 2 });
+  const { data: nearest, isPending: isPending2 } = useNearest(lat, lng);
+  const { mutateAsync: pickup, isPending: isPending3 } = usePickup();
 
   useEffect(() => {
-    if (addresses && addresses.length > 0) {
-      const primary = addresses.find((addr: AddressProps) => addr.isPrimary);
-      if (primary) setAdressId(primary.id);
-    }
-  }, [addresses]);
+    if (!addresses || !addressId) return;
 
-  function onSubmit() {
-    if (!date || !time) {
-      console.error("Date or time not set");
-      return;
+    const selected = addresses.find(
+      (addr: AddressProps) => addr.id === addressId,
+    );
+
+    if (selected) {
+      setLat(selected.latitude);
+      setLng(selected.longitude);
     }
+  }, [addressId, addresses]);
+
+  async function onSubmit() {
+    if (!date || !time) return;
 
     const [hours, minutes] = time.split(":").map(Number);
     const pickupDate = new Date(date);
     pickupDate.setHours(hours, minutes, 0, 0);
 
-    const data: PickupProps = {
+    await pickup({
       addressId,
       outletId,
       notes: note || null,
-      pickupTime: pickupDate, // or pickupDate.toISOString() if backend expects string
-    };
-
-    console.log(data);
-
-    // pickup(data);
+      pickupTime: pickupDate,
+    });
   }
 
   return (
@@ -72,6 +76,7 @@ export default function Create() {
         <SelectAddress
           data={addresses}
           isPending={isPending}
+          addressId={addressId}
           setAdressId={setAdressId}
         />
         <SelectDateTime
@@ -92,7 +97,9 @@ export default function Create() {
         <Button variant={"outline"} onClick={() => router.back()}>
           Cancel
         </Button>
-        <Button onClick={onSubmit}>Schedule Pickup</Button>
+        <PickupConfirmation onSubmit={onSubmit} isPending={isPending3}>
+          <Button>Schedule Pickup</Button>
+        </PickupConfirmation>
       </section>
     </main>
   );
@@ -112,10 +119,12 @@ function Greeting() {
 function SelectAddress({
   data,
   isPending,
+  addressId,
   setAdressId,
 }: {
   data: any;
   isPending: boolean;
+  addressId: string;
   setAdressId: (id: string) => void;
 }) {
   return (
@@ -132,6 +141,7 @@ function SelectAddress({
               key={i}
               index={i + 1}
               data={data[i]}
+              addressId={addressId}
               setAdressId={setAdressId}
             />
           ))}
@@ -222,7 +232,7 @@ function UserNote({ setNote }: { setNote: (note: string) => void }) {
       <SectionTitle title="User Note" />
 
       <Textarea
-        placeholder="e.g., Please use the side door. Watch out for the dog."
+        placeholder="e.g., Caution with the dress."
         className="h-40 md:h-[90%]"
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
           setNote(e.target.value)
@@ -231,3 +241,44 @@ function UserNote({ setNote }: { setNote: (note: string) => void }) {
     </div>
   );
 }
+
+const PickupConfirmation = ({
+  onSubmit,
+  isPending,
+  children,
+}: {
+  onSubmit: () => Promise<void>;
+  isPending: boolean;
+  children: ReactNode;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Create request pickup?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Make sure everything is correct before submitting.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+
+          <Button
+            disabled={isPending}
+            onClick={async () => {
+              await onSubmit();
+              setOpen(false);
+            }}
+          >
+            {isPending ? <LoadingAnimation /> : "Submit request"}
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};

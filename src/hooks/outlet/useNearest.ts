@@ -9,7 +9,7 @@ export const useNearest = (latitude?: string, longitude?: string) => {
   const token = session?.user?.accessToken;
 
   return useQuery({
-    queryKey: ["get_nearest", token],
+    queryKey: ["get_nearest", latitude, longitude],
     queryFn: async () => {
       const res = await cuuciApi.get(
         `/outlets/nearest?latitude=${latitude}&longitude=${longitude}`,
