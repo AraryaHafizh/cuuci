@@ -14,7 +14,7 @@ export type PickupProps = {
   pickupTime: Date;
 };
 
-export const usePickup = () => {
+export const useCreate = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const token = session?.user?.accessToken;

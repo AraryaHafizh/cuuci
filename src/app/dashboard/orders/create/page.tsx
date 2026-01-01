@@ -18,13 +18,13 @@ import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { SectionTitle } from "@/components/ui/section-title";
 import { Textarea } from "@/components/ui/textarea";
 import { useAddress } from "@/hooks/address/useAddress";
-import { usePickup } from "@/hooks/order/usePickup";
 import { useNearest } from "@/hooks/outlet/useNearest";
 import { addMonths, isAfter, isBefore, startOfDay } from "date-fns";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 import OutletCard, { OutletProps } from "./OutletCard";
 import { AddressProps, PickupAddressCard } from "./PickupAddressCard";
+import { useCreate } from "@/hooks/order/useCreate";
 
 export default function Create() {
   const router = useRouter();
@@ -39,7 +39,7 @@ export default function Create() {
 
   const { data: addresses, isPending } = useAddress({ index: 2 });
   const { data: nearest, isPending: isPending2 } = useNearest(lat, lng);
-  const { mutateAsync: pickup, isPending: isPending3 } = usePickup();
+  const { mutateAsync: pickup, isPending: isPending3 } = useCreate();
 
   useEffect(() => {
     if (!addresses || !addressId) return;

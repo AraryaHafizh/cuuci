@@ -20,10 +20,10 @@ export function InfoCard({
   endButtonUrl,
 }: InfoRowProps) {
   return (
-    <div className="flex items-center gap-4 text-sm font-light md:text-base">
-      {icon}
+    <div className="flex items-center gap-4 text-sm font-light">
+      <div>{icon}</div>
       <div>
-        <p className="text-xs opacity-50 md:text-sm">{label}</p>
+        <p className="mb-0.5 opacity-50">{label}</p>
         <p>{title}</p>
         <p>{value}</p>
       </div>
