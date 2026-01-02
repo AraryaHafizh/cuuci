@@ -1,36 +1,68 @@
 "use client";
 
-import { OutletAddressCard, PickupAddressCard } from "@/components/AddressCard";
 import SectionInfo from "@/components/SectionInfo";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { addMonths, isAfter, isBefore, startOfDay } from "date-fns";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { userAddress } from "../../account/data";
-import { outletLocation } from "./data";
 import { SectionTitle } from "@/components/ui/section-title";
+import { useAddress } from "@/hooks/address/useAddress";
+import { useOutlets } from "@/hooks/outlet/useOutlet";
+import axios from "axios";
+import { addMonths, isAfter, isBefore, startOfDay } from "date-fns";
+import { getSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Create() {
   const router = useRouter();
+
+  const [pickup, setPickup] = useState({
+    addressId: "",
+    pickupAt: "",
+    outletId: "",
+    note: "",
+  });
+
+  const submit = async () => {
+  const session = await getSession();
+
+  if (!pickup.addressId || !pickup.pickupAt || !pickup.outletId) {
+    alert("Complete required fields");
+    return;
+  }
+
+};
+
   return (
     <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
       <section className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 2xl:flex 2xl:gap-5 2xl:space-y-0">
-        <SelectAddress />
-        <SelectDateTime />
-        <SelectOutlet />
-        <UserNote />
+        <SelectAddress
+          value={pickup.addressId}
+          onChange={(id) => setPickup((p) => ({ ...p, addressId: id }))}
+        />
+
+        <SelectDateTime
+          onChange={(dateTime) =>
+            setPickup((p) => ({ ...p, pickupAt: dateTime }))
+          }
+        />
+
+        <SelectOutlet
+          value={pickup.outletId}
+          onChange={(id) => setPickup((p) => ({ ...p, outletId: id }))}
+        />
+
+        <UserNote
+          value={pickup.note}
+          onChange={(note) => setPickup((p) => ({ ...p, note }))}
+        />
       </section>
       <section className="mt-10 flex justify-end gap-5">
         <Button variant={"outline"} onClick={() => router.back()}>
           Cancel
         </Button>
-        <Button onClick={() => router.push("/dashboard/orders/summary")}>
-          Schedule Pickup
-        </Button>
+        <Button onClick={submit}>Schedule Pickup</Button>
       </section>
     </main>
   );
@@ -47,24 +79,50 @@ function Greeting() {
   );
 }
 
-function SelectAddress() {
-  return (
-    <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <SectionTitle title="Where to Pick Up?" />
+type SelectAddressProps = {
+  value: string;
+  onChange: (id: string) => void;
+};
 
-      <div className="space-y-5">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <PickupAddressCard key={i} {...userAddress[i]} />
-        ))}
-      </div>
-    </section>
+function SelectAddress({ value, onChange }: SelectAddressProps) {
+  const { data: addresses, isLoading, error } = useAddress();
+  if (isLoading) return <p>Loading...</p>;
+  if (error || !addresses) return <p>Error</p>;
+  console.log({ addresses, isLoading, error });
+  return (
+    <div>
+      {addresses.map((addr) => (
+        <button
+          key={addr.id}
+          onClick={() => onChange(addr.id)}
+          className={value === addr.id ? "active" : ""}
+        >
+          {addr.address}
+        </button>
+      ))}
+    </div>
   );
 }
 
-function SelectDateTime() {
+type SelectDateTimeProps = {
+  onChange: (isoDate: string) => void;
+};
+
+function SelectDateTime({ onChange }: SelectDateTimeProps) {
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [time, setTime] = useState("06:30");
   const today = startOfDay(new Date()); // normalisasi ke awal hari
   const maxDate = addMonths(today, 3);
+
+  useEffect(() => {
+    if (!date) return;
+
+    const [h, m] = time.split(":");
+    const combined = new Date(date);
+    combined.setHours(Number(h), Number(m));
+
+    onChange(combined.toISOString());
+  }, [date, time]);
 
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
@@ -86,39 +144,46 @@ function SelectDateTime() {
       <Input
         id="time-picker"
         type="time"
-        defaultValue="06:30"
+        value={time}
+        onChange={(e) => setTime(e.target.value)}
         className="appearance-none bg-(--container-bg) dark:bg-(--container-bg) [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
       />
     </section>
   );
 }
 
-function SelectOutlet() {
-  return (
-    <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <SectionTitle title="Select Outlet Location" />
+type SelectOutletProps = {
+  value: string;
+  onChange: (id: string) => void;
+};
 
-      {outletLocation.map((outlet, i) => (
-        <OutletAddressCard
-          key={i}
-          {...outlet}
-          userLatitude={userAddress[0].latitude}
-          userLongitude={userAddress[0].longitude}
-        />
+function SelectOutlet({ value, onChange }: SelectOutletProps) {
+  const { data: outlets, isLoading, error} = useOutlets()
+  if (isLoading) return <p>Loading...</p>;
+  if (error || !outlets) return <p>Failed to load outlets</p>;
+  return (
+    <select value={value} onChange={(e) => onChange(e.target.value)}>
+      <option value="">Select outlet</option>
+      {outlets.map((o) => (
+        <option key={o.id} value={o.id}>
+          {o.name}
+        </option>
       ))}
-    </section>
+    </select>
   );
 }
 
-function UserNote() {
-  return (
-    <div className="w-full space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <SectionTitle title="User Note" />
+type UserNoteProps = {
+  value: string;
+  onChange: (note: string) => void;
+};
 
-      <Textarea
-        placeholder="e.g., Please use the side door. Watch out for the dog."
-        className="h-40 md:h-[90%]"
-      />
-    </div>
+function UserNote({ value, onChange }: UserNoteProps) {
+  return (
+    <textarea
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder="Optional note"
+    />
   );
 }
