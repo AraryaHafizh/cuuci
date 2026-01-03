@@ -1,17 +1,30 @@
-import { AddressCard } from "@/components/AddressCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { Separator } from "@/components/ui/separator";
-import { Plus } from "lucide-react";
-import { userAddress } from "./data";
+import { useAddress } from "@/hooks/address/useAddress";
+import { useEdit } from "@/hooks/user/useEdit";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import Address from "./AddressMenu";
 import { ProfileStore } from "./store";
 
-export function AccountMenuDetail({ session }: { session: any }) {
+export function AccountMenuDetail() {
+  const { data: session } = useSession();
   const index = ProfileStore((state) => state.index);
-  const sessionData = session.user;
+  const sessionData = session!.user;
+
+  const { data: addresses, isPending } = useAddress({ index });
 
   function Profile() {
+    const { mutateAsync: edit, isPending } = useEdit();
+    const [name, setName] = useState(sessionData.name ?? "");
+
+    async function onSave() {
+      await edit({ name });
+    }
+
     return (
       <div className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
         <div>
@@ -20,15 +33,18 @@ export function AccountMenuDetail({ session }: { session: any }) {
             View and manage your personal information and account details.
           </p>
         </div>
+
         <Separator />
 
         <div className="w-full space-y-4">
           <Label>Full Name</Label>
-          <Input placeholder={sessionData.name ?? "?"}></Input>
+          <Input value={name} onChange={(e) => setName(e.target.value)} />
         </div>
 
         <div className="flex justify-end">
-          <Button>Save</Button>
+          <Button onClick={onSave} disabled={isPending}>
+            {isPending ? <LoadingAnimation /> : "Save"}
+          </Button>
         </div>
       </div>
     );
@@ -60,34 +76,15 @@ export function AccountMenuDetail({ session }: { session: any }) {
     );
   }
 
-  function Address() {
-    return (
-      <div className="rounded-2xl border bg-(--container-bg) p-5">
-        <div className="items-center justify-between md:flex">
-          <div>
-            <p>Manage My Address</p>
-            <p className="text-sm font-light opacity-50">
-              Add, edit, or remove your saved addresses for faster checkout.
-            </p>
-          </div>
-          <Button size={"sm"} className="mt-5 w-full text-xs md:mt-0 md:w-fit">
-            <Plus />
-            Add New Address
-          </Button>
-        </div>
-        <Separator className="my-5" />
-        <div className="grid gap-2 lg:grid-cols-2">
-          {userAddress.map((item, i) => (
-            <AddressCard key={i} {...item} />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex-2">
-      {[<Profile />, <Password />, <Address />][index]}
+      {
+        [
+          <Profile />,
+          <Password />,
+          <Address isPending={isPending} addresses={addresses} />,
+        ][index]
+      }
     </div>
   );
 }

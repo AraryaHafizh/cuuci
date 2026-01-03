@@ -25,7 +25,7 @@ export const signupSchema = z.object({
     .string()
     .min(10, "Phone number must be at least 10 characters long."),
   password: z.string().min(8, "Password must be at least 8 characters long."),
-  role: z.string().optional(),
+  role: z.string(),
   outletId: z.string().optional(),
 });
 
