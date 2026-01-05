@@ -15,6 +15,7 @@ export function AccountMenuDetail() {
   const index = ProfileStore((state) => state.index);
   const sessionData = session!.user;
 
+
   const { data: addresses, isPending } = useAddress({ index });
 
   function Profile() {
@@ -82,7 +83,7 @@ export function AccountMenuDetail() {
         [
           <Profile />,
           <Password />,
-          <Address isPending={isPending} addresses={addresses} />,
+          // <Address isPending={isPending} addresses={addresses} />,
         ][index]
       }
     </div>
