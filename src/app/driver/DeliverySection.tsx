@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 
 export default function DeliverySection() {
   const { data: available, isPending } = useAvailablePickup();
-  const { data: ongoing, isPending: isPending2 } = useOngoing();
+  const { data: ongoing } = useOngoing();
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(
     null,
   );
@@ -87,15 +87,24 @@ function AvailableDeliveries({
 function OngoingDelivery({ data }: { data: AvailableDeliveryProps }) {
   const router = useRouter();
 
+  function getTitle() {
+    switch (data.status) {
+      case "WAITING_FOR_PICKUP":
+        return `Pickup from ${data.customer.name}`;
+      case "LAUNDRY_ON_THE_WAY":
+        return "Delivering to outlet";
+      case "DELIVERING_TO_CUSTOMER":
+        return `Delivery to ${data.customer.name}`;
+      default:
+        return "Order in progress";
+    }
+  }
+
   return (
     <section className="h-fit flex-1 space-y-5 rounded-2xl border bg-(--container-bg) p-5 md:sticky md:top-38 md:z-10 xl:mt-11">
       <SectionTitle title="Ongoing Activity" />
 
-      <p className="text-lg font-bold lg:text-xl">
-        {data.status === "LAUNDRY_ON_THE_WAY"
-          ? `Pickup from ${data.customer.name}`
-          : `Delivery to ${data.customer.name}`}
-      </p>
+      <p className="text-lg font-bold lg:text-xl">{getTitle()}</p>
 
       <div className="font-light">
         <p className="mb-1.5 text-sm opacity-50">Pickup from</p>

@@ -14,7 +14,7 @@ export type PickupProps = {
   pickupTime: Date;
 };
 
-export const useAcceptPickup = () => {
+export const useFinishPickup = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const token = session?.user?.accessToken;
@@ -22,7 +22,7 @@ export const useAcceptPickup = () => {
   return useMutation({
     mutationFn: async (id: string) => {
       const { data } = await cuuciApi.post(
-        `/drivers/requests/take/${id}`,
+        `/drivers/requests/finish/${id}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -31,7 +31,7 @@ export const useAcceptPickup = () => {
 
     onSuccess: async (data) => {
       router.back();
-      toast.success(data.message ?? "Pickup accepted");
+      toast.success(data.message ?? "Pickup finish");
     },
 
     onError: (error: AxiosError<{ message: string }>) => {

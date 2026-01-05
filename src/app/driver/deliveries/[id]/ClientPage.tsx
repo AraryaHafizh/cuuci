@@ -25,12 +25,14 @@ import { getDistance, getLocation } from "@/lib/utils";
 import { House, Navigation, Store } from "lucide-react";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { CustomerButton } from "../DeliveryButtons";
-import Status from "./Status";
+import { useConfirmPickup } from "@/hooks/order/useConfirmPickup";
+import { useFinishPickup } from "@/hooks/order/useFinishPickup";
 
 export default function ClientPage({ id }: { id: string }) {
   const { data, isPending } = usePickupDetail(id);
-  const { mutateAsync: acceptPickup, isPending: isPending2 } =
-    useAcceptPickup();
+  const { mutateAsync: take, isPending: isPending2 } = useAcceptPickup();
+  const { mutateAsync: pickup, isPending: isPending3 } = useConfirmPickup();
+  const { mutateAsync: finish, isPending: isPending4 } = useFinishPickup();
   const [location, setLocation] = useState<{ lat: number; lng: number } | null>(
     null,
   );
@@ -43,11 +45,32 @@ export default function ClientPage({ id }: { id: string }) {
       });
   }, []);
 
-  async function onSubmit() {
-    acceptPickup(id);
+  async function takeOrder() {
+    take(id);
+  }
+
+  async function pickupOrder(file: File) {
+    const formData = new FormData();
+    formData.append("confirmationProof", file);
+
+    await pickup({ id, formData });
+  }
+
+  async function finishOrder() {
+    await finish(id);
   }
 
   if (isPending) return <LoadingScreen />;
+
+  const isOnTheWayToOutlet = data.status === "LAUNDRY_ON_THE_WAY";
+
+  const destinationLat = isOnTheWayToOutlet
+    ? Number(data.outlet.latitude)
+    : Number(data.address.latitude);
+
+  const destinationLng = isOnTheWayToOutlet
+    ? Number(data.outlet.longitude)
+    : Number(data.address.longitude);
 
   return (
     <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
@@ -56,29 +79,33 @@ export default function ClientPage({ id }: { id: string }) {
         <Map
           lat1={location?.lat || -6.211281680388138}
           lng1={location?.lng || 106.82139922392919}
-          lat2={Number(data.address.latitude)}
-          lng2={Number(data.address.longitude)}
+          lat2={destinationLat}
+          lng2={destinationLng}
         />
+
         <div className="flex-1/2 space-y-5">
           <CustomerDetail
             data={data}
             driverLat={location?.lat || -6.211281680388138}
             driverLng={location?.lng || 106.82139922392919}
           />
-          <Status />
           <DeliverySummary
             data={data}
             lat={Number(data.address.latitude)}
             lng={Number(data.address.longitude)}
           />
-          {data.status === "WAITING_FOR_PICKUP" ? (
-            <AcceptRequest onSubmit={onSubmit} isPending={isPending2}>
+          {data.status === "LOOKING_FOR_DRIVER" ? (
+            <AcceptRequest onSubmit={takeOrder} isPending={isPending2}>
               <Button className="w-full">Accept Pickup</Button>
             </AcceptRequest>
-          ) : (
-            <PickupRequest onSubmit={onSubmit} isPending={isPending2}>
+          ) : data.status === "WAITING_FOR_PICKUP" ? (
+            <PickupRequest onSubmit={pickupOrder} isPending={isPending3}>
               <Button className="w-full">Confirm Pickup</Button>
             </PickupRequest>
+          ) : (
+            <FinishRequest onSubmit={finishOrder} isPending={isPending4}>
+              <Button className="w-full">Finish Pickup</Button>
+            </FinishRequest>
           )}
         </div>
       </section>
@@ -87,16 +114,29 @@ export default function ClientPage({ id }: { id: string }) {
 }
 
 function Greeting({ data, isPending }: { data: any; isPending: boolean }) {
+  function getStatus() {
+    switch (data.status) {
+      case "WAITING_FOR_PICKUP":
+        return `Pickup from ${data.customer.name}`;
+      case "LAUNDRY_ON_THE_WAY":
+        return "Delivering to outlet";
+      case "DELIVERING_TO_CUSTOMER":
+        return `Delivery to ${data.customer.name}`;
+      default:
+        return "Order in progress";
+    }
+  }
   return (
     <section className="space-y-10">
       <SectionInfo
         title={
-          data.status === "WAITING_FOR_PICKUP"
+          data.status === "LOOKING_FOR_DRIVER"
             ? `Pickup Detail`
             : `Delivery Detail`
         }
         description="View all details of this order, including pickup and delivery information."
         loading={isPending}
+        role={getStatus()}
       />
     </section>
   );
@@ -111,6 +151,15 @@ function CustomerDetail({
   driverLat: number;
   driverLng: number;
 }) {
+  const isOnTheWayToOutlet = data.status === "LAUNDRY_ON_THE_WAY";
+
+  const destinationLat = isOnTheWayToOutlet
+    ? Number(data.outlet.latitude)
+    : Number(data.address.latitude);
+
+  const destinationLng = isOnTheWayToOutlet
+    ? Number(data.outlet.longitude)
+    : Number(data.address.longitude);
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
       <SectionTitle title="Customer Details" />
@@ -124,12 +173,7 @@ function CustomerDetail({
           <span className="font-medium">{data.customer.name}</span>
           <span className="opacity-50">
             Distance{" "}
-            {getDistance(
-              driverLat,
-              driverLng,
-              Number(data.address.latitude),
-              Number(data.address.longitude),
-            )}
+            {getDistance(driverLat, driverLng, destinationLat, destinationLng)}
           </span>
         </div>
         <CustomerButton />
@@ -296,4 +340,44 @@ const PickupRequest = ({
   );
 };
 
-// NOTE: add UI when package is secure and otw to outlet
+const FinishRequest = ({
+  onSubmit,
+  isPending,
+  children,
+}: {
+  onSubmit: () => Promise<void>;
+  isPending: boolean;
+  children: ReactNode;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+
+      <AlertDialogContent className="z-9999">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Finish this pickup?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Once confirmed, the delivery will be completed and the package will
+            be marked as arrived at the outlet.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+
+          <Button
+            disabled={isPending}
+            onClick={async () => {
+              await onSubmit();
+              setOpen(false);
+            }}
+          >
+            {isPending ? <LoadingAnimation /> : "Accept"}
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};

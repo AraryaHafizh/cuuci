@@ -7,31 +7,36 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export type PickupProps = {
-  addressId: string;
-  outletId: string;
-  notes: string | null;
-  pickupTime: Date;
-};
-
-export const useAcceptPickup = () => {
+export const useConfirmPickup = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const token = session?.user?.accessToken;
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async ({
+      id,
+      formData,
+    }: {
+      id: string;
+      formData: FormData;
+    }) => {
       const { data } = await cuuciApi.post(
-        `/drivers/requests/take/${id}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } },
+        `/drivers/requests/confirm/${id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        },
       );
+
       return data;
     },
 
-    onSuccess: async (data) => {
+    onSuccess: (data) => {
       router.back();
-      toast.success(data.message ?? "Pickup accepted");
+      toast.success(data.message ?? "Pickup confirmed");
     },
 
     onError: (error: AxiosError<{ message: string }>) => {

@@ -15,7 +15,7 @@ const SectionInfo = ({
 }: SectionProps) => {
   return (
     <div className={`space-y-2 ${className}`}>
-      <div className="flex items-center justify-between md:justify-start md:gap-5">
+      <div className="flex flex-col justify-between gap-2 md:flex-row md:items-center md:justify-start md:gap-5">
         {loading ? (
           <div className="bg-foreground/10 h-8 w-64 animate-pulse rounded-lg lg:h-10 2xl:h-14" />
         ) : (
@@ -25,7 +25,7 @@ const SectionInfo = ({
         )}
 
         {!loading && role !== "" && (
-          <p className="bg-foreground/10 text-primary rounded-2xl px-3 py-1 text-sm lg:text-base 2xl:text-xl">
+          <p className="bg-foreground/10 text-primary w-fit rounded-2xl px-3 py-1 text-sm lg:text-base 2xl:text-xl">
             {role}
           </p>
         )}
