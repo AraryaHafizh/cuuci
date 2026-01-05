@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { Separator } from "@/components/ui/separator";
 import { useAddress } from "@/hooks/address/useAddress";
 import Address from "./AddressMenu";
 import { ProfileStore } from "./store";
 import { useEdit } from "@/hooks/user/useEdit";
-import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 

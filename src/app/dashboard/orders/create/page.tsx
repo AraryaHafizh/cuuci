@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { SectionTitle } from "@/components/ui/section-title";
@@ -94,7 +95,11 @@ export default function Create() {
         <UserNote setNote={setNote} />
       </section>
       <section className="mt-10 flex justify-end gap-5">
-        <Button variant={"outline"} onClick={() => router.back()}>
+        <Button
+          variant={"outline"}
+          onClick={() => router.back()}
+          disabled={isPending}
+        >
           Cancel
         </Button>
         <PickupConfirmation onSubmit={onSubmit} isPending={isPending3}>
