@@ -12,20 +12,17 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
-import { SectionTitle } from "@/components/ui/section-title";
-import { Textarea } from "@/components/ui/textarea";
 import { useAddress } from "@/hooks/address/useAddress";
+import { useCreate } from "@/hooks/order/useCreate";
 import { useNearest } from "@/hooks/outlet/useNearest";
-import { addMonths, isAfter, isBefore, startOfDay } from "date-fns";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
-import OutletCard, { OutletProps } from "./OutletCard";
-import { AddressProps, PickupAddressCard } from "./PickupAddressCard";
-import { useCreate } from "@/hooks/order/useCreate";
+import { SelectAddress } from "../components/selectAddress";
+import { SelectDateTime } from "../components/selectDateTime";
+import { SelectOutlet } from "../components/selectOutlet";
+import { UserNote } from "../components/userNote";
+import { AddressProps } from "./PickupAddressCard";
 
 export default function Create() {
   const router = useRouter();
@@ -118,142 +115,6 @@ function Greeting() {
         description="Create a new laundry pickup request quickly and easily."
       />
     </section>
-  );
-}
-
-function SelectAddress({
-  data,
-  isPending,
-  addressId,
-  setAdressId,
-}: {
-  data: any;
-  isPending: boolean;
-  addressId: string;
-  setAdressId: (id: string) => void;
-}) {
-  return (
-    <section className="w-full space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <SectionTitle title="Where to Pick Up?" />
-      {isPending ? (
-        <div className="flex h-full min-h-52 items-center justify-center">
-          <LoadingAnimation />
-        </div>
-      ) : (
-        <div className="space-y-5">
-          {data.length === 0 ? (
-            <p className="flex h-86 items-center justify-center font-light opacity-50">
-              no address available. please create one.
-            </p>
-          ) : (
-            Array.from({ length: data.length }).map((_, i) => (
-              <PickupAddressCard
-                key={i}
-                index={i + 1}
-                data={data[i]}
-                addressId={addressId}
-                setAdressId={setAdressId}
-              />
-            ))
-          )}
-        </div>
-      )}
-    </section>
-  );
-}
-
-function SelectDateTime({
-  date,
-  setDate,
-  time,
-  setTime,
-}: {
-  date: Date | undefined;
-  setDate: (date: Date) => void;
-  time: string;
-  setTime: (time: string) => void;
-}) {
-  const today = startOfDay(new Date());
-  const maxDate = addMonths(today, 3);
-
-  return (
-    <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <SectionTitle title="When to Arrive?" />
-
-      <Calendar
-        mode="single"
-        selected={date}
-        onSelect={(d) => d && setDate(d)}
-        className="w-full rounded-md border shadow-sm"
-        captionLayout="dropdown"
-        startMonth={today}
-        endMonth={maxDate}
-        disabled={(currentDate) => {
-          const day = startOfDay(currentDate);
-          return isBefore(day, today) || isAfter(day, maxDate);
-        }}
-      />
-      <Input
-        id="time-picker"
-        type="time"
-        value={time}
-        onChange={(e) => setTime(e.target.value)}
-        className="appearance-none bg-(--container-bg) dark:bg-(--container-bg) [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-      />
-    </section>
-  );
-}
-
-function SelectOutlet({
-  data = [],
-  isPending,
-  outletId,
-  setOutletId,
-}: {
-  data: OutletProps[];
-  isPending: boolean;
-  outletId: string;
-  setOutletId: (id: string) => void;
-}) {
-  return (
-    <section className="w-full space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <SectionTitle title="Select Outlet Location" />
-
-      {isPending ? (
-        <div className="flex h-full min-h-52 items-center justify-center">
-          <LoadingAnimation />
-        </div>
-      ) : data.length === 0 ? (
-        <p className="flex h-86 items-center justify-center font-light opacity-50">
-          no outlets available.
-        </p>
-      ) : (
-        data.map((outlet: any, i: number) => (
-          <OutletCard
-            key={i}
-            data={outlet}
-            outletId={outletId}
-            setOutletId={setOutletId}
-          />
-        ))
-      )}
-    </section>
-  );
-}
-
-function UserNote({ setNote }: { setNote: (note: string) => void }) {
-  return (
-    <div className="w-full space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <SectionTitle title="User Note" />
-
-      <Textarea
-        placeholder="e.g., Caution with the dress."
-        className="h-40 md:h-[90%]"
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-          setNote(e.target.value)
-        }
-      />
-    </div>
   );
 }
 

@@ -1,24 +1,18 @@
 import { SectionTitle } from "@/components/ui/section-title";
 import { Textarea } from "@/components/ui/textarea";
 
-type UserNoteProps = {
-  value: string;
-  onChange: (note: string) => void;
-};
-
-export function UserNote({ value, onChange }: UserNoteProps) {
+export function UserNote({ setNote }: { setNote: (note: string) => void }) {
   return (
-    <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <SectionTitle title="Additional Notes" />
+    <div className="w-full space-y-5 rounded-2xl border bg-(--container-bg) p-5">
+      <SectionTitle title="User Note" />
+
       <Textarea
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder="Add any special instructions or notes for the driver..."
-        className="min-h-32 resize-none"
+        placeholder="e.g., Caution with the dress."
+        className="h-40 md:h-[90%]"
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+          setNote(e.target.value)
+        }
       />
-      <p className="text-muted-foreground text-xs">
-        Optional - Let us know if you have any special requirements
-      </p>
-    </section>
+    </div>
   );
 }
