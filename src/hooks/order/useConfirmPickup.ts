@@ -1,7 +1,7 @@
 "use client";
 
 import { cuuciApi } from "@/lib/axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ export const useConfirmPickup = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const token = session?.user?.accessToken;
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
@@ -36,6 +37,10 @@ export const useConfirmPickup = () => {
 
     onSuccess: (data) => {
       router.back();
+      queryClient.invalidateQueries({
+        queryKey: ["get_ongoing", "get_available_pickup"],
+        exact: false,
+      });
       toast.success(data.message ?? "Pickup confirmed");
     },
 

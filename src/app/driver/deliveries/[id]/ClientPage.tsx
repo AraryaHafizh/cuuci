@@ -116,6 +116,8 @@ export default function ClientPage({ id }: { id: string }) {
 function Greeting({ data, isPending }: { data: any; isPending: boolean }) {
   function getStatus() {
     switch (data.status) {
+      case "LOOKING_FOR_DRIVER":
+        return "New pickup request";
       case "WAITING_FOR_PICKUP":
         return `Pickup from ${data.customer.name}`;
       case "LAUNDRY_ON_THE_WAY":
