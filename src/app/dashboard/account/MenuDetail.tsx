@@ -4,17 +4,16 @@ import { Label } from "@/components/ui/label";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { Separator } from "@/components/ui/separator";
 import { useAddress } from "@/hooks/address/useAddress";
-import { useEdit } from "@/hooks/user/useEdit";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
 import Address from "./AddressMenu";
 import { ProfileStore } from "./store";
+import { useEdit } from "@/hooks/user/useEdit";
+import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 export function AccountMenuDetail() {
   const { data: session } = useSession();
   const index = ProfileStore((state) => state.index);
   const sessionData = session!.user;
-
 
   const { data: addresses, isPending } = useAddress({ index });
 
@@ -83,7 +82,7 @@ export function AccountMenuDetail() {
         [
           <Profile />,
           <Password />,
-          // <Address isPending={isPending} addresses={addresses} />,
+          <Address isPending={isPending} addresses={addresses} />,
         ][index]
       }
     </div>

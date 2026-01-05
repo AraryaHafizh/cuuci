@@ -12,97 +12,84 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
-import { SectionTitle } from "@/components/ui/section-title";
-import { Textarea } from "@/components/ui/textarea";
 import { useAddress } from "@/hooks/address/useAddress";
-import { useCreatePickup } from "@/hooks/order/useCreatePickup";
-import { useNearestOutlet } from "@/hooks/outlet/useNearestOutlet";
-import { addMonths, isAfter, isBefore, startOfDay } from "date-fns";
-import { Check, MapPin } from "lucide-react";
+import { useCreate } from "@/hooks/order/useCreate";
+import { useNearest } from "@/hooks/outlet/useNearest";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { UserNote } from "../components/userNote";
-import { SelectOutlet } from "../components/selectOutlet";
-import { SelectDateTime } from "../components/selectDateTime";
+import { ReactNode, useEffect, useState } from "react";
 import { SelectAddress } from "../components/selectAddress";
-
-interface PickupFormData {
-  addressId: string;
-  pickupAt: string;
-  outletId: string;
-  note: string;
-}
+import { SelectDateTime } from "../components/selectDateTime";
+import { SelectOutlet } from "../components/selectOutlet";
+import { UserNote } from "../components/userNote";
+import { AddressProps } from "./PickupAddressCard";
 
 export default function Create() {
   const router = useRouter();
-  const [pickup, setPickup] = useState<PickupFormData>({
-    addressId: "",
-    pickupAt: "",
-    outletId: "",
-    note: "",
-  });
-  const { mutate: createPickup, isPending } = useCreatePickup();
-  const handleSubmit = () => {
-    // Validation
-    if (!pickup.addressId) {
-      toast.error("Please select a pickup address");
-      return;
-    }
-    if (!pickup.pickupAt) {
-      toast.error("Please select pickup date and time");
-      return;
-    }
-    if (!pickup.outletId) {
-      toast.error("Please wait for outlet assignment");
-      return;
-    }
 
-    // buat submit
-    createPickup(pickup, {
-      onSuccess: (response) => {
-        toast.success("Pickup request created successfully!");
-        router.push(`/dashboard/orders/${response.data.id}`);
-      },
-      onError: (error: any) => {
-        toast.error(
-          error.response?.data?.message || "Failed to create pickup request",
-        );
-      },
+  const [outletId, setOutletId] = useState<string>("");
+  const [addressId, setAdressId] = useState<string>("");
+  const [lat, setLat] = useState<string>();
+  const [lng, setLng] = useState<string>();
+  const [note, setNote] = useState<string>("");
+  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [time, setTime] = useState<string>("06:30");
+
+  const { data: addresses, isPending } = useAddress({ index: 2 });
+  const { data: nearest, isPending: isPending2 } = useNearest(lat, lng);
+  const { mutateAsync: pickup, isPending: isPending3 } = useCreate();
+
+  useEffect(() => {
+    if (!addresses || !addressId) return;
+
+    const selected = addresses.find(
+      (addr: AddressProps) => addr.id === addressId,
+    );
+
+    if (selected) {
+      setLat(selected.latitude);
+      setLng(selected.longitude);
+    }
+  }, [addressId, addresses]);
+
+  async function onSubmit() {
+    if (!date || !time) return;
+
+    const [hours, minutes] = time.split(":").map(Number);
+    const pickupDate = new Date(date);
+    pickupDate.setHours(hours, minutes, 0, 0);
+
+    await pickup({
+      addressId,
+      outletId,
+      notes: note || null,
+      pickupTime: pickupDate,
     });
-  };
+  }
 
   return (
     <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting />
       <section className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 2xl:flex 2xl:gap-5 2xl:space-y-0">
         <SelectAddress
-          value={pickup.addressId}
-          onChange={(id) =>
-            setPickup((p) => ({ ...p, addressId: id, outletId: "" }))
-          }
+          data={addresses}
+          isPending={isPending}
+          addressId={addressId}
+          setAdressId={setAdressId}
         />
-
         <SelectDateTime
-          onChange={(dateTime) =>
-            setPickup((p) => ({ ...p, pickupAt: dateTime }))
-          }
+          date={date}
+          setDate={setDate}
+          time={time}
+          setTime={setTime}
         />
-
         <SelectOutlet
-          addressId={pickup.addressId}
-          value={pickup.outletId}
-          onChange={(id) => setPickup((p) => ({ ...p, outletId: id }))}
+          data={nearest}
+          isPending={isPending2}
+          outletId={outletId}
+          setOutletId={setOutletId}
         />
-
-        <UserNote
-          value={pickup.note}
-          onChange={(note) => setPickup((p) => ({ ...p, note }))}
-        />
+        <UserNote setNote={setNote} />
       </section>
       <section className="mt-10 flex justify-end gap-5">
         <Button
@@ -112,9 +99,9 @@ export default function Create() {
         >
           Cancel
         </Button>
-        <Button onClick={handleSubmit} disabled={isPending}>
-          {isPending ? "Creating..." : "Schedule Pickup"}
-        </Button>
+        <PickupConfirmation onSubmit={onSubmit} isPending={isPending3}>
+          <Button>Schedule Pickup</Button>
+        </PickupConfirmation>
       </section>
     </main>
   );
@@ -131,6 +118,43 @@ function Greeting() {
   );
 }
 
+const PickupConfirmation = ({
+  onSubmit,
+  isPending,
+  children,
+}: {
+  onSubmit: () => Promise<void>;
+  isPending: boolean;
+  children: ReactNode;
+}) => {
+  const [open, setOpen] = useState(false);
 
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
 
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Create request pickup?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Make sure everything is correct before submitting.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
 
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+
+          <Button
+            disabled={isPending}
+            onClick={async () => {
+              await onSubmit();
+              setOpen(false);
+            }}
+          >
+            {isPending ? <LoadingAnimation /> : "Submit request"}
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};

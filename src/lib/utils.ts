@@ -15,6 +15,8 @@ export function formatDate(
   dateString: string,
   mode: "all" | "date" | "time" = "all",
 ) {
+  if (dateString === null) return "-";
+
   const date = new Date(dateString);
 
   const day = date.getDate().toString().padStart(2, "0");

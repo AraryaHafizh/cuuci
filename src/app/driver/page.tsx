@@ -1,11 +1,9 @@
 "use client";
 
-import { DeliveryCard } from "@/app/driver/deliveries/DeliveryCard";
 import SectionInfo from "@/components/SectionInfo";
 import { Button } from "@/components/ui/button";
 import { SectionTitle } from "@/components/ui/section-title";
 import { userStatus } from "../worker/data";
-import { ongoingDeliveryData } from "./data";
 import DeliverySection from "./DeliverySection";
 
 const driverStatus = "inactive";

@@ -102,11 +102,7 @@ export default function CreateAddress({
       </FieldGroup>
       <div className="mt-5 space-y-5 overflow-hidden rounded-lg">
         <Label>Select Location</Label>
-        <MapSelect
-          centerLat={-6.2} // default coordinate (change later)
-          centerLng={106.8}
-          onSelect={handleSelect}
-        />
+        <MapSelect centerLat={-6.2} centerLng={106.8} onSelect={handleSelect} />
         <div className="flex items-center justify-end gap-5">
           <Controller
             name="isPrimary"
@@ -116,7 +112,7 @@ export default function CreateAddress({
                 <Checkbox
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="data-[state=checked]:bg-primary data-[state=checked]:text-foreground"
+                  className="data-[state=checked]:bg-primary data-[state=checked]:text-white"
                 />
                 <p className="text-sm font-light">Set as default</p>
               </Label>
@@ -124,7 +120,7 @@ export default function CreateAddress({
           />
 
           <Button onClick={form.handleSubmit(onSubmit)}>
-            {isPending ? <LoadingAnimation /> : "Create Outlet"}
+            {isPending ? <LoadingAnimation /> : "Create address"}
           </Button>
         </div>
       </div>

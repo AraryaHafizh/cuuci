@@ -13,12 +13,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { useEdit } from "@/hooks/outlet/useEdit";
-import { useOutlets } from "@/hooks/outlet/useOutlet";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Controller, useForm, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
-import { OutletProps } from "../../props";
 
 export const editOutletSchema = z.object({
   name: z.string().optional(),
@@ -29,27 +27,22 @@ export const editOutletSchema = z.object({
 
 type OutletFormValues = z.infer<typeof editOutletSchema>;
 
-export function OutletEditInput({ id }: { id: string }) {
-  const { data } = useOutlets();
-  const outletData = data?.find((user: OutletProps) => user.id === id);
-
+export function OutletEditInput({ data }: { data: any }) {
   const router = useRouter();
   const form = useForm<OutletFormValues>({
     resolver: zodResolver(editOutletSchema),
     defaultValues: {
-      name: outletData?.name,
-      address: outletData?.address,
-      latitude: outletData?.latitude,
-      longitude: outletData?.longitude,
+      name: data?.name,
+      address: data?.address,
+      latitude: data?.latitude,
+      longitude: data?.longitude,
     },
   });
 
-  const { mutateAsync: edit, isPending } = useEdit();
+  const { mutateAsync: edit, isPending } = useEdit(data.id);
 
   function onSubmit(data: OutletFormValues) {
-    console.log(data);
-
-    // edit(data);
+    edit(data);
   }
 
   return (
@@ -57,8 +50,8 @@ export function OutletEditInput({ id }: { id: string }) {
       <BasicInfo form={form} />
       <SelectLocation
         form={form}
-        latitude={outletData?.latitude}
-        longitude={outletData?.longitude}
+        latitude={data?.latitude}
+        longitude={data?.longitude}
       />
 
       <div className="flex justify-end gap-5">

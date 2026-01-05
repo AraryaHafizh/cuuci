@@ -60,7 +60,9 @@ export function NotificationBadge() {
 
                   <div className="flex-1 space-y-1">
                     <p className="text-sm font-medium">{item.title}</p>
-                    <p className="text-muted-foreground text-sm">{item.time}</p>
+                    <p className="text-muted-foreground line-clamp-1 text-sm">
+                      {item.description}
+                    </p>
                   </div>
                 </div>
               );
