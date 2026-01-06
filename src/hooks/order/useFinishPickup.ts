@@ -33,7 +33,11 @@ export const useFinishPickup = () => {
     onSuccess: async (data) => {
       router.back();
       queryClient.invalidateQueries({
-        queryKey: ["get_ongoing", "get_available_pickup"],
+        queryKey: ["get_ongoing"],
+        exact: false,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["get_available_pickup"],
         exact: false,
       });
       toast.success(data.message ?? "Pickup finish");

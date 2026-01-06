@@ -14,12 +14,11 @@ import { Input } from "@/components/ui/input";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { useAdminSignup } from "@/hooks/auth/useSignup";
 import { useOutlets } from "@/hooks/outlet/useOutlet";
-import { formatPhoneDisplay, generatePassword } from "@/lib/utils";
+import { formatPhone, generatePassword } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Controller, useForm, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
-import { OutletProps } from "../../outlets/props";
 import { roles, shifts } from "../data";
 
 export const createUserSchema = z.object({
@@ -151,7 +150,7 @@ function BasicInfo({ form }: { form: UseFormReturn<OutletFormValues> }) {
                     className="pl-10"
                     inputMode="numeric"
                     pattern="[0-9]*"
-                    value={formatPhoneDisplay(field.value ?? "")}
+                    value={formatPhone(field.value ?? "")}
                     onChange={(e) => {
                       const raw = e.target.value.replace(/\D/g, "");
                       field.onChange(raw);
@@ -199,7 +198,7 @@ function UserRole({ form }: { form: UseFormReturn<OutletFormValues> }) {
   const { data } = useOutlets();
   const role = form.watch("role");
 
-  const outlets = (data || []).map((outlet: OutletProps) => ({
+  const outlets = (data || []).map((outlet) => ({
     value: outlet.id,
     label: outlet.name,
   }));

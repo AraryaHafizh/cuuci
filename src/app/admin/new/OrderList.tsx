@@ -1,53 +1,61 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { LoadingScreen } from "@/components/ui/loading-animation";
 import { Separator } from "@/components/ui/separator";
-import { formatDate } from "@/lib/utils";
+import { useArrivedOrder } from "@/hooks/order/useArrivedOrder";
 import { useState } from "react";
-import { dummyNew } from "../data";
 import { OrderDetail } from "./OrderDetail";
 
 export function NewOrders() {
   const [index, setIndex] = useState<number | null>(null);
+  const { data, isPending } = useArrivedOrder();
+
+  if (isPending)
+    return (
+      <div className="h-[560px]">
+        <LoadingScreen isDashboard={true} />
+      </div>
+    );
 
   return (
     <section className="mt-10 flex gap-5">
-      <OrderList index={index} setIndex={setIndex} />
+      <OrderList data={data} index={index} setIndex={setIndex} />
       {index !== null && <OrderDetail index={index} setIndex={setIndex} />}
     </section>
   );
 }
 
 function OrderList({
+  data,
   index,
   setIndex,
 }: {
+  data: any;
   index: number | null;
   setIndex: React.Dispatch<React.SetStateAction<number | null>>;
 }) {
   return (
     <section
-      className={`grid ${index !== null ? "w-0 md:w-[40vw] md:grid-cols-1 xl:w-fit xl:grid-cols-2" : "md:grid-cols-2 xl:grid-cols-3"} gap-5`}
+      className={`grid ${index !== null ? "w-0 md:w-[40vw] md:grid-cols-1 xl:w-fit xl:grid-cols-2" : "md:grid-cols-2 xl:grid-cols-3"} h-fit gap-5 md:flex-1 xl:flex-2`}
     >
-      {dummyNew.map((item, i) => (
+      {data.map((item: any, i: number) => (
         <div key={i} className="rounded-2xl border bg-(--container-bg) p-5">
-          <div className="flex justify-between">
-            <div>
-              <p className="mb-2 text-sm opacity-50">{item.id}</p>
-              <p className="text-lg">{item.customerName}</p>
-              <p className="opacity-50">{item.address}</p>
-            </div>
-            <div className="flex flex-col items-end text-sm font-light">
-              <p>1.5 km away</p>
-              <p className="opacity-50">{formatDate(item.timestamp)}</p>
-            </div>
-          </div>
+          <p className="mb-2 font-light opacity-50">Order {item.orderNumber}</p>
+          <p className="text-lg font-medium">{item.customer.name}</p>
+          <p className="text-sm font-light opacity-50">
+            {item.address.address}
+          </p>
           <Separator className="my-2" />
           <div className="flex items-center justify-between">
             <span className="flex gap-1 text-sm">
-              <p className="opacity-50">Driver: </p> {item.driver}
+              <p className="opacity-50">Driver: </p> {item.driver.driver.name}
             </span>
-            <Button size={"sm"} onClick={() => setIndex(i)}>
+            <Button
+              size={"sm"}
+              variant={"secondary"}
+              onClick={() => setIndex(i)}
+            >
               Process Order
             </Button>
           </div>

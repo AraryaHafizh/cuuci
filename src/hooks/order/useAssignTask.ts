@@ -7,45 +7,48 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export const useConfirmPickup = () => {
+export interface AssignOrderItem {
+  id: string;
+  qty: number;
+}
+
+export interface AssignOrderBody {
+  orderItems: AssignOrderItem[];
+  totalPrice: number;
+  totalWeight: number;
+}
+
+export interface AssignTaskParams {
+  orderId: string;
+  body: AssignOrderBody;
+}
+
+export const useAssignTask = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const token = session?.user?.accessToken;
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({
-      id,
-      formData,
-    }: {
-      id: string;
-      formData: FormData;
-    }) => {
+    mutationFn: async ({ orderId, body }: AssignTaskParams) => {
       const { data } = await cuuciApi.post(
-        `/drivers/requests/confirm/${id}`,
-        formData,
+        `/admins/orders/${orderId}/assign`,
+        body,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
+          headers: { Authorization: `Bearer ${token}` },
         },
       );
-
       return data;
     },
 
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       router.back();
       queryClient.invalidateQueries({
-        queryKey: ["get_ongoing"],
+        queryKey: ["get_arrived_order"],
         exact: false,
       });
-      queryClient.invalidateQueries({
-        queryKey: ["get_available_pickup"],
-        exact: false,
-      });
-      toast.success(data.message ?? "Pickup confirmed");
+
+      toast.success(data.message ?? "Pickup accepted");
     },
 
     onError: (error: AxiosError<{ message: string }>) => {

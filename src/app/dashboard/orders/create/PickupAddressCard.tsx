@@ -29,7 +29,7 @@ export function PickupAddressCard({
       onClick={() => setAdressId(data.id)}
     >
       <p className="text-sm">Address {index}</p>
-      <p className="text-sm opacity-50">{data.address}</p>
+      <p className="line-clamp-3 text-sm opacity-50">{data.address}</p>
     </div>
   );
 }

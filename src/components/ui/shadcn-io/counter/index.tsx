@@ -48,7 +48,7 @@ function Counter({
       <SlidingNumber
         number={number}
         {...slidingNumberProps}
-        className={cn("", slidingNumberProps?.className)}
+        className={cn("text-sm md:text-base", slidingNumberProps?.className)}
       />
 
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
