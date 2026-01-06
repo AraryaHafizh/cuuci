@@ -16,7 +16,7 @@ import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { useAdminSignup } from "@/hooks/auth/useSignup";
 import { useOutlets } from "@/hooks/outlet/useOutlet";
 import { useUsers } from "@/hooks/user/useUser";
-import { formatPhoneDisplay } from "@/lib/utils";
+import { formatPhone } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Controller, useForm, UseFormReturn } from "react-hook-form";
@@ -154,7 +154,7 @@ function BasicInfo({ form }: { form: UseFormReturn<OutletFormValues> }) {
                     className="pl-10"
                     inputMode="numeric"
                     pattern="[0-9]*"
-                    value={formatPhoneDisplay(field.value ?? "")}
+                    value={formatPhone(field.value ?? "")}
                     onChange={(e) => {
                       const raw = e.target.value.replace(/\D/g, "");
                       field.onChange(raw);
@@ -195,7 +195,7 @@ function UserRole({
 }) {
   const { data } = useOutlets();
 
-  const outlets = (data || []).map((outlet: OutletProps) => ({
+  const outlets = (data || []).map((outlet) => ({
     value: outlet.id,
     label: outlet.name,
   }));

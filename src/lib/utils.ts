@@ -70,13 +70,30 @@ export function formatNumber(num: number): string {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
-export function formatPhoneDisplay(value: string) {
+export function formatPhone(value: string) {
   const cleaned = value.replace(/\D/g, "");
 
   if (cleaned.length <= 3) return cleaned;
   if (cleaned.length <= 7) return `${cleaned.slice(0, 3)} ${cleaned.slice(3)}`;
 
   return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 7)} ${cleaned.slice(7, 11)}`;
+}
+
+export function formatPhoneDb(value?: string) {
+  if (!value) return "";
+
+  const cleaned = value.replace(/\D/g, "");
+
+  if (!cleaned.startsWith("62")) return value;
+
+  const country = "62";
+  const rest = cleaned.slice(2);
+
+  if (rest.length <= 3) return `+${country} ${rest}`;
+  if (rest.length <= 7)
+    return `+${country} ${rest.slice(0, 3)} ${rest.slice(3)}`;
+
+  return `+${country} ${rest.slice(0, 3)} ${rest.slice(3, 7)} ${rest.slice(7, 11)}`;
 }
 
 export const getLocation = () =>

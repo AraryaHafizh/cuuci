@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { useSignup } from "@/hooks/auth/useSignup";
-import { formatPhoneDisplay } from "@/lib/utils";
+import { formatPhone } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
@@ -108,7 +108,7 @@ export const Form = () => {
                     {...field}
                     className="pl-10"
                     inputMode="numeric"
-                    value={formatPhoneDisplay(field.value ?? "")}
+                    value={formatPhone(field.value ?? "")}
                     onChange={(e) => {
                       const raw = e.target.value.replace(/\D/g, "");
                       field.onChange(raw);

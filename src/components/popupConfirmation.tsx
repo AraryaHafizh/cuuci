@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useQueryClient } from "@tanstack/react-query";
 import { signOut } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
 
 interface CreateAccountConfirmationProps {

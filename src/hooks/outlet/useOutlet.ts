@@ -18,7 +18,7 @@ export const useOutlets = ({ params }: { params?: any } = {}) => {
   const token = session?.user?.accessToken;
 
   return useQuery<Outlet[]>({
-    queryKey: ["outlets", token, params],
+    queryKey: ["get_outlets", token, params],
     queryFn: async () => {
       const res = await cuuciApi.get("/outlets", {
         headers: { Authorization: `Bearer ${token}` },

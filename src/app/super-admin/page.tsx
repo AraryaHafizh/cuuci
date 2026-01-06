@@ -6,6 +6,7 @@ import { formatDate, formatNumber } from "@/lib/utils";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { dummyData, statusFormatter } from "./data";
 import { SectionTitle } from "@/components/ui/section-title";
+import { LaundryItems } from "./LaundryItems";
 
 export default function Dashboard() {
   return (
@@ -15,6 +16,7 @@ export default function Dashboard() {
       <section className="mt-5 gap-5 space-y-5 lg:flex lg:space-y-0">
         <OutletPerformance />
         <OrderOverview />
+        <LaundryItems />
       </section>
       <TodayActivities />
     </main>
@@ -76,13 +78,13 @@ function Summary() {
 
 function OrderOverview() {
   return (
-    <section className="h-fit flex-2 rounded-2xl border bg-(--container-bg) p-5">
+    <section className="flex-2 rounded-2xl border bg-(--container-bg) p-5">
       <SectionTitle title="Order Status Overview" />
 
       <div className="mt-5 text-sm xl:text-base">
         {dummyData.orderStatusOverview.map((item, i) => (
           <div key={i}>
-            {item.label === "TOTAL" && <Separator className="my-2" />}
+            {item.label === "TOTAL" && <Separator className="my-5" />}
             <div className="flex gap-20 space-y-1">
               <p className="flex-1">
                 {statusFormatter[item.label as keyof typeof statusFormatter]}
