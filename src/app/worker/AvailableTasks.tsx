@@ -1,8 +1,7 @@
 import TaskCard from "@/components/TaskCard";
-import { tasks } from "./data";
+import { LoadingScreen } from "@/components/ui/loading-animation";
 import { SectionTitle } from "@/components/ui/section-title";
 import { useTasks } from "@/hooks/worker/useTask";
-import { LoadingScreen } from "@/components/ui/loading-animation";
 
 export default function AvailableTasks() {
   const { data, isPending } = useTasks();
@@ -26,7 +25,7 @@ export default function AvailableTasks() {
       <SectionTitle title="Available Tasks" />
 
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-        {tasks.map((task: any, i) => (
+        {data.map((task: any, i: number) => (
           <TaskCard key={i} {...task} />
         ))}
       </div>
