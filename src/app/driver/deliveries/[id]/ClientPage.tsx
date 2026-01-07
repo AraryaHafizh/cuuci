@@ -65,11 +65,11 @@ export default function ClientPage({ id }: { id: string }) {
   const isOnTheWayToOutlet = data.status === "LAUNDRY_ON_THE_WAY";
 
   const destinationLat = isOnTheWayToOutlet
-    ? Number(data.outlet.latitude)
+    ? Number(data.address.latitude)
     : Number(data.address.latitude);
 
   const destinationLng = isOnTheWayToOutlet
-    ? Number(data.outlet.longitude)
+    ? Number(data.address.longitude)
     : Number(data.address.longitude);
 
   return (
@@ -102,6 +102,10 @@ export default function ClientPage({ id }: { id: string }) {
             <PickupRequest onSubmit={pickupOrder} isPending={isPending3}>
               <Button className="w-full">Confirm Pickup</Button>
             </PickupRequest>
+          ) : data.status === "READY_FOR_DELIVERY" ? (
+            <AcceptRequest onSubmit={takeOrder} isPending={isPending2}>
+              <Button className="w-full">Accept Pickup</Button>
+            </AcceptRequest>
           ) : (
             <FinishRequest onSubmit={finishOrder} isPending={isPending4}>
               <Button className="w-full">Finish Pickup</Button>
@@ -123,6 +127,10 @@ function Greeting({ data, isPending }: { data: any; isPending: boolean }) {
       case "LAUNDRY_ON_THE_WAY":
         return "Delivering to outlet";
       case "DELIVERING_TO_CUSTOMER":
+        return `Delivery to ${data.customer.name}`;
+      case "READY_FOR_DELIVERY":
+        return `Pickup from ${data.outlet.name}`;
+      case "DELIVERY_ON_THE_WAY":
         return `Delivery to ${data.customer.name}`;
       default:
         return "Order in progress";
@@ -156,11 +164,11 @@ function CustomerDetail({
   const isOnTheWayToOutlet = data.status === "LAUNDRY_ON_THE_WAY";
 
   const destinationLat = isOnTheWayToOutlet
-    ? Number(data.outlet.latitude)
+    ? Number(data.address.latitude)
     : Number(data.address.latitude);
 
   const destinationLng = isOnTheWayToOutlet
-    ? Number(data.outlet.longitude)
+    ? Number(data.address.longitude)
     : Number(data.address.longitude);
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
@@ -178,7 +186,7 @@ function CustomerDetail({
             {getDistance(driverLat, driverLng, destinationLat, destinationLng)}
           </span>
         </div>
-        <CustomerButton />
+        <CustomerButton data={data} />
       </div>
     </section>
   );

@@ -72,7 +72,7 @@ function AvailableDeliveries({
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {data.map((delivery) => (
             <DeliveryCard
-              key={delivery.id} // 👈 important
+              key={delivery.id}
               data={delivery}
               userLat={userLocation?.lat}
               userLng={userLocation?.lng}
@@ -95,6 +95,8 @@ function OngoingDelivery({ data }: { data: AvailableDeliveryProps }) {
         return "Delivering to outlet";
       case "DELIVERING_TO_CUSTOMER":
         return `Delivery to ${data.customer.name}`;
+      case "DELIVERY_ON_THE_WAY":
+        return `Delivery to ${data.customer.name}`;
       default:
         return "Order in progress";
     }
@@ -108,19 +110,35 @@ function OngoingDelivery({ data }: { data: AvailableDeliveryProps }) {
 
       <div className="font-light">
         <p className="mb-1.5 text-sm opacity-50">Pickup from</p>
-        <p className="font-bold">{data.customer.name}</p>
-        <p>{data.address.address}</p>
+        <p className="font-bold">
+          {data.status === "WAITING_FOR_PICKUP"
+            ? data.customer.name
+            : data.outlet.name}
+        </p>
+        <p>
+          {data.status === "WAITING_FOR_PICKUP"
+            ? data.address.address
+            : data.outlet.address}
+        </p>
       </div>
       <Separator />
       <div className="font-light">
         <p className="mb-1.5 text-sm opacity-50">Deliver to</p>
-        <p className="font-bold">{data.outlet.name}</p>
-        <p>{data.outlet.address}</p>
+        <p className="font-bold">
+          {data.status === "WAITING_FOR_PICKUP"
+            ? data.outlet.name
+            : data.customer.name}
+        </p>
+        <p>
+          {data.status === "WAITING_FOR_PICKUP"
+            ? data.outlet.address
+            : data.address.address}
+        </p>
       </div>
 
       <Button
         variant={"secondary"}
-        onClick={() => router.push(`driver/deliveries/${data.orderId}`)}
+        onClick={() => router.push(`driver/deliveries/${data.id}`)}
         className="w-full"
       >
         See details

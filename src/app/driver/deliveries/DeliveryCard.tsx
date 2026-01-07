@@ -67,20 +67,30 @@ export interface Outlet {
 }
 
 export interface AvailableDeliveryProps {
-  id: string;
-  pickupNumber: string;
-  status: string;
+   id: string;
   customerId: string;
-  addressId: string;
   outletId: string;
   driverId: string | null;
-  orderId: string;
+  addressId: string;
+  orderNumber: string;
+  status:
+    | "WAITING_FOR_PICKUP"
+    | "ON_PICKUP"
+    | "ON_DELIVERY"
+    | "COMPLETED"
+    | string;
+  totalPrice: number;
+  totalWeight: number;
+  distance: number;
+  pickupTime: string;
+  deliveryTime: string | null;
+  invoiceUrl: string | null;
+
   createdAt: string;
   updatedAt: string;
 
   address: Address;
   customer: Customer;
-  order: Order;
   outlet: Outlet;
 }
 
@@ -112,7 +122,7 @@ export function DeliveryCard({
         <div className="mt-2 space-y-1 text-sm font-light">
           <span className="flex gap-2">
             <Hash color="#578bc2" size={20} />
-            <p className="opacity-50">{data.order.orderNumber}</p>
+            <p className="opacity-50">{data.orderNumber}</p>
           </span>
           <span className="flex gap-2">
             <Route color="#578bc2" size={20} />
@@ -130,7 +140,7 @@ export function DeliveryCard({
         <p className="mt-5 line-clamp-2 font-light">{data.address.address}</p>
       </div>
 
-      <Button onClick={() => router.push(`/driver/deliveries/${data.orderId}`)}>
+      <Button onClick={() => router.push(`/driver/deliveries/${data.id}`)}>
         See Details
       </Button>
     </div>

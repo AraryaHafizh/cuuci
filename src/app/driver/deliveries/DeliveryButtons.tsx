@@ -1,13 +1,21 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { Phone } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export function CustomerButton() {
+export function CustomerButton({ data }: { data: any }) {
   return (
-    <Button className="ml-auto rounded-full" variant={"ghost"} size={"icon-lg"}>
+    <Button
+      className="ml-auto rounded-full"
+      variant={"ghost"}
+      size={"icon-lg"}
+      onClick={() => {
+        const phone = data.customer.phoneNumber.replace(/\D/g, "");
+        const url = `https://api.whatsapp.com/send?phone=${phone}`;
+        window.open(url, "_blank");
+      }}
+    >
       <Phone className="text-primary fill-current" />
     </Button>
   );
