@@ -1,89 +1,206 @@
 "use client";
 
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
+import { ReactNode, useState } from "react";
+import { useAcceptTask } from "@/hooks/worker/useAcceptTask";
+import { LoadingAnimation } from "./ui/loading-animation";
 
-type ProgressState = "pending" | "in_progress";
+export type WorkStation = "WASHING" | "IRONING" | "PACKING";
+export type WorkStatus =
+  | "PENDING"
+  | "IN_PROCESS"
+  | "BYPASS_REQUESTED"
+  | "COMPLETED"
+  | "FAILED";
 
-type TaskStatus = "washing" | "ironing" | "packing" | "completed";
-
-interface TaskItem {
+export interface LaundryItem {
   name: string;
-  qty: number;
 }
 
-interface StationProgress {
-  washing: ProgressState;
-  ironing: ProgressState;
-  packing: ProgressState;
-}
-
-interface TaskProps {
+export interface OrderItem {
   id: string;
-  userName: string;
-  items: TaskItem[];
-  status: TaskStatus;
-  stationProgress: StationProgress;
+  orderId: string;
+  laundryItemId: string;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+  laundryItem: LaundryItem;
 }
 
-export const StatusMap = {
-  washing: {
-    textColor: "text-primary",
-    bgColor: "bg-primary/20",
+export interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: "CUSTOMER" | "ADMIN" | "WORKER" | string;
+  phoneNumber: string;
+  emailVerified: boolean;
+  verifiedAt: string | null;
+  profilePictureUrl: string | null;
+  provider: "GOOGLE" | "CREDENTIALS" | string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+  outletId: string | null;
+  isOutletAdmin: boolean;
+}
+
+export interface Order {
+  id: string;
+  customerId: string;
+  outletId: string;
+  driverId: string;
+  addressId: string;
+  orderNumber: string;
+  status: WorkStatus;
+  totalPrice: number;
+  totalWeight: number;
+  distance: number;
+  createdAt: string;
+  updatedAt: string;
+  pickupTime: string | null;
+  deliveryTime: string | null;
+  invoiceUrl: string | null;
+  customer: Customer;
+  orderItems: OrderItem[];
+}
+
+export interface OrderWorkProcess {
+  id: string;
+  workerId: string | null;
+  orderId: string;
+  station: WorkStation;
+  status: WorkStatus;
+  notes: string | null;
+  completedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  outletId: string;
+  order: Order;
+}
+
+export const workStatusStyle: Record<
+  WorkStation,
+  { bgColor: string; textColor: string }
+> = {
+  WASHING: {
+    bgColor: "bg-blue-200",
+    textColor: "text-blue-700",
   },
-  ironing: {
-    textColor: "text-amber-600",
-    bgColor: "bg-amber-500/20",
+  IRONING: {
+    bgColor: "bg-foreground/20",
+    textColor: "text-foreground",
   },
-  packing: {
-    textColor: "text-emerald-600",
-    bgColor: "bg-emerald-600/20",
+  PACKING: {
+    bgColor: "bg-emerald-200",
+    textColor: "text-emerald-700",
   },
 };
 
-export default function TaskCard(data: TaskProps) {
+export default function TaskCard(data: any) {
   const router = useRouter();
-  const status = data.status;
-  const statusData = StatusMap[data.status as keyof typeof StatusMap];
-  const progress =
-    data.stationProgress[status as keyof typeof data.stationProgress];
+  const station: WorkStation = data.station;
+  const stationData = workStatusStyle[station];
 
   return (
-    <div className="flex min-h-65 flex-col justify-between rounded-2xl border bg-(--container-bg) p-5 lg:min-h-70 2xl:min-h-85">
+    <div
+      className={`flex min-h-65 flex-col justify-between space-y-2 rounded-2xl border bg-(--container-bg) p-5 lg:min-h-70 2xl:min-h-85 ${data.status === "IN_PROCESS" && "ring-primary/50 shadow-xl ring-5"} `}
+    >
       <div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-xl font-bold">{data.id}</p>
-            <p className="font-light opacity-50">{data.userName}</p>
+            <p className="font-bold xl:text-xl">
+              Order {data.order.orderNumber}
+            </p>
+            <p className="font-light opacity-50">{data.order.customer.name}</p>
           </div>
           <div
-            className={`rounded-2xl px-3 py-1 text-xs font-light 2xl:text-sm ${statusData.bgColor} ${statusData.textColor}`}
+            className={`rounded-2xl px-3 py-1 text-xs 2xl:text-sm ${stationData.bgColor} ${stationData.textColor} `}
           >
-            {status}
+            {station}
           </div>
         </div>
+
         <Separator className="my-2 2xl:my-5" />
 
         <p className="text-sm 2xl:text-base">Order items:</p>
         <div className="mt-2 grid grid-cols-2">
-          {data.items.map((item, i) => (
+          {data.order.orderItems.map((item: any, i: number) => (
             <div
               key={i}
               className="text-sm font-light opacity-50 2xl:text-base"
             >
-              {item.qty}x {item.name}
+              • {item.laundryItem.name}
             </div>
           ))}
         </div>
+
+        <Separator className="my-2 2xl:my-5" />
+
+        <div>
+          <p className="text-sm 2xl:text-base">Order note:</p>
+          <p className="text-sm font-light opacity-50 2xl:text-base">
+            {data.notes}
+          </p>
+        </div>
       </div>
-      <div className="mt-3 lg:mt-0"></div>
-      {progress === "pending" && <Button>Start {status}</Button>}
-      {progress === "in_progress" && (
+      {data.status === "PENDING" && (
+        <AcceptTask id={data.id}>
+          <Button>Start {station.toLowerCase()}</Button>
+        </AcceptTask>
+      )}
+      {data.status === "IN_PROCESS" && (
         <Button onClick={() => router.push(`worker/tasks/${data.id}/review`)}>
-          Finish {status}
+          Finish {station.toLowerCase()}
         </Button>
       )}
     </div>
   );
 }
+
+const AcceptTask = ({ id, children }: { id: string; children: ReactNode }) => {
+  const [open, setOpen] = useState(false);
+  const { mutateAsync: acceptTask, isPending } = useAcceptTask();
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+
+      <AlertDialogContent className="z-9999">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Accept this task?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Once confirmed, this task will be assigned to you and the laundry
+            process will begin. This action cannot be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+
+          <Button
+            disabled={isPending}
+            onClick={async () => {
+              await acceptTask(id);
+              setOpen(false);
+            }}
+          >
+            {isPending ? <LoadingAnimation /> : "Accept"}
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
