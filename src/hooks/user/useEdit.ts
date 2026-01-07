@@ -6,16 +6,21 @@ import { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
+export interface userUpdateProps {
+  name?: string;
+  phoneNumber?: string;
+}
+
 export const useEdit = () => {
   const { data: session, update } = useSession();
   const token = session?.user?.accessToken;
   const id = session?.user?.id;
 
   return useMutation({
-    mutationFn: async ({ name }: { name: string }) => {
+    mutationFn: async ({ name, phoneNumber }: userUpdateProps) => {
       const { data } = await cuuciApi.patch(
         `/users/update/${id}`,
-        { name },
+        { name, phoneNumber },
         {
           headers: { Authorization: `Bearer ${token}` },
         },

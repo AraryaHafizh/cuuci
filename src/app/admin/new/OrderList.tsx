@@ -18,6 +18,13 @@ export function NewOrders() {
       </div>
     );
 
+  if (!data || data.length === 0)
+    return (
+      <div className="mt-10 flex h-[60vh] items-center justify-center rounded-2xl border">
+        <p className="opacity-50">no new order available</p>
+      </div>
+    );
+
   return (
     <section className="mt-10 flex gap-5">
       <OrderList data={data} index={index} setIndex={setIndex} />

@@ -114,7 +114,7 @@ function Items({
     <section className="flex-2 rounded-2xl border bg-(--container-bg) p-5">
       <SectionTitle title="Order Items" className="mb-5" />
       {data.order.orderItems.map((item: OrderItem, i: number) => (
-        <div key={item.laundryItemId}>
+        <div key={i}>
           <div className="flex items-center justify-between">
             <p className="md:text-lg">{item.laundryItem.name}</p>
             <Counter

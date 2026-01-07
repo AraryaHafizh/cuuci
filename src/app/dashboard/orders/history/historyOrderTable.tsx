@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { LoadingScreen } from "@/components/ui/loading-animation";
 import {
   Pagination,
@@ -19,10 +20,12 @@ import {
 } from "@/components/ui/table";
 import { useHistory } from "@/hooks/user/useHistory";
 import { formatDate, formatOrderStatus } from "@/lib/utils";
+import { Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function HistoryOrderTable() {
   const router = useRouter();
+  const nf = new Intl.NumberFormat("id-ID");
   const { data, isPending } = useHistory();
 
   if (isPending)
@@ -48,16 +51,28 @@ export function HistoryOrderTable() {
           <TableHead>Status</TableHead>
           <TableHead>Total Weight</TableHead>
           <TableHead className="text-right">Total</TableHead>
+          <TableHead className="w-10"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((order: any) => (
-          <TableRow key={order.orderId} className="border-none">
+        {data.map((order: any, i: number) => (
+          <TableRow key={i} className="border-none">
             <TableCell className="font-medium">{order.orderNumber}</TableCell>
             <TableCell>{formatDate(order.createdAt, "date")}</TableCell>
             <TableCell>{formatOrderStatus(order.status)}</TableCell>
             <TableCell>{order.totalWeight} kg</TableCell>
-            <TableCell className="text-right">${order.totalPrice}</TableCell>
+            <TableCell className="text-right">
+              Rp {nf.format(order.totalPrice)}
+            </TableCell>
+            <TableCell>
+              <Button
+                size={"icon-sm"}
+                variant="outline"
+                onClick={() => router.push(`/dashboard/orders/${order.id}`)}
+              >
+                <Info />
+              </Button>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
