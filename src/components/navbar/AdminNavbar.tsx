@@ -39,7 +39,6 @@ export default AdminNavbar;
 const DesktopNav = () => {
   return (
     <section className="hidden items-center space-x-5 md:flex">
-      <Link href={"/admin/new"}>New Orders</Link>
       <Link href={"/admin/orders"}>Orders</Link>
       <Link href={"/admin/workers"}>Workers</Link>
     </section>
@@ -57,9 +56,6 @@ const MobileNav = () => {
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2">
-          <DropdownMenuItem asChild>
-            <Link href="/admin/new">New Orders</Link>
-          </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href="/admin/orders">Orders</Link>
           </DropdownMenuItem>

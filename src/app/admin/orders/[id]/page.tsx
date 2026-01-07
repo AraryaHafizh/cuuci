@@ -138,7 +138,7 @@ function PaymentDetail() {
   );
 }
 
-function HorizontalDetail({ label, data }: { label: string; data: string }) {
+export function HorizontalDetail({ label, data }: { label: string; data: string }) {
   return (
     <div className="flex items-center justify-between gap-10 text-sm font-light">
       <p className="opacity-50">{label}</p>
@@ -147,7 +147,7 @@ function HorizontalDetail({ label, data }: { label: string; data: string }) {
   );
 }
 
-function VerticalDetail({ label, data }: { label: string; data: string }) {
+export function VerticalDetail({ label, data }: { label: string; data: string }) {
   return (
     <div className="gap-10 text-sm font-light">
       <p className="opacity-50">{label}</p>

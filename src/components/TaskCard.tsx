@@ -116,10 +116,10 @@ export default function TaskCard(data: any) {
 
   return (
     <div
-      className={`flex min-h-65 flex-col justify-between space-y-2 rounded-2xl border bg-(--container-bg) p-5 lg:min-h-70 2xl:min-h-85 ${data.status === "IN_PROCESS" && "ring-primary/50 shadow-xl ring-5"} `}
+      className={`flex min-h-65 flex-col justify-between space-y-2 rounded-2xl border bg-(--container-bg) p-5 lg:min-h-70 2xl:min-h-85 ${data.status === "IN_PROCESS" && "ring-primary/50 shadow-xl ring-5 shadow-black/20"} `}
     >
       <div>
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center justify-between gap-10">
           <div>
             <p className="font-bold xl:text-xl">
               Order {data.order.orderNumber}
@@ -136,7 +136,7 @@ export default function TaskCard(data: any) {
         <Separator className="my-2 2xl:my-5" />
 
         <p className="text-sm 2xl:text-base">Order items:</p>
-        <div className="mt-2 grid grid-cols-2">
+        <div className="scroll-hidden mt-2 grid h-23 auto-rows-min grid-cols-2 overflow-y-auto">
           {data.order.orderItems.map((item: any, i: number) => (
             <div
               key={i}

@@ -8,6 +8,8 @@ import { TrendingDown, TrendingUp } from "lucide-react";
 import { statusFormatter } from "../super-admin/data";
 import { userStatus } from "../worker/data";
 import { dummyData, todayActivityKey, workerStatus } from "./data";
+import BypassOrder from "./BypassOrder";
+import NewOrder from "./NewOrder";
 
 const adminStatus = "active";
 
@@ -17,7 +19,7 @@ export default function Admin() {
       <Greeting />
       <Summary />
       <section className="mt-5 gap-5 space-y-5 lg:flex lg:space-y-0">
-        <div className="flex-1 space-y-5">
+        <div className="flex flex-1 flex-col space-y-5">
           <Attendance />
           <OrderOverview />
         </div>
@@ -30,6 +32,10 @@ export default function Admin() {
             label="Driver Activities"
             data={dummyData.driverActivity}
           />
+        </div>
+        <div className="flex-1 space-y-5">
+          <BypassOrder />
+          <NewOrder />
         </div>
       </section>
       <TodayActivities />
@@ -51,7 +57,7 @@ function Greeting() {
 
 function Attendance() {
   return (
-    <section className="flex-1 space-y-5 rounded-2xl border bg-(--container-bg) p-5">
+    <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
       <div className="flex justify-between">
         <p className="">Current Status</p>
 
@@ -121,7 +127,7 @@ function Summary() {
 
 function OrderOverview() {
   return (
-    <section className="h-fit rounded-2xl border bg-(--container-bg) p-5">
+    <section className="h-full rounded-2xl border bg-(--container-bg) p-5">
       <p>Order Status Overview</p>
       <div className="mt-5 text-sm">
         {dummyData.orderStatusOverview.map((item, i) => (
@@ -142,7 +148,7 @@ function OrderOverview() {
 
 function WorkerActivity({ label, data }: { label: string; data: any[] }) {
   return (
-    <section className="flex-1 rounded-2xl border bg-(--container-bg) p-5">
+    <section className="h-full rounded-2xl border bg-(--container-bg) p-5">
       <p>{label}</p>
       <div className="mt-5 grid gap-5 text-sm md:grid-cols-2 xl:grid-cols-3">
         {data.map((worker, i) => {
