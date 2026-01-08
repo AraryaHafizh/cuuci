@@ -53,7 +53,7 @@ export function Attendance() {
         </p>
       </div>
 
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-2">
         <CheckIn>
           <Button disabled={isPending || isWorking === true}>Start Day</Button>
         </CheckIn>

@@ -50,6 +50,7 @@ export function HistoryOrderTable() {
           <TableHead>Order Date</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Total Weight</TableHead>
+          <TableHead>Payment Status</TableHead>
           <TableHead className="text-right">Total</TableHead>
           <TableHead className="w-10"></TableHead>
         </TableRow>
@@ -61,6 +62,7 @@ export function HistoryOrderTable() {
             <TableCell>{formatDate(order.createdAt, "date")}</TableCell>
             <TableCell>{formatOrderStatus(order.status)}</TableCell>
             <TableCell>{order.totalWeight} kg</TableCell>
+            <TableCell>{formatOrderStatus(order.payment.status)}</TableCell>
             <TableCell className="text-right">
               Rp {nf.format(order.totalPrice)}
             </TableCell>

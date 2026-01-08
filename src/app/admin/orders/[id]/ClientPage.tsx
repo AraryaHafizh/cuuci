@@ -30,13 +30,13 @@ export default function ClientPage({ id }: { id: string }) {
     <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting data={data} isPending={isPending} />
       <OrderLog data={data} />
-      <section className="mt-5 flex gap-5">
+      <section className="mt-5 gap-5 md:flex">
         <div className="flex-4 space-y-5 overflow-x-auto">
           <ItemTable data={data} />
           <OrderLogs data={data} />
         </div>
 
-        <div className="flex-1 space-y-5">
+        <div className="mt-5 flex-1 space-y-5 md:mt-0">
           <CustomerDetail data={data} />
           <AddressDetail data={data} />
           <AssignmentDetail data={data} />
@@ -181,6 +181,10 @@ function PaymentDetail({ data }: { data: any }) {
   return (
     <section className="h-fit rounded-2xl border bg-(--container-bg) p-5">
       <p className="mb-2">Payment Summary</p>
+      <HorizontalDetail
+        label="Status"
+        data={formatOrderStatus(data.payment.status)}
+      />
       <HorizontalDetail
         label="Subtotal"
         data={`Rp ${nf.format(data.totalPrice)}`}

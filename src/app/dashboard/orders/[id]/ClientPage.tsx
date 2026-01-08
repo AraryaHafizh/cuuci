@@ -62,7 +62,17 @@ function Greeting({ data, isPending }: { data: any; isPending: boolean }) {
 }
 
 function PayButton({ data }: { data: any }) {
-  return <Button disabled={!data.invoiceUrl}>To payment page</Button>;
+  return (
+    <Button
+      disabled={!data.invoiceUrl}
+      onClick={() => {
+        const url = data.invoiceUrl;
+        window.open(url, "_blank");
+      }}
+    >
+      To payment page
+    </Button>
+  );
 }
 
 function OrderLog({ data }: { data: any }) {
@@ -175,6 +185,10 @@ function PaymentDetail({ data }: { data: any }) {
   return (
     <section className="h-fit rounded-2xl border bg-(--container-bg) p-5">
       <p className="mb-2">Payment Summary</p>
+      <HorizontalDetail
+        label="Status"
+        data={formatOrderStatus(data.payment.status)}
+      />
       <HorizontalDetail
         label="Subtotal"
         data={`Rp ${nf.format(data.totalPrice)}`}

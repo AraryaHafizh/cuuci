@@ -5,20 +5,24 @@ import SectionInfo from "@/components/SectionInfo";
 import UserDetailTable from "./components/UserDetailTable";
 import { dummyUsers, userRole } from "@/app/super-admin/data";
 import { LoadingScreen } from "@/components/ui/loading-animation";
+import { formatPhoneDb } from "@/lib/utils";
 
 export function WorkerDetail({ userId }: { userId: string }) {
   const { data, isPending } = useUser(userId);
 
   if (isPending) return <LoadingScreen />;
 
+  const userData = data.user;
+  const taskData = data.task;
+
   return (
     <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
-      <Greeting data={data} />
+      <Greeting data={userData} />
       <section className="mt-10 gap-5 space-y-5 lg:flex lg:space-y-0 xl:mt-20">
-        <UserInfo data={data} />
-        <UserStats data={data} />
+        <UserInfo data={userData} />
+        <UserStats data={userData} />
       </section>
-      <UserDetailTable role={data.role} />
+      <UserDetailTable userId={userId} role={userData.role} tasks={taskData} />
     </main>
   );
 
@@ -44,7 +48,7 @@ export function WorkerDetail({ userId }: { userId: string }) {
         <div className="font-light">
           <p className="flex gap-5 text-2xl font-bold">{data.name}</p>
           <p>{data.email}</p>
-          <p>{data.phoneNumber}</p>
+          <p>{formatPhoneDb(data.phoneNumber)}</p>
         </div>
       </section>
     );

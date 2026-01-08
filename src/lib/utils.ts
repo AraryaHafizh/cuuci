@@ -142,3 +142,17 @@ export function formatHistoryStatus(status: string) {
       return "Unknown status";
   }
 }
+
+export function countDuration(startISO: string, endISO: string) {
+  if (!startISO || !endISO) return "-";
+
+  const start = new Date(startISO);
+  const end = new Date(endISO);
+
+  const diffMs = end.getTime() - start.getTime();
+
+  const hours = Math.floor(diffMs / (1000 * 60 * 60));
+  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  return `${hours} jam ${minutes} menit`;
+}
