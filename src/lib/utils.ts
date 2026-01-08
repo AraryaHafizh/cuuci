@@ -123,3 +123,22 @@ export function generatePassword(length = 8): string {
   }
   return password;
 }
+
+export function formatHistoryStatus(status: string) {
+  switch (status) {
+    case "CREATED":
+      return "Order created";
+    case "PICKUP":
+      return "Pickup order";
+    case "WASHING":
+      return "Washing";
+    case "IRONING":
+      return "Ironing";
+    case "PACKING":
+      return "Packing";
+    case "DELIVERY":
+      return "Delivery to customer";
+    default:
+      return "Unknown status";
+  }
+}
