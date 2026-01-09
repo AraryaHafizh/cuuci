@@ -1,0 +1,36 @@
+"use client";
+
+import { LoadingAnimation } from "@/components/ui/loading-animation";
+import { SectionTitle } from "@/components/ui/section-title";
+import { Separator } from "@/components/ui/separator";
+import { useNotification } from "@/hooks/notification/useNotification";
+import { formatTime } from "@/lib/utils";
+
+export function RecentActivity() {
+  const { data, isPending } = useNotification({ params: {} });
+
+  return (
+    <section className="flex-1 space-y-5">
+      <SectionTitle title="Recent Activity" />
+
+      <div className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
+        {isPending ? (
+          <LoadingAnimation />
+        ) : (
+          data.map((activity: any, i: number) => {
+            return (
+              <div key={i}>
+                <p className="text-xs md:text-sm">{activity.title}</p>
+                <p className="text-sm xl:text-base">{activity.description}</p>
+                <p className="mt-1 text-xs opacity-50">
+                  {formatTime(activity.createdAt)}
+                </p>
+                {i !== data.length - 1 && <Separator className="mt-5" />}
+              </div>
+            );
+          })
+        )}
+      </div>
+    </section>
+  );
+}

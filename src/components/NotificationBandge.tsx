@@ -16,7 +16,7 @@ import { useNotification } from "@/hooks/notification/useNotification";
 
 export function NotificationBadge() {
   const [open, setOpen] = useState(false);
-  const { data, isPending } = useNotification(open);
+  const { data, isPending } = useNotification({ params: { limit: 5 } });
 
   const count = data?.length;
 

@@ -10,7 +10,7 @@ export function Greeting() {
   const router = useRouter();
 
   return (
-    <section className="space-y-10">
+    <section className="space-y-5 md:space-y-10">
       <SectionInfo
         title={`Hello, ${session?.user.name}!`}
         description="Here's a summary of your laundry activities."

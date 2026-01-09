@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatTime(isoDate: string): string {
+export function formatTime(isoDate: any) {
   const date = parseISO(isoDate);
   return formatDistanceToNow(date, { addSuffix: true });
 }
