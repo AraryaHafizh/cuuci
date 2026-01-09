@@ -62,7 +62,9 @@ export function HistoryOrderTable() {
             <TableCell>{formatDate(order.createdAt, "date")}</TableCell>
             <TableCell>{formatOrderStatus(order.status)}</TableCell>
             <TableCell>{order.totalWeight} kg</TableCell>
-            <TableCell>{formatOrderStatus(order.payment.status)}</TableCell>
+            <TableCell>
+              {formatOrderStatus(order.payment?.status || "Delivering")}
+            </TableCell>
             <TableCell className="text-right">
               Rp {nf.format(order.totalPrice)}
             </TableCell>

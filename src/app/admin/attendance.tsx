@@ -21,7 +21,6 @@ import { useState } from "react";
 export function Attendance() {
   const { data, isPending } = useStatus();
   const isWorking = !isPending && data ? data.isWorking : undefined;
-  const shift = !isPending && data ? data.shift : undefined;
 
   return (
     <section className="flex flex-col space-y-5 rounded-2xl border bg-(--container-bg) p-5 lg:flex-1">
