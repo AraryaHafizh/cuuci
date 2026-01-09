@@ -19,7 +19,7 @@ export const useTaskDetail = (id: string) => {
       return res.data.data;
     },
     enabled: !!token,
-    staleTime: 1000 * 60 * 30,
+    refetchOnMount: "always",
     refetchOnWindowFocus: false,
   });
 };

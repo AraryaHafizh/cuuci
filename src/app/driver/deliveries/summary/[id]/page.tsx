@@ -1,8 +1,8 @@
 import { SummaryInfoCard } from "@/components/InfoCard";
 import SectionInfo from "@/components/SectionInfo";
-import { History, Image, Package } from "lucide-react";
-import { EndButton, SummaryButton } from "../../DeliveryButtons";
 import { SectionTitle } from "@/components/ui/section-title";
+import { History, Image, Package } from "lucide-react";
+import { SummaryButton } from "../../DeliveryButtons";
 
 interface SummaryProps {
   params: Promise<{ id: string }>;

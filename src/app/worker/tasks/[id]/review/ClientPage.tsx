@@ -40,7 +40,7 @@ export default function ClientPage({ id }: { id: string }) {
       setItems(
         data.order.orderItems.map((item: OrderItem) => ({
           id: item.laundryItemId,
-          qty: 0, // default 0
+          qty: 0,
         })),
       );
     }
@@ -225,11 +225,10 @@ const FinishTask = ({
 
       <AlertDialogContent className="z-9999">
         <AlertDialogHeader>
-          <AlertDialogTitle>Submit bypass request?</AlertDialogTitle>
+          <AlertDialogTitle>Finish task?</AlertDialogTitle>
           <AlertDialogDescription>
-            You are about to request a bypass for this task. Once submitted, you
-            will not be able to take other tasks until the admin resolves this
-            request.
+            You are about to finish this task. This action will mark it as
+            completed and cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
 

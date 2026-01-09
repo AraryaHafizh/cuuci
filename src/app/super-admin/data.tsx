@@ -516,60 +516,36 @@ export const userRole = {
 
 export const tabKeys = {
   CUSTOMER: ["address", "orders", "payments"],
-  WORKER: ["tasks", "attendance", "performance", "payroll"],
-  DRIVER: ["deliveries", "attendance", "ratings", "vehicle"],
+  WORKER: ["tasks", "attendance"],
+  DRIVER: ["deliveries", "attendance"],
   OUTLET_ADMIN: ["attendance", "outlets", "workers"],
 };
 
 export const tableKeys = {
-  CUSTOMER: {
-    address: [
-      "label",
-      "phone",
-      "address",
-      "latitude",
-      "longitude",
-      "isPrimary",
-      "createdAt",
-    ],
-    orders: [
-      "orderId",
-      "status",
-      "totalAmount",
-      "totalWeight",
-      "pickupDate",
-      "deliveryDate",
-      "paymentStatus",
-    ],
-    payments: ["paymentId", "method", "amount", "status", "transactionDate"],
-  },
+  // CUSTOMER: {
+  //   address: [
+  //     "label",
+  //     "phone",
+  //     "address",
+  //     "latitude",
+  //     "longitude",
+  //     "isPrimary",
+  //     "createdAt",
+  //   ],
+  //   orders: [
+  //     "orderId",
+  //     "status",
+  //     "totalAmount",
+  //     "totalWeight",
+  //     "pickupDate",
+  //     "deliveryDate",
+  //     "paymentStatus",
+  //   ],
+  //   payments: ["paymentId", "method", "amount", "status", "transactionDate"],
+  // },
   WORKER: {
-    tasks: [
-      "taskId",
-      "title",
-      "status",
-      "assignedAt",
-      "completedAt",
-      "priority",
-    ],
-    attendance: [
-      "attendanceId",
-      "date",
-      "clockIn",
-      "clockOut",
-      "totalHours",
-      "shift",
-    ],
-    performance: ["reviewId", "period", "score", "remarks", "reviewedBy"],
-    payroll: [
-      "payrollId",
-      "period",
-      "basicSalary",
-      "bonus",
-      "deductions",
-      "netSalary",
-      "paidAt",
-    ],
+    tasks: ["Order ID", "Station", "status", "assignedAt", "completedAt"],
+    attendance: ["attendanceId", "date", "clockIn", "clockOut", "totalHours"],
   },
   DRIVER: {
     deliveries: [
@@ -587,15 +563,6 @@ export const tableKeys = {
       "clockOut",
       "totalHours",
       "shift",
-    ],
-    ratings: ["ratingId", "score", "comment", "ratedBy", "date"],
-    vehicle: [
-      "vehicleId",
-      "plateNumber",
-      "brand",
-      "model",
-      "year",
-      "lastServiceDate",
     ],
   },
   OUTLET_ADMIN: {

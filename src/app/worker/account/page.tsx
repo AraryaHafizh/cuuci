@@ -20,19 +20,6 @@ export default function Account() {
   );
 }
 
-function ProfilePicture() {
-  return (
-    <section className="flex flex-col items-center rounded-2xl border bg-(--container-bg) p-5">
-      <div className="bg-foreground/10 mb-5 flex h-30 w-30 items-center justify-center rounded-full text-4xl">
-        U
-      </div>
-
-      <p>User Name</p>
-      <p>user@mail.com</p>
-    </section>
-  );
-}
-
 function Greeting() {
   return (
     <section className="space-y-10">

@@ -4,17 +4,16 @@ import { cuuciApi } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
-export const useHistory = () => {
+export const useHistory = ({ params }: { params?: any } = {}) => {
   const { data: session } = useSession();
   const token = session?.user?.accessToken;
 
   return useQuery({
-    queryKey: ["get_worker_history", token],
+    queryKey: ["get_worker_history", token, params],
     queryFn: async () => {
       const res = await cuuciApi.get("/workers/history", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
+        params,
       });
       return res.data.data;
     },

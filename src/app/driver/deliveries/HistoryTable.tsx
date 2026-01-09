@@ -18,12 +18,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useHistory } from "@/hooks/driver/useHIstory";
 import { formatDate, formatOrderStatus } from "@/lib/utils";
 
-export function DeliveryTable() {
-  const { data, isPending } = useHistory();
-
+export function HistoryTable({
+  data,
+  isPending,
+}: {
+  data: any;
+  isPending: boolean;
+}) {
   if (isPending)
     return (
       <div className="h-[560px]">

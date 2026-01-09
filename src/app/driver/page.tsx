@@ -1,10 +1,7 @@
-"use client";
-
 import SectionInfo from "@/components/SectionInfo";
-import { Button } from "@/components/ui/button";
 import { SectionTitle } from "@/components/ui/section-title";
-import { userStatus } from "../worker/data";
 import DeliverySection from "./DeliverySection";
+import { Attendance } from "./attendance";
 
 const driverStatus = "inactive";
 
@@ -28,35 +25,6 @@ function Greeting() {
         title="Welcome, Driver"
         description="Manage your pickups and deliveries, track active tasks, and stay updated with new requests."
       />
-    </section>
-  );
-}
-
-function Attendance() {
-  return (
-    <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5 lg:flex-1">
-      <div className="flex justify-between">
-        <SectionTitle title="Current Status" />
-
-        <span
-          className={`flex items-center gap-1 ${userStatus[driverStatus].textColor}`}
-        >
-          <div
-            className={`h-3 w-3 rounded-full ${userStatus[driverStatus].bgColor}`}
-          ></div>
-          {userStatus[driverStatus].text}
-        </span>
-      </div>
-
-      <div>
-        <p className="text-xl font-medium">My work hour</p>
-        <p className="opacity-50">08:00 AM - 07:00 PM</p>
-      </div>
-
-      <div className="flex flex-col space-y-2">
-        <Button variant="outline"> Start Day</Button>
-        <Button variant="destructive">End Day</Button>
-      </div>
     </section>
   );
 }

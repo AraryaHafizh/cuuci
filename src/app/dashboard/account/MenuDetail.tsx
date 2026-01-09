@@ -24,7 +24,9 @@ export function AccountMenuDetail() {
   function Profile() {
     const { mutateAsync: edit, isPending } = useEdit();
     const [name, setName] = useState(sessionData.name ?? "");
-    const [phone, setPhone] = useState(sessionData.phoneNumber ?? "");
+    const [phone, setPhone] = useState(
+      sessionData.phoneNumber?.replace(/^(\+62|62)/, "") ?? "",
+    );
 
     async function onSave() {
       const payload: userUpdateProps = {};

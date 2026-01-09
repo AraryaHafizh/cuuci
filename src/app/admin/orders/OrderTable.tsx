@@ -70,7 +70,7 @@ export function OrderTable({
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => router.push(`orders/${order.orderId}`)}
+                onClick={() => router.push(`orders/${order.id}`)}
               >
                 <Info />
               </Button>

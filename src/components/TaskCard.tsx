@@ -16,6 +16,7 @@ import { Button } from "./ui/button";
 import { ReactNode, useState } from "react";
 import { useAcceptTask } from "@/hooks/worker/useAcceptTask";
 import { LoadingAnimation } from "./ui/loading-animation";
+import { formatDate } from "@/lib/utils";
 
 export type WorkStation = "WASHING" | "IRONING" | "PACKING";
 export type WorkStatus =
@@ -119,12 +120,14 @@ export default function TaskCard(data: any) {
       className={`flex min-h-65 flex-col justify-between space-y-2 rounded-2xl border bg-(--container-bg) p-5 lg:min-h-70 2xl:min-h-85 ${data.status === "IN_PROCESS" && "ring-primary/50 shadow-xl ring-5 shadow-black/20"} `}
     >
       <div>
-        <div className="flex items-center justify-between gap-10">
+        <div className="flex items-center justify-between gap-5">
           <div>
             <p className="font-bold xl:text-xl">
-              Order {data.order.orderNumber}
+              Order <br /> {data.order.orderNumber}
             </p>
-            <p className="font-light opacity-50">{data.order.customer.name}</p>
+            <p className="text-sm font-light opacity-50">
+              Posted {formatDate(data.createdAt)}
+            </p>
           </div>
           <div
             className={`rounded-2xl px-3 py-1 text-xs 2xl:text-sm ${stationData.bgColor} ${stationData.textColor} `}
@@ -152,7 +155,7 @@ export default function TaskCard(data: any) {
         <div>
           <p className="text-sm 2xl:text-base">Order note:</p>
           <p className="text-sm font-light opacity-50 2xl:text-base">
-            {data.notes}
+            {data.notes || "-"}
           </p>
         </div>
       </div>

@@ -17,12 +17,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useHistory } from "@/hooks/worker/useHistory";
-import { taskHistory } from "../../worker/tasks/data";
+import { formatDate, formatOrderStatus } from "@/lib/utils";
 
-export function TaskTable() {
-  const { data, isPending } = useHistory();
-
+export function TaskTable({
+  data,
+  isPending,
+}: {
+  data: any;
+  isPending: boolean;
+}) {
   if (isPending)
     return (
       <div className="h-[560px]">
@@ -41,24 +44,24 @@ export function TaskTable() {
     <Table>
       <TableHeader>
         <TableRow className="bg-muted/50 border-none">
-          <TableHead>Task ID</TableHead>
-          <TableHead>Customer</TableHead>
-          <TableHead>Items</TableHead>
+          <TableHead>No</TableHead>
+          <TableHead>Order ID</TableHead>
+          <TableHead>Station</TableHead>
           <TableHead>Status</TableHead>
+          <TableHead>Take at</TableHead>
           <TableHead>Completed At</TableHead>
         </TableRow>
       </TableHeader>
 
       <TableBody>
-        {taskHistory.map((task) => (
+        {data.map((task: any, i: number) => (
           <TableRow key={task.id} className="border-none">
-            <TableCell className="font-medium">{task.id}</TableCell>
-            <TableCell>{task.userName}</TableCell>
-            <TableCell>
-              {task.items.reduce((sum, item) => sum + item.qty, 0)} items
-            </TableCell>
-            <TableCell className="capitalize">{task.status}</TableCell>
-            <TableCell>{new Date(task.completedAt).toLocaleString()}</TableCell>
+            <TableCell className="font-medium">{i + 1}</TableCell>
+            <TableCell>{task.order.orderNumber}</TableCell>
+            <TableCell>{formatOrderStatus(task.station)}</TableCell>
+            <TableCell>{formatOrderStatus(task.status)}</TableCell>
+            <TableCell>{formatDate(task.createdAt)}</TableCell>
+            <TableCell>{formatDate(task.completedAt)}</TableCell>
           </TableRow>
         ))}
       </TableBody>

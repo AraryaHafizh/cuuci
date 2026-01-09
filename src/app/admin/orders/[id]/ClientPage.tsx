@@ -1,9 +1,8 @@
 "use client";
 
-import { HorizontalDetail, VerticalDetail } from "@/app/admin/orders/[id]/page";
 import SectionInfo from "@/components/SectionInfo";
-import { Button } from "@/components/ui/button";
 import { LoadingScreen } from "@/components/ui/loading-animation";
+import { Separator } from "@/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -12,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useDetail } from "@/hooks/user/useDetail";
+import { useDetailAdmin } from "@/hooks/user/useDetail";
 import {
   formatDate,
   formatHistoryStatus,
@@ -20,59 +19,43 @@ import {
   formatPhoneDb,
 } from "@/lib/utils";
 import { Check, CircleDashed } from "lucide-react";
+import { OrderLogs } from "./components/OrderLogs";
 
 export default function ClientPage({ id }: { id: string }) {
-  const { data, isPending } = useDetail(id);
+  const { data, isPending } = useDetailAdmin(id);
 
   if (isPending) return <LoadingScreen />;
 
   return (
     <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
-      <section className="flex items-center justify-between">
-        <Greeting data={data} isPending={isPending} />
-        <PayButton data={data} />
-      </section>
-
-      <section className="flex flex-col gap-5">
-        <OrderLog data={data} />
-
-        <div className="flex gap-5">
+      <Greeting data={data} isPending={isPending} />
+      <OrderLog data={data} />
+      <section className="mt-5 gap-5 md:flex">
+        <div className="flex-4 space-y-5 overflow-x-auto">
           <ItemTable data={data} />
-          <div className="flex-1 space-y-5">
-            <PaymentDetail data={data} />
-            <CustomerDetail data={data} />
-            <OutletDetail data={data} />
-            <AddressDetail data={data} />
-          </div>
+          <OrderLogs data={data} />
+        </div>
+
+        <div className="mt-5 flex-1 space-y-5 md:mt-0">
+          <CustomerDetail data={data} />
+          <AddressDetail data={data} />
+          <AssignmentDetail data={data} />
+          <PaymentDetail data={data} />
         </div>
       </section>
     </main>
   );
-}
 
-function Greeting({ data, isPending }: { data: any; isPending: boolean }) {
-  return (
-    <SectionInfo
-      title={`Order Detail`}
-      description="View detailed information, track progress, and manage the order."
-      loading={isPending}
-      role={formatOrderStatus(data.status)}
-    />
-  );
-}
-
-function PayButton({ data }: { data: any }) {
-  return (
-    <Button
-      disabled={!data.invoiceUrl}
-      onClick={() => {
-        const url = data.invoiceUrl;
-        window.open(url, "_blank");
-      }}
-    >
-      To payment page
-    </Button>
-  );
+  function Greeting({ data, isPending }: { data: any; isPending: boolean }) {
+    return (
+      <SectionInfo
+        title={`Order Detail`}
+        description="View detailed information, track progress, and manage the order."
+        loading={isPending}
+        role={formatOrderStatus(data.status)}
+      />
+    );
+  }
 }
 
 function OrderLog({ data }: { data: any }) {
@@ -154,27 +137,40 @@ function CustomerDetail({ data }: { data: any }) {
   );
 }
 
-function OutletDetail({ data }: { data: any }) {
-  return (
-    <section className="h-fit rounded-2xl border bg-(--container-bg) p-5">
-      <p className="mb-2">Outlet Details</p>
-      <HorizontalDetail label="Outlet" data={data.outlet.outletId} />
-      <HorizontalDetail label="Outlet name" data={data.outlet.name} />
-      <VerticalDetail label="Address" data={data.outlet.address} />
-    </section>
-  );
-}
-
 function AddressDetail({ data }: { data: any }) {
   return (
     <section className="flex-1 rounded-2xl border bg-(--container-bg) p-5">
-      <p className="mb-2">Address</p>
+      <p className="mb-2">Addresses Details</p>
       <VerticalDetail label="Customer" data={data.customer.name} />
       <VerticalDetail
         label="Contact"
         data={formatPhoneDb(data.customer.phoneNumber)}
       />
       <VerticalDetail label="Address" data={data.address.address} />
+
+      <Separator className="my-2" />
+
+      <VerticalDetail label="Outlet" data={data.outlet.name} />
+      <VerticalDetail
+        label="Contact"
+        data={formatPhoneDb(data.outlet.admin.phoneNumber)}
+      />
+      <VerticalDetail label="Address" data={data.outlet.address} />
+    </section>
+  );
+}
+
+function AssignmentDetail({ data }: { data: any }) {
+  return (
+    <section className="flex-1 rounded-2xl border bg-(--container-bg) p-5">
+      <p>Assignments</p>
+      <HorizontalDetail label="Outlet" data={data.outlet.name} />
+      <HorizontalDetail label="Outlet Admin" data={data.outlet.admin.name} />
+      <HorizontalDetail label="Driver" data={data.orderLog[1]?.name || "-"} />
+      <HorizontalDetail label="Washing" data={data.orderLog[2]?.name || "-"} />
+      <HorizontalDetail label="Ironing" data={data.orderLog[3]?.name || "-"} />
+      <HorizontalDetail label="Packing" data={data.orderLog[4]?.name || "-"} />
+      <HorizontalDetail label="Delivery" data={data.orderLog[5]?.name || "-"} />
     </section>
   );
 }
@@ -194,5 +190,35 @@ function PaymentDetail({ data }: { data: any }) {
         data={`Rp ${nf.format(data.totalPrice)}`}
       />
     </section>
+  );
+}
+
+export function HorizontalDetail({
+  label,
+  data,
+}: {
+  label: string;
+  data: string;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-10 text-sm font-light">
+      <p className="opacity-50">{label}</p>
+      <p>{data}</p>
+    </div>
+  );
+}
+
+export function VerticalDetail({
+  label,
+  data,
+}: {
+  label: string;
+  data: string;
+}) {
+  return (
+    <div className="gap-10 text-sm font-light">
+      <p className="opacity-50">{label}</p>
+      <p>{data}</p>
+    </div>
   );
 }

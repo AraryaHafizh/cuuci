@@ -123,3 +123,36 @@ export function generatePassword(length = 8): string {
   }
   return password;
 }
+
+export function formatHistoryStatus(status: string) {
+  switch (status) {
+    case "CREATED":
+      return "Order created";
+    case "PICKUP":
+      return "Pickup order";
+    case "WASHING":
+      return "Washing";
+    case "IRONING":
+      return "Ironing";
+    case "PACKING":
+      return "Packing";
+    case "DELIVERY":
+      return "Delivery to customer";
+    default:
+      return "Unknown status";
+  }
+}
+
+export function countDuration(startISO: string, endISO: string) {
+  if (!startISO || !endISO) return "-";
+
+  const start = new Date(startISO);
+  const end = new Date(endISO);
+
+  const diffMs = end.getTime() - start.getTime();
+
+  const hours = Math.floor(diffMs / (1000 * 60 * 60));
+  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  return `${hours} jam ${minutes} menit`;
+}

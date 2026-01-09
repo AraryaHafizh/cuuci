@@ -10,6 +10,7 @@ import { userStatus } from "../worker/data";
 import { dummyData, todayActivityKey, workerStatus } from "./data";
 import BypassOrder from "./BypassOrder";
 import NewOrder from "./NewOrder";
+import { Attendance } from "./attendance";
 
 const adminStatus = "active";
 
@@ -51,35 +52,6 @@ function Greeting() {
         description="Monitor your outlet operations, manage orders, and handle incoming pickup requests with ease"
         role="Branch Tebet"
       />
-    </section>
-  );
-}
-
-function Attendance() {
-  return (
-    <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-      <div className="flex justify-between">
-        <p className="">Current Status</p>
-
-        <span
-          className={`flex items-center gap-1 ${userStatus[adminStatus].textColor}`}
-        >
-          <div
-            className={`h-3 w-3 rounded-full ${userStatus[adminStatus].bgColor}`}
-          ></div>
-          {userStatus[adminStatus].text}
-        </span>
-      </div>
-
-      <div>
-        <p className="text-xl font-medium">My work hour</p>
-        <p className="opacity-50">08:00 AM - 07:00 PM</p>
-      </div>
-
-      <div className="flex flex-col space-y-2">
-        <Button variant="outline"> Start Day</Button>
-        <Button variant="destructive">End Day</Button>
-      </div>
     </section>
   );
 }

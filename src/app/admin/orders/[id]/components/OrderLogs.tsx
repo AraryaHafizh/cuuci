@@ -3,9 +3,12 @@
 import { oderTabKey } from "@/app/super-admin/orders/data";
 import { useState } from "react";
 
-export function OrderLogs() {
+export function OrderLogs({ data }: { data: any }) {
   const [index, setIndex] = useState<number>(0);
-  const components = [<CustomerNote />, <CustomerReport />];
+  const components = [
+    <CustomerNote data={data} />,
+    <CustomerReport data={data} />,
+  ];
 
   return (
     <section className="rounded-2xl border bg-(--container-bg) p-5">
@@ -25,23 +28,18 @@ export function OrderLogs() {
   );
 }
 
-function CustomerNote() {
+function CustomerNote({ data }: { data: any }) {
   return (
     <section>
-      <p>From John Doe</p>
+      <p>From {data.customer.name}</p>
       <p className="opacity-50">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Odit explicabo
-        laboriosam voluptatum facere, sunt voluptatem eligendi aspernatur qui
-        odio alias porro animi dignissimos blanditiis earum illo voluptates
-        culpa accusantium, nam exercitationem corrupti aperiam eaque facilis
-        perspiciatis. Iste aliquid nesciunt, nam aliquam quos natus deleniti
-        eligendi ea atque possimus, eum aut.
+        {data.notes?.find((n: any) => n.type === "INSTRUCTION")?.body ?? "-"}
       </p>
     </section>
   );
 }
 
-function CustomerReport() {
+function CustomerReport({ data }: { data: any }) {
   return (
     <section className="space-y-5">
       <div>

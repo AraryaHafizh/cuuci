@@ -1,7 +1,7 @@
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { SectionTitle } from "@/components/ui/section-title";
 import { useArrivedOrder } from "@/hooks/order/useArrivedOrder";
-import { Info } from "lucide-react";
+import { BadgeDollarSign, Info } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function NewOrder() {
@@ -26,8 +26,8 @@ export default function NewOrder() {
             onClick={() => router.push("/admin/new")}
             className="hover:bg-foreground/8 active:bg-foreground/8 flex cursor-pointer items-center justify-between rounded-xl p-1 py-0.5 transition-all duration-300 select-none"
           >
-            <p>Order {item.order.orderNumber}</p>
-            <Info className="text-destructive" size={22} />
+            <p>Order {item.orderNumber}</p>
+            <BadgeDollarSign className="text-primary" size={22} />
           </div>
         ))
       )}
