@@ -30,7 +30,6 @@ export const useEdit = () => {
 
     onSuccess: async (data) => {
       await update({ reason: "profile-updated" });
-      console.log("update");
 
       toast(data.message);
     },

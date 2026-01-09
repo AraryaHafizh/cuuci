@@ -34,8 +34,6 @@ export const useUser = (userId: string) => {
       const res = await cuuciApi.get(`/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(res.data.data);
-      
       return res.data.data;
     },
     enabled: !!token,

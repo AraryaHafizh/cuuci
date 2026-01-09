@@ -38,7 +38,6 @@ function SortDropdown({
 }) {
   const handleChange = (value: string) => {
     setStatus(value === "ALL" ? "" : value);
-    console.log(value);
   };
 
   return (

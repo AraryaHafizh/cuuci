@@ -70,9 +70,6 @@ export function UserEditInput({ id }: { id: string }) {
     if (filtered.phoneNumber) {
       filtered.phoneNumber = "+62" + filtered.phoneNumber;
     }
-
-    console.log(filtered);
-    // signup(filtered)
   }
 
   return (
