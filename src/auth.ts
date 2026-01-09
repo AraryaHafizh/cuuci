@@ -112,7 +112,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 });
 
 async function loginWithGoogle(accessToken: string) {
-  const res = await fetch("http://localhost:8000/auth/google", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_CUUCI_API}/auth/google`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -128,7 +128,7 @@ async function loginWithGoogle(accessToken: string) {
 }
 
 async function refetch(accessToken: string) {
-  const res = await fetch("http://localhost:8000/auth/refetch", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_CUUCI_API}/auth/refetch`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${accessToken}`,
