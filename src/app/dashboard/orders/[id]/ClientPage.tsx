@@ -30,15 +30,17 @@ export default function ClientPage({ id }: { id: string }) {
     <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <section className="flex items-center justify-between">
         <Greeting data={data} isPending={isPending} />
-        <PayButton data={data} />
+        <div className="bg-background fixed bottom-0 left-0 z-999 w-full p-4 md:static md:w-fit">
+          <PayButton data={data} />
+        </div>
       </section>
 
       <section className="flex flex-col gap-5">
         <OrderLog data={data} />
 
-        <div className="flex gap-5">
+        <div className="gap-5 md:flex">
           <ItemTable data={data} />
-          <div className="flex-1 space-y-5">
+          <div className="mt-5 flex-1 space-y-5 md:mt-0">
             <PaymentDetail data={data} />
             <CustomerDetail data={data} />
             <OutletDetail data={data} />
@@ -64,11 +66,12 @@ function Greeting({ data, isPending }: { data: any; isPending: boolean }) {
 function PayButton({ data }: { data: any }) {
   return (
     <Button
-      disabled={!data.invoiceUrl}
+      disabled={!data.invoiceUrl || data.payment.status === "SUCCESS"}
       onClick={() => {
         const url = data.invoiceUrl;
         window.open(url, "_blank");
       }}
+      className="w-full py-6 md:py-2"
     >
       To payment page
     </Button>

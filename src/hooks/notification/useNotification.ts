@@ -4,21 +4,20 @@ import { cuuciApi } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
-export const useNotification = (enabled: boolean) => {
+export const useNotification = ({ params }: { params?: any }) => {
   const { data: session } = useSession();
   const token = session?.user?.accessToken;
 
   return useQuery({
-    queryKey: ["get_notification", token],
+    queryKey: ["get_notification", token, params],
     queryFn: async () => {
       const res = await cuuciApi.get("/notifications", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
+        params,
       });
       return res.data.data;
     },
-    enabled,
+    enabled: !!token,
     staleTime: 1000 * 60 * 30,
     refetchOnWindowFocus: false,
   });

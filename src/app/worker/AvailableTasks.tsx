@@ -1,3 +1,5 @@
+"use client";
+
 import TaskCard from "@/components/TaskCard";
 import { LoadingScreen } from "@/components/ui/loading-animation";
 import { SectionTitle } from "@/components/ui/section-title";
