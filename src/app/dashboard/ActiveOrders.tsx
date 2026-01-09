@@ -23,17 +23,17 @@ export function ActiveOrders() {
             return (
               <div
                 key={i}
-                className="hover:bg-foreground/10 active:bg-foreground/10 cursor-pointer rounded-2xl border bg-(--container-bg) p-2.5 transition-all duration-300 2xl:p-5"
+                className="hover:bg-foreground/10 active:bg-foreground/10 cursor-pointer rounded-2xl border bg-(--container-bg) p-3 transition-all duration-300 xl:p-5"
                 onClick={() => router.push(`/dashboard/orders/${order.id}`)}
               >
-                <p className="text-sm opacity-70 md:text-base">
+                <p className="text-xs xl:text-base">
                   Order {order.orderNumber}
                 </p>
-                <p className="mt-1 md:text-lg">
+                <p className="mt-1 text-sm xl:text-lg">
                   {formatOrderStatus(order.status)}
                 </p>
                 <p className="text-xs opacity-50">
-                  update: {formatDate(order.updatedAt)}
+                  at {formatDate(order.updatedAt)}
                 </p>
               </div>
             );

@@ -30,7 +30,7 @@ export default function ClientPage({ id }: { id: string }) {
     <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <section className="flex items-center justify-between">
         <Greeting data={data} isPending={isPending} />
-        <div className="bg-background fixed bottom-0 left-0 z-999 w-full p-4 md:static md:w-fit">
+        <div className="bg-background fixed bottom-0 left-0 z-2 w-full p-4 md:static md:w-fit">
           <PayButton data={data} />
         </div>
       </section>
