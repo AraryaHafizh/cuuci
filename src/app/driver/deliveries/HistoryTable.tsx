@@ -45,7 +45,9 @@ export function HistoryTable({
     <Table>
       <TableHeader>
         <TableRow className="bg-muted/50 border-none">
+          <TableHead>No</TableHead>
           <TableHead>Order ID</TableHead>
+          <TableHead>Type</TableHead>
           <TableHead>Customer</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Picked Up At</TableHead>
@@ -61,15 +63,15 @@ export function HistoryTable({
       <TableBody>
         {data.map((delivery: any, i: number) => (
           <TableRow key={i} className="border-none">
-            <TableCell className="font-medium">
-              {delivery.orderNumber}
-            </TableCell>
-            <TableCell>{delivery.customer.name}</TableCell>
+            <TableCell className="font-medium">{i + 1}</TableCell>
+            <TableCell>{delivery.order.orderNumber}</TableCell>
+            <TableCell>{formatOrderStatus(delivery.type)}</TableCell>
+            <TableCell>{delivery.order.customer.name}</TableCell>
             <TableCell className="capitalize">
               {formatOrderStatus(delivery.status)}
             </TableCell>
-            <TableCell>{formatDate(delivery.pickupTime)}</TableCell>
-            <TableCell>{formatDate(delivery.deliveryTime)}</TableCell>
+            <TableCell>{formatDate(delivery.createdAt)}</TableCell>
+            <TableCell>{formatDate(delivery.updatedAt)}</TableCell>
             <TableCell>{delivery.numberOfItems}</TableCell>
             <TableCell>{delivery.totalWeight}</TableCell>
             <TableCell>{delivery.distance}</TableCell>

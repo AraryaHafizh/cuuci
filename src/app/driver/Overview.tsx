@@ -1,13 +1,13 @@
 "use client";
 
 import { SectionTitle } from "@/components/ui/section-title";
+import { useAvailablePickup } from "@/hooks/order/useAvailablePickup";
 import { useHistory } from "@/hooks/worker/useHistory";
 import { useStatus } from "@/hooks/worker/useStatus";
-import { useTasks } from "@/hooks/worker/useTask";
 import { CircleCheck, CircleMinus } from "lucide-react";
 
-export function TaskWidget() {
-  const { data: tasks, isPending } = useTasks();
+export function Overview() {
+  const { data: deliveries, isPending } = useAvailablePickup();
   const { data: status } = useStatus();
   const { data: completed } = useHistory({
     params: { status: "COMPLETED" },
@@ -52,7 +52,7 @@ export function TaskWidget() {
       <SectionTitle title="Today Overview" />
 
       <div className="mt-5 flex gap-5">
-        <Widget title="Available Tasks" data={tasks?.length ?? 0} />
+        <Widget title="Available Deliveries" data={deliveries?.length ?? 0} />
         <Widget title="Completed" data={completed?.length ?? 0} />
         <Widget
           title="Status"
