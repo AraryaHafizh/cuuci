@@ -47,8 +47,8 @@ type OutletFormValues = z.infer<typeof editUserSchema>;
 
 export function UserEditInput({ id }: { id: string }) {
   const { data } = useUsers();
-  const userData = data?.find((user: UserProps) => user.id === id);
-  const isCustomer = userData?.role === "CUSTOMER";
+  const users = Array.isArray(data?.data) ? data.data : [];
+  const userData = users.find((user: any) => user.id === id);
 
   const router = useRouter();
   const form = useForm<OutletFormValues>({
@@ -219,7 +219,7 @@ function BasicInfo({ form }: { form: UseFormReturn<OutletFormValues> }) {
 function UserRole({ form }: { form: UseFormReturn<OutletFormValues> }) {
   const { data } = useOutlets();
 
-  const outlets = (data || []).map((outlet:any) => ({
+  const outlets = (data?.data ?? []).map((outlet: any) => ({
     value: outlet.id,
     label: outlet.name,
   }));

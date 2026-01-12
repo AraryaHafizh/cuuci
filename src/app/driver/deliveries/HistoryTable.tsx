@@ -52,11 +52,7 @@ export function HistoryTable({
           <TableHead>Status</TableHead>
           <TableHead>Picked Up At</TableHead>
           <TableHead>Delivered At</TableHead>
-          <TableHead>Items</TableHead>
-          <TableHead>Weight</TableHead>
-          <TableHead>Distance</TableHead>
-          <TableHead>Total Time</TableHead>
-          <TableHead className="text-center">Proof</TableHead>
+          {/* <TableHead className="text-center">Proof</TableHead> */}
         </TableRow>
       </TableHeader>
 
@@ -72,17 +68,13 @@ export function HistoryTable({
             </TableCell>
             <TableCell>{formatDate(delivery.createdAt)}</TableCell>
             <TableCell>{formatDate(delivery.updatedAt)}</TableCell>
-            <TableCell>{delivery.numberOfItems}</TableCell>
-            <TableCell>{delivery.totalWeight}</TableCell>
-            <TableCell>{delivery.distance}</TableCell>
-            <TableCell>{delivery.duration}</TableCell>
-            <TableCell>
+            {/* <TableCell className="w-10">
               {
                 <Button variant={"ghost"} size={"sm"}>
                   view
                 </Button>
               }
-            </TableCell>
+            </TableCell> */}
           </TableRow>
         ))}
       </TableBody>

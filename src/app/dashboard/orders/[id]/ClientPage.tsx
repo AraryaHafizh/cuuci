@@ -206,6 +206,15 @@ function PaymentDetail({ data }: { data: any }) {
         data={formatOrderStatus(data.payment?.status || "Price Pending")}
       />
       <HorizontalDetail
+        label="Laundry price"
+        data={`Rp ${nf.format(data.totalPrice)}`}
+      />
+      <HorizontalDetail label="Delivery price" data={`Rp 10.000`} />
+      <HorizontalDetail
+        label="Subtotal"
+        data={`Rp ${nf.format(data.totalPrice)}`}
+      />
+      <HorizontalDetail
         label="Subtotal"
         data={`Rp ${nf.format(data.totalPrice)}`}
       />

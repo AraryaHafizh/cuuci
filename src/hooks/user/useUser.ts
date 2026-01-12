@@ -24,17 +24,18 @@ export const useUsers = ({ params }: { params?: any } = {}) => {
   });
 };
 
-export const useUser = (userId: string) => {
+export const useUser = ({ id, params }: { id: string; params?: any }) => {
   const { data: session } = useSession();
   const token = session?.user?.accessToken;
 
   return useQuery({
-    queryKey: ["get-user", userId, token],
+    queryKey: ["get-user", id, token],
     queryFn: async () => {
-      const res = await cuuciApi.get(`/users/${userId}`, {
+      const res = await cuuciApi.get(`/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
+        params,
       });
-      return res.data.data;
+      return res.data;
     },
     enabled: !!token,
     staleTime: 1000 * 60 * 30,

@@ -515,46 +515,36 @@ export const userRole = {
 // ===================================
 
 export const tabKeys = {
-  CUSTOMER: ["address", "orders", "payments"],
+  CUSTOMER: ["orders"],
   WORKER: ["tasks", "attendance"],
   DRIVER: ["deliveries", "attendance"],
-  OUTLET_ADMIN: ["attendance", "outlets", "workers"],
+  OUTLET_ADMIN: ["attendance"],
 };
 
 export const tableKeys = {
-  // CUSTOMER: {
-  //   address: [
-  //     "label",
-  //     "phone",
-  //     "address",
-  //     "latitude",
-  //     "longitude",
-  //     "isPrimary",
-  //     "createdAt",
-  //   ],
-  //   orders: [
-  //     "orderId",
-  //     "status",
-  //     "totalAmount",
-  //     "totalWeight",
-  //     "pickupDate",
-  //     "deliveryDate",
-  //     "paymentStatus",
-  //   ],
-  //   payments: ["paymentId", "method", "amount", "status", "transactionDate"],
-  // },
+  CUSTOMER: {
+    orders: [
+      "Order Id",
+      "Status",
+      "Total Price",
+      "Total Weight",
+      "Create at",
+      "Payment Status",
+    ],
+    payments: ["paymentId", "method", "amount", "status", "transactionDate"],
+  },
   WORKER: {
     tasks: ["Order ID", "Station", "status", "assignedAt", "completedAt"],
     attendance: ["attendance ID", "date", "clockIn", "clockOut", "totalHours"],
   },
   DRIVER: {
     deliveries: [
-      "deliveryId",
-      "orderId",
-      "status",
-      "pickupTime",
-      "dropoffTime",
-      "distanceKm",
+      "Order Id",
+      "Type",
+      "Customer",
+      "Status",
+      "Picked Up At",
+      "Delivered At",
     ],
     attendance: [
       "attendanceId",
