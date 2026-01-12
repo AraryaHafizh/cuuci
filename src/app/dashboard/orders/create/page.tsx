@@ -23,6 +23,7 @@ import { SelectDateTime } from "../components/selectDateTime";
 import { SelectOutlet } from "../components/selectOutlet";
 import { UserNote } from "../components/userNote";
 import { AddressProps } from "./PickupAddressCard";
+import { toast } from "sonner";
 
 export default function Create() {
   const router = useRouter();
@@ -56,8 +57,18 @@ export default function Create() {
     if (!date || !time) return;
 
     const [hours, minutes] = time.split(":").map(Number);
+
     const pickupDate = new Date(date);
     pickupDate.setHours(hours, minutes, 0, 0);
+
+    const now = new Date();
+
+    const isToday = pickupDate.toDateString() === now.toDateString();
+
+    if (isToday && pickupDate < now) {
+      toast.error("Pickup time cannot be earlier than the current time");
+      return;
+    }
 
     await pickup({
       addressId,
