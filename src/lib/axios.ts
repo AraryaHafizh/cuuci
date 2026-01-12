@@ -13,3 +13,12 @@ cuuciApi.interceptors.request.use(async (config) => {
   }
   return config;
 });
+
+cuuciApi.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
