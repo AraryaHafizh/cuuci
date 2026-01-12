@@ -1,6 +1,16 @@
 "use client";
 
 import { MapSelect } from "@/components/Map";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -15,6 +25,7 @@ import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { useEdit } from "@/hooks/outlet/useEdit";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { ReactNode, useState } from "react";
 import { Controller, useForm, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
 
@@ -41,7 +52,9 @@ export function OutletEditInput({ data }: { data: any }) {
 
   const { mutateAsync: edit, isPending } = useEdit(data.id);
 
-  function onSubmit(data: OutletFormValues) {
+  async function onSubmit() {
+    const data = form.getValues();
+
     edit(data);
   }
 
@@ -58,9 +71,9 @@ export function OutletEditInput({ data }: { data: any }) {
         <Button variant={"outline"} onClick={() => router.back()}>
           Cancel
         </Button>
-        <Button onClick={form.handleSubmit(onSubmit)}>
-          {isPending ? <LoadingAnimation /> : "Edit Outlet"}
-        </Button>
+        <EditConfirmation onSubmit={onSubmit} isPending={isPending}>
+          <Button>Edit Outlet</Button>
+        </EditConfirmation>
       </div>
     </section>
   );
@@ -152,3 +165,45 @@ function SelectLocation({
     </Card>
   );
 }
+
+const EditConfirmation = ({
+  onSubmit,
+  isPending,
+  children,
+}: {
+  onSubmit: () => Promise<void>;
+  isPending: boolean;
+  children: ReactNode;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+
+      <AlertDialogContent className="z-9999">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Edit user detail?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Make sure the updated information is correct before saving the
+            changes.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+
+          <Button
+            disabled={isPending}
+            onClick={async () => {
+              await onSubmit();
+              setOpen(false);
+            }}
+          >
+            {isPending ? <LoadingAnimation /> : "Save changes"}
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};

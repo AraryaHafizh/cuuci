@@ -10,17 +10,27 @@ import UsersTable from "./components/UsersTable";
 export default function ClientPage() {
   const [role, setRole] = useState("");
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
   const [debounceSearch] = useDebounceValue(search, 500);
 
   const { data, isPending } = useUsers({
-    params: { role, search: debounceSearch },
+    params: { role, page, search: debounceSearch },
   });
+
+  const users = data?.data ?? [];
+  const meta = data?.meta;
 
   return (
     <section>
       <ActionSection setSearch={setSearch} setRole={setRole} />
-      <UsersTable data={data} isPending={isPending} />
-      <UserPagination />
+      <UsersTable data={users} isPending={isPending} />
+      {meta && (
+        <UserPagination
+          meta={meta}
+          onPageChange={setPage}
+          isPending={isPending}
+        />
+      )}
     </section>
   );
 }

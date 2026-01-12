@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="justify-between space-y-5 md:flex md:space-y-0">
         <p className="opacity-50">© 2025 cuuci. All Rights Reserved.</p>
         <div className="space-x-10">
-          <Link
+          {/* <Link
             href={"/tos"}
             className="opacity-50 transition-opacity duration-300 hover:opacity-100"
           >
@@ -27,7 +27,7 @@ export default function Footer() {
             className="opacity-50 transition-opacity duration-300 hover:opacity-100"
           >
             Support
-          </Link>
+          </Link> */}
         </div>
       </div>
     </section>

@@ -545,7 +545,7 @@ export const tableKeys = {
   // },
   WORKER: {
     tasks: ["Order ID", "Station", "status", "assignedAt", "completedAt"],
-    attendance: ["attendanceId", "date", "clockIn", "clockOut", "totalHours"],
+    attendance: ["attendance ID", "date", "clockIn", "clockOut", "totalHours"],
   },
   DRIVER: {
     deliveries: [

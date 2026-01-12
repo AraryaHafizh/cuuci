@@ -15,7 +15,7 @@ export const useHistory = ({ params }: { params?: any } = {}) => {
         headers: { Authorization: `Bearer ${token}` },
         params,
       });
-      return res.data.data;
+      return res.data;
     },
     enabled: !!token,
     staleTime: 1000 * 60 * 30,
