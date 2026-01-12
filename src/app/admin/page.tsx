@@ -1,18 +1,12 @@
-"use client";
-
 import SectionInfo from "@/components/SectionInfo";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { formatDate, formatNumber } from "@/lib/utils";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { statusFormatter } from "../super-admin/data";
-import { userStatus } from "../worker/data";
-import { dummyData, todayActivityKey, workerStatus } from "./data";
 import BypassOrder from "./BypassOrder";
 import NewOrder from "./NewOrder";
 import { Attendance } from "./attendance";
-
-const adminStatus = "active";
+import { dummyData, todayActivityKey, workerStatus } from "./data";
 
 export default function Admin() {
   return (

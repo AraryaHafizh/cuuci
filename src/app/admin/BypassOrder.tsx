@@ -1,3 +1,5 @@
+"use client";
+
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { SectionTitle } from "@/components/ui/section-title";
 import { useBypassorder } from "@/hooks/order/useBypassOrder";
