@@ -1,7 +1,15 @@
 "use client";
 
-import { OutletProps } from "@/app/super-admin/outlets/props";
-import { SuparAdminConfirmation } from "@/components/popupConfirmation";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Combobox } from "@/components/ui/combobox";
@@ -13,13 +21,15 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
-import { useAdminSignup } from "@/hooks/auth/useSignup";
 import { useOutlets } from "@/hooks/outlet/useOutlet";
+import { useEditAdmin } from "@/hooks/user/useEdit";
 import { useUsers } from "@/hooks/user/useUser";
 import { formatPhone } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { ReactNode, useEffect, useState } from "react";
 import { Controller, useForm, UseFormReturn } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 import { roles } from "../../data";
 import { UserProps } from "../../props";
@@ -44,54 +54,76 @@ export function UserEditInput({ id }: { id: string }) {
   const form = useForm<OutletFormValues>({
     resolver: zodResolver(editUserSchema),
     defaultValues: {
-      name: userData?.name,
-      email: userData?.email,
+      name: "",
+      email: "",
       password: "",
-      phoneNumber: userData?.phoneNumber,
-      role: userData?.role,
-      outletId: userData?.outletId ?? "",
+      phoneNumber: "",
+      role: "",
+      outletId: "",
     },
   });
 
-  const {
-    mutateAsync: signup,
-    isPending,
-    openDialog,
-    setOpenDialog,
-  } = useAdminSignup();
+  const { mutateAsync: edit, isPending } = useEditAdmin(id);
 
-  function onSubmit(data: any) {
-    const filtered = Object.fromEntries(
-      Object.entries(data).filter(
-        ([_, v]) => v !== "" && v !== undefined && v !== null,
-      ),
-    );
+  useEffect(() => {
+    if (!userData) return;
 
-    if (filtered.phoneNumber) {
-      filtered.phoneNumber = "+62" + filtered.phoneNumber;
+    form.reset({
+      name: userData.name ?? "",
+      email: userData.email ?? "",
+      password: "",
+      phoneNumber: userData.phoneNumber?.replace("+62", "") ?? "",
+      role: userData.role ?? "",
+      outletId: userData.outletId ?? "",
+    });
+  }, [userData]);
+
+  async function onSubmit() {
+    const values = form.getValues();
+    const payload: Partial<OutletFormValues> = {};
+
+    // NAME
+    if (values.name?.trim() && values.name.trim() !== userData?.name) {
+      payload.name = values.name.trim();
     }
+
+    // PASSWORD (selalu boleh kalau diisi)
+    if (values.password?.trim()) {
+      payload.password = values.password;
+    }
+
+    // PHONE NUMBER
+    if (values.phoneNumber?.trim()) {
+      const cleaned = values.phoneNumber.replace(/\s+/g, "");
+      const formatted = `+62${cleaned.replace(/^62/, "")}`;
+
+      if (formatted !== userData?.phoneNumber) {
+        payload.phoneNumber = formatted;
+      }
+    }
+
+    if (Object.keys(payload).length === 0) {
+      toast("No changes detected");
+      return;
+    }
+
+    await edit(payload);
   }
 
   return (
     <section>
       <div className="mt-10 gap-5 space-y-5 lg:flex lg:space-y-0">
         <BasicInfo form={form} />
-        <UserRole form={form} isCustomer={isCustomer} />
+        <UserRole form={form} />
       </div>
       <div className="mt-5 flex justify-end gap-2">
         <Button variant={"outline"} onClick={() => router.back()}>
           Cancel
         </Button>
-        <Button onClick={form.handleSubmit(onSubmit)}>
-          {isPending ? <LoadingAnimation /> : "Create User"}
-        </Button>
+        <EditConfirmation onSubmit={onSubmit} isPending={isPending}>
+          <Button>Edit User</Button>
+        </EditConfirmation>
       </div>
-      <SuparAdminConfirmation
-        title="User Created"
-        description="The new user has been added successfully."
-        open={openDialog}
-        onOpenChange={setOpenDialog}
-      />
     </section>
   );
 }
@@ -128,6 +160,7 @@ function BasicInfo({ form }: { form: UseFormReturn<OutletFormValues> }) {
                   {...field}
                   placeholder="user@mail.co"
                   autoComplete="off"
+                  disabled={true}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -170,7 +203,7 @@ function BasicInfo({ form }: { form: UseFormReturn<OutletFormValues> }) {
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>Password</FieldLabel>
-                <Input {...field} />
+                <Input {...field} placeholder="*****" />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
@@ -183,13 +216,7 @@ function BasicInfo({ form }: { form: UseFormReturn<OutletFormValues> }) {
   );
 }
 
-function UserRole({
-  form,
-  isCustomer,
-}: {
-  form: UseFormReturn<OutletFormValues>;
-  isCustomer: boolean;
-}) {
+function UserRole({ form }: { form: UseFormReturn<OutletFormValues> }) {
   const { data } = useOutlets();
 
   const outlets = (data || []).map((outlet) => ({
@@ -216,7 +243,7 @@ function UserRole({
                   value={field.value}
                   onChange={field.onChange}
                   placeholder="Select Role"
-                  disabled={isCustomer}
+                  disabled={true}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -235,7 +262,7 @@ function UserRole({
                   value={field.value}
                   onChange={field.onChange}
                   placeholder="Select Store"
-                  disabled={isCustomer}
+                  disabled={true}
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -248,3 +275,45 @@ function UserRole({
     </Card>
   );
 }
+
+const EditConfirmation = ({
+  onSubmit,
+  isPending,
+  children,
+}: {
+  onSubmit: () => Promise<void>;
+  isPending: boolean;
+  children: ReactNode;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Edit user detail?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Make sure the updated information is correct before saving the
+            changes.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+
+        <AlertDialogFooter>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+
+          <Button
+            disabled={isPending}
+            onClick={async () => {
+              await onSubmit();
+              setOpen(false);
+            }}
+          >
+            {isPending ? <LoadingAnimation /> : "Save changes"}
+          </Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};

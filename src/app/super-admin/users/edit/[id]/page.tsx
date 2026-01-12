@@ -18,7 +18,7 @@ async function UserEdit(props: UserEditProps) {
   function Greeting() {
     return (
       <SectionInfo
-        title={`Edit User ${id}`}
+        title="Edit User"
         description="Edit details and settings for an existing worker, driver, or outlet admin."
       />
     );

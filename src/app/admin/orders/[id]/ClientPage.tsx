@@ -183,7 +183,7 @@ function PaymentDetail({ data }: { data: any }) {
       <p className="mb-2">Payment Summary</p>
       <HorizontalDetail
         label="Status"
-        data={formatOrderStatus(data.payment.status)}
+        data={formatOrderStatus(data.payment?.status || "Price Pending")}
       />
       <HorizontalDetail
         label="Subtotal"
