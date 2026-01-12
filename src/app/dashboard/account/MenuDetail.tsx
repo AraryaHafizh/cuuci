@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { Separator } from "@/components/ui/separator";
-
 import { useAddress } from "@/hooks/address/useAddress";
 import { useEditPassword } from "@/hooks/auth/useEditPassword";
 import { useEdit, userUpdateProps } from "@/hooks/user/useEdit";
