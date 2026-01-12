@@ -12,17 +12,32 @@ export default function ClientPage() {
   const { data: session } = useSession();
   const [role, setRole] = useState("");
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
   const [debounceSearch] = useDebounceValue(search, 500);
 
   const { data, isPending } = useUsers({
-    params: { role, outletId: session?.user?.outletId, search: debounceSearch },
+    params: {
+      role,
+      page,
+      outletId: session?.user?.outletId,
+      search: debounceSearch,
+    },
   });
-  
+
+  const workers = data?.data ?? [];
+  const meta = data?.meta;
+
   return (
     <section>
       <ActionSection setSearch={setSearch} setRole={setRole} />
-      <WorkerTable data={data} isPending={isPending} />
-      <WorkerPagination />
+      <WorkerTable data={workers} isPending={isPending} />
+      {meta && (
+        <WorkerPagination
+          meta={meta}
+          onPageChange={setPage}
+          isPending={isPending}
+        />
+      )}
     </section>
   );
 }

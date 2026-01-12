@@ -9,17 +9,27 @@ import { useDebounceValue } from "usehooks-ts";
 
 export default function ClientPage() {
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
   const [debounceSearch] = useDebounceValue(search, 500);
 
   const { data, isPending } = useOutlets({
-    params: { search: debounceSearch },
+    params: { page, search: debounceSearch },
   });
+
+  const outlets = data?.data ?? [];
+  const meta = data?.meta;
 
   return (
     <section>
       <ActionSection setSearch={setSearch} />
-      <OutletsTable data={data} isPending={isPending} />
-      <OutletPagination />
+      <OutletsTable data={outlets} isPending={isPending} />
+      {meta && (
+              <OutletPagination
+                meta={meta}
+                onPageChange={setPage}
+                isPending={isPending}
+              />
+            )}
     </section>
   );
 }

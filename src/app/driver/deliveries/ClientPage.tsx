@@ -11,15 +11,21 @@ export default function ClientPage() {
   const [status, setStatus] = useState("");
   const [type, setType] = useState("");
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
   const [debounceSearch] = useDebounceValue(search, 500);
 
   const { data, isPending } = useHistory({
     params: {
       type,
+      page,
       status,
       search: debounceSearch,
     },
   });
+
+  const deliveries = data?.data ?? [];
+  const meta = data?.meta;
+
   return (
     <section>
       <ActionSection
@@ -27,8 +33,14 @@ export default function ClientPage() {
         setStatus={setStatus}
         setType={setType}
       />
-      <HistoryTable data={data} isPending={isPending} />
-      <DeliveryPagination />
+      <HistoryTable data={deliveries} isPending={isPending} />
+      {meta && (
+        <DeliveryPagination
+          meta={meta}
+          onPageChange={setPage}
+          isPending={isPending}
+        />
+      )}
     </section>
   );
 }

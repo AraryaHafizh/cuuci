@@ -89,28 +89,29 @@ export function SummonTable({
       </TableHeader>
 
       <TableBody>
-        {tab === "attendance" && isPending ? (
-          <TableRow>
-            <TableCell colSpan={labels.length + 1} className="h-52">
-              <div className="flex h-full w-full items-center justify-center">
-                <LoadingAnimation />
-              </div>
-            </TableCell>
-          </TableRow>
-        ) : (
-          (attendances?.data ?? []).map((attendance: any, i: number) => (
-            <TableRow key={i} className="border-none">
-              <TableCell className="font-medium">{i + 1}</TableCell>
-              <TableCell>{attendance.id}</TableCell>
-              <TableCell>{formatDate(attendance.createdAt)}</TableCell>
-              <TableCell>{formatDate(attendance.checkIn)}</TableCell>
-              <TableCell>{formatDate(attendance.checkOut)}</TableCell>
-              <TableCell>
-                {countDuration(attendance.checkIn, attendance.checkOut)}
+        {tab === "attendance" &&
+          (isPending ? (
+            <TableRow>
+              <TableCell colSpan={labels.length + 1} className="h-52">
+                <div className="flex h-full w-full items-center justify-center">
+                  <LoadingAnimation />
+                </div>
               </TableCell>
             </TableRow>
-          ))
-        )}
+          ) : (
+            (attendances?.data ?? []).map((attendance: any, i: number) => (
+              <TableRow key={i} className="border-none">
+                <TableCell className="font-medium">{i + 1}</TableCell>
+                <TableCell>{attendance.id}</TableCell>
+                <TableCell>{formatDate(attendance.createdAt)}</TableCell>
+                <TableCell>{formatDate(attendance.checkIn)}</TableCell>
+                <TableCell>{formatDate(attendance.checkOut)}</TableCell>
+                <TableCell>
+                  {countDuration(attendance.checkIn, attendance.checkOut)}
+                </TableCell>
+              </TableRow>
+            ))
+          ))}
 
         {tab === "tasks" &&
           tasks.map((task: any, i: number) => (
