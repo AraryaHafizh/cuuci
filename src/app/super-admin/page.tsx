@@ -1,12 +1,11 @@
-"use client";
-
 import SectionInfo from "@/components/SectionInfo";
+import { SectionTitle } from "@/components/ui/section-title";
 import { Separator } from "@/components/ui/separator";
-import { formatDate, formatNumber } from "@/lib/utils";
+import { formatNumber } from "@/lib/utils";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { dummyData, statusFormatter } from "./data";
-import { SectionTitle } from "@/components/ui/section-title";
 import { LaundryItems } from "./LaundryItems";
+import { TodayActivities } from "./TodayActivity";
 
 export default function Dashboard() {
   return (
@@ -133,30 +132,6 @@ function OutletPerformance() {
             </div>
           ))}
         </div>
-      </div>
-    </section>
-  );
-}
-
-function TodayActivities() {
-  return (
-    <section className="mt-5 h-fit flex-2 rounded-2xl border bg-(--container-bg) p-5">
-      <p>Today Activities</p>
-      <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {dummyData.todayActivity.map((item, i) => (
-          <div
-            key={i}
-            className="bg-foreground/3 flex h-27 flex-col justify-between rounded-lg border-2 p-5"
-          >
-            <p className="font-bold">
-              Order {item.id} is{" "}
-              {statusFormatter[item.status as keyof typeof statusFormatter]}
-            </p>
-            <p className="text-sm font-light opacity-50">
-              {formatDate(item.date, "time")}
-            </p>
-          </div>
-        ))}
       </div>
     </section>
   );
