@@ -39,7 +39,7 @@ export function LaundryItems() {
   }
 
   return (
-    <section className="flex h-[60vh] flex-1 flex-col rounded-2xl border bg-(--container-bg) p-5 md:h-[45vh]">
+    <section className="flex flex-1 flex-col rounded-2xl border bg-(--container-bg) p-5">
       <SectionTitle title="Laundry items" />
 
       <div className="flex min-h-0 flex-1 flex-col pt-4">
@@ -47,12 +47,12 @@ export function LaundryItems() {
           <div className="flex flex-1 items-center justify-center">
             <LoadingAnimation />
           </div>
-        ) : data.length === 0 ? (
-          <div className="flex flex-1 items-center justify-center rounded-lg border-2 border-dashed text-center">
-            <p className="opacity-50">no laundry items, start adding now.</p>
+        ) : data === null || data.length === 0 ? (
+          <div className="mt-5 flex h-50 items-center justify-center rounded-lg border-2 border-dashed lg:h-full">
+            <p className="text-sm opacity-50">No laundry data available.</p>
           </div>
         ) : (
-          <div className="scroll-hidden min-h-0 flex-1 overflow-y-auto">
+          <div className="scroll-hidden min-h-0 flex-1 overflow-y-auto text-sm">
             {data.map((item: any) => (
               <div
                 key={item.id}
