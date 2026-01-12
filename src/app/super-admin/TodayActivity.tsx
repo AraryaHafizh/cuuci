@@ -30,9 +30,9 @@ export function TodayActivities() {
         <div className="flex h-100 items-center justify-center">
           <LoadingAnimation />
         </div>
-      ) : orders.length === 0 ? (
-        <div className="mt-5 flex h-100 items-center justify-center rounded-2xl border-3 border-dashed">
-          <p className="opacity-50">No activities for today</p>
+      ) : orders === null || orders.length === 0 ? (
+        <div className="mt-5 flex h-90 items-center justify-center rounded-lg border-2 border-dashed">
+          <p className="text-sm opacity-50">No activities for today.</p>
         </div>
       ) : (
         <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
