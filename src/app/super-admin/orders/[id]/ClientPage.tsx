@@ -19,7 +19,6 @@ import {
   formatPhoneDb,
 } from "@/lib/utils";
 import { Check, CircleDashed } from "lucide-react";
-import { OrderLogs } from "./components/OrderLogs";
 
 export default function ClientPage({ id }: { id: string }) {
   const { data, isPending } = useDetailAdmin(id);
@@ -33,14 +32,16 @@ export default function ClientPage({ id }: { id: string }) {
       <section className="mt-5 gap-5 md:flex">
         <div className="flex-4 space-y-5 overflow-x-auto">
           <ItemTable data={data} />
-          <OrderLogs data={data} />
+          <div className="gap-5 space-y-5 md:flex md:space-y-0">
+            <Note data={data} />
+            <CustomerDetail data={data} />
+            <PaymentDetail data={data} />
+          </div>
         </div>
 
         <div className="mt-5 flex-1 space-y-5 md:mt-0">
-          <CustomerDetail data={data} />
           <AddressDetail data={data} />
           <AssignmentDetail data={data} />
-          <PaymentDetail data={data} />
         </div>
       </section>
     </main>
@@ -130,9 +131,23 @@ function ItemTable({ data }: { data: any }) {
   );
 }
 
+function Note({ data }: { data: any }) {
+  return (
+    <section className="flex-1 rounded-2xl border bg-(--container-bg) p-5">
+      <p>Order notes</p>
+      <div className="mt-3 text-sm font-light">
+        <p className="opacity-50">From {data.customer.name}</p>
+        <p>
+          {data.notes?.find((n: any) => n.type === "INSTRUCTION")?.body ?? "-"}
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function CustomerDetail({ data }: { data: any }) {
   return (
-    <section className="h-fit rounded-2xl border bg-(--container-bg) p-5">
+    <section className="h-fit flex-1 rounded-2xl border bg-(--container-bg) p-5">
       <p className="mb-2">Customer Details</p>
       <HorizontalDetail label="Order id" data={data.orderNumber} />
       <HorizontalDetail label="Customer" data={data.customer.name} />
@@ -188,18 +203,33 @@ function AssignmentDetail({ data }: { data: any }) {
 
 function PaymentDetail({ data }: { data: any }) {
   const nf = new Intl.NumberFormat("id-ID");
+  const paymentStatus = data?.payment?.status;
 
   return (
-    <section className="h-fit rounded-2xl border bg-(--container-bg) p-5">
-      <p className="mb-2">Payment Summary</p>
-      <HorizontalDetail
-        label="Status"
-        data={formatOrderStatus(data.payment?.status || "Price Pending")}
-      />
-      <HorizontalDetail
-        label="Subtotal"
-        data={`Rp ${nf.format(data.totalPrice)}`}
-      />
+    <section className="flex flex-1 flex-col rounded-2xl border bg-(--container-bg) p-5">
+      <p className="mb-4">Payment Summary</p>
+
+      {!paymentStatus ? (
+        <div className="flex min-h-32 flex-1 items-center justify-center rounded-2xl border-3 border-dashed text-sm md:min-h-0">
+          <p className="opacity-50">Price Pending</p>
+        </div>
+      ) : (
+        <>
+          <HorizontalDetail
+            label="Status"
+            data={formatOrderStatus(paymentStatus)}
+          />
+          <HorizontalDetail
+            label="Laundry price"
+            data={`Rp ${nf.format(data.totalPrice)}`}
+          />
+          <HorizontalDetail label="Delivery price" data="Rp 10.000" />
+          <HorizontalDetail
+            label="Subtotal"
+            data={`Rp ${nf.format(data.totalPrice)}`}
+          />
+        </>
+      )}
     </section>
   );
 }

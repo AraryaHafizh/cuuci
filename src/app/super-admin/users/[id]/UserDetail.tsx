@@ -1,31 +1,37 @@
 "use client";
 
-import { userRole } from "@/app/super-admin/data";
 import SectionInfo from "@/components/SectionInfo";
 import { LoadingScreen } from "@/components/ui/loading-animation";
 import { useUser } from "@/hooks/user/useUser";
 import { formatPhoneDb } from "@/lib/utils";
-import UserDetailTable from "./components/UserDetailTable";
 import { useState } from "react";
+import { userRole } from "../../data";
+import UserDetailTable from "./components/UserDetailTable";
 
-export function WorkerDetail({ userId }: { userId: string }) {
+export default function UserDetail({ userId }: { userId: string }) {
   const [page, setPage] = useState(1);
-
   const { data, isPending } = useUser({ id: userId, params: { page } });
 
   if (isPending) return <LoadingScreen />;
 
-  const userData = data.user;
-  const taskData = data.task;
+  const userData = data.data.user;
+  const taskData = data.data.task;
+  const meta = data.meta;
 
   return (
     <main className="mt-25 mb-20 md:mt-40 lg:mt-45 xl:mt-50">
       <Greeting data={userData} />
       <section className="mt-10 gap-5 space-y-5 lg:flex lg:space-y-0 xl:mt-20">
         <UserInfo data={userData} />
-        <UserStats data={userData} />
+        <UserStats data={userData} task={taskData} />
       </section>
-      <UserDetailTable userId={userId} role={userData.role} tasks={taskData} />
+      <UserDetailTable
+        userId={userId}
+        role={userData.role}
+        tasks={taskData}
+        meta={meta}
+        setPage={setPage}
+      />
     </main>
   );
 
@@ -57,7 +63,7 @@ export function WorkerDetail({ userId }: { userId: string }) {
     );
   }
 
-  function UserStats({ data }: { data: any }) {
+  function UserStats({ data, task }: { data: any; task: any }) {
     function Widget({ title, data }: any) {
       return (
         <div className="bg-foreground/3 flex w-full flex-col items-center justify-center space-y-3 rounded-lg border py-5 text-center lg:py-10 2xl:p-10">
@@ -67,12 +73,19 @@ export function WorkerDetail({ userId }: { userId: string }) {
       );
     }
 
-    return (
-      <section className="flex flex-2 gap-5 rounded-2xl border bg-(--container-bg) p-5">
-        <Widget title="Available Requests" data="10" />
-        <Widget title="Available Requests" data="10" />
-        <Widget title="Available Requests" data="10" />
-      </section>
-    );
+    if (data.role === "CUSTOMER") {
+      return (
+        <section className="flex flex-2 gap-5 rounded-2xl border bg-(--container-bg) p-5">
+          <Widget title="Total Orders" data={task.length} />
+        </section>
+      );
+    }
+    if (data.role === "WORKER") {
+      return (
+        <section className="flex flex-2 gap-5 rounded-2xl border bg-(--container-bg) p-5">
+          <Widget title="Finished tasks" data={task.length} />
+        </section>
+      );
+    }
   }
 }

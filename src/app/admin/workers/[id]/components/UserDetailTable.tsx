@@ -33,7 +33,7 @@ export default function UserDetailTable({
 }) {
   const tabKey = tabKeys[role as keyof typeof tabKeys];
   const [tab, setTab] = useState(tabKey[0]);
-  const { data: attendances, isPending } = useLog(userId);
+  const { data: attendances, isPending } = useLog({ id: userId });
 
   return (
     <section className="mt-5 rounded-2xl border bg-(--container-bg) p-5">

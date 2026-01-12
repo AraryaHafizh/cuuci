@@ -4,7 +4,7 @@ import { cuuciApi } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
-export const useLog = (id: string) => {
+export const useLog = ({ id, params }: { id: string; params?: any }) => {
   const { data: session } = useSession();
   const token = session?.user?.accessToken;
 
@@ -13,6 +13,7 @@ export const useLog = (id: string) => {
     queryFn: async () => {
       const res = await cuuciApi.get(`/attendances/log/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
+        params,
       });
       return res.data;
     },
