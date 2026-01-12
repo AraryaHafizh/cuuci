@@ -219,7 +219,7 @@ function BasicInfo({ form }: { form: UseFormReturn<OutletFormValues> }) {
 function UserRole({ form }: { form: UseFormReturn<OutletFormValues> }) {
   const { data } = useOutlets();
 
-  const outlets = (data || []).map((outlet) => ({
+  const outlets = (data || []).map((outlet:any) => ({
     value: outlet.id,
     label: outlet.name,
   }));
