@@ -12,7 +12,6 @@ import { LoadingScreen } from "@/components/ui/loading-animation";
 
 export default function Account() {
   const { data: session, status } = useSession();
-  console.log(session?.user.accessToken);
 
   if (status === "loading") return <LoadingScreen />;
 
