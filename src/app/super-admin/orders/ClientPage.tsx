@@ -1,7 +1,6 @@
 "use client";
 
 import { useOrders } from "@/hooks/order/useOrders";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { ActionSection } from "./ActionSection";
@@ -9,19 +8,13 @@ import { OrderTable } from "./OrderTable";
 import OrderPagination from "./Pagination";
 
 export default function ClientPage() {
-  const { data: session } = useSession();
   const [status, setStatus] = useState("");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [debounceSearch] = useDebounceValue(search, 500);
 
   const { data, isPending } = useOrders({
-    params: {
-      status,
-      page,
-      outletId: session?.user?.outletId,
-      search: debounceSearch,
-    },
+    params: { status, search: debounceSearch, page, limit: 10 },
   });
 
   const orders = data?.data ?? [];

@@ -65,7 +65,7 @@ export const Form = () => {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="signup-form">Username</FieldLabel>
+                <FieldLabel htmlFor="signup-form">Full name</FieldLabel>
                 <Input
                   {...field}
                   id="signup-form"

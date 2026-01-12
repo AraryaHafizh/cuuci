@@ -86,8 +86,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       if (trigger === "update" && hasAuthUser(token.user)) {
-        console.log("jalan 0000000000x");
-
         const refreshedUser = await refetch(token.user.accessToken);
 
         token.user = {

@@ -106,13 +106,24 @@ function ItemTable({ data }: { data: any }) {
         </TableHeader>
 
         <TableBody>
-          {data.orderItems.map((item: any, i: number) => (
-            <TableRow key={i} className="border-none">
-              <TableCell>{i + 1}</TableCell>
-              <TableCell>{item.laundryItem.name}</TableCell>
-              <TableCell>{item.quantity}</TableCell>
+          {!data?.orderItems || data.orderItems.length === 0 ? (
+            <TableRow className="h-52">
+              <TableCell
+                colSpan={3}
+                className="text-muted-foreground py-10 text-center"
+              >
+                Order not yet received by outlet.
+              </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            data.orderItems.map((item: any, i: number) => (
+              <TableRow key={i} className="border-none">
+                <TableCell>{i + 1}</TableCell>
+                <TableCell>{item.laundryItem.name}</TableCell>
+                <TableCell>{item.quantity}</TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </section>

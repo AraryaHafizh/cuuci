@@ -192,8 +192,7 @@ export const dummyBypass = [
 // ===================================
 
 export const filterStatus = {
-  ORDER_PLACED: "Order Placed",
-  CANCELLED: "Cancelled",
+  LOOKING_FOR_DRIVER: "Looking for Driver",
   WAITING_FOR_PICKUP: "Waiting for Pickup",
   LAUNDRY_ON_THE_WAY: "Laundry on the Way",
   ARRIVED_AT_OUTLET: "Arrived at Outlet",

@@ -16,7 +16,7 @@ export const useUsers = ({ params }: { params?: any } = {}) => {
         headers: { Authorization: `Bearer ${token}` },
         params,
       });
-      return res.data.data;
+      return res.data;
     },
     enabled: !!token,
     staleTime: 1000 * 60 * 30,
@@ -34,8 +34,6 @@ export const useUser = (userId: string) => {
       const res = await cuuciApi.get(`/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(res.data.data);
-      
       return res.data.data;
     },
     enabled: !!token,

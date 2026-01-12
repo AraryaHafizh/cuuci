@@ -1,14 +1,16 @@
 "use client";
 
 import { cuuciApi } from "@/lib/axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export interface userUpdateProps {
   name?: string;
   phoneNumber?: string;
+  password?: string;
 }
 
 export const useEdit = () => {
@@ -30,9 +32,38 @@ export const useEdit = () => {
 
     onSuccess: async (data) => {
       await update({ reason: "profile-updated" });
-      console.log("update");
 
       toast(data.message);
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data.message ?? "Oops, something went wrong");
+    },
+  });
+};
+
+export const useEditAdmin = (id: string) => {
+  const { data: session } = useSession();
+  const token = session?.user?.accessToken;
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: async (body: userUpdateProps) => {
+      const { data } = await cuuciApi.patch(
+        `/users/update/${id}`,
+        body ,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      return data;
+    },
+
+    onSuccess: async (data) => {
+      queryClient.invalidateQueries({ queryKey: ["get-users"] });
+      toast(data.message);
+
+      router.back();
     },
     onError: (error: AxiosError<{ message: string }>) => {
       toast.error(error.response?.data.message ?? "Oops, something went wrong");

@@ -1,11 +1,22 @@
+import { auth } from "@/auth";
 import SectionInfo from "@/components/SectionInfo";
+import { redirect } from "next/navigation";
 import { Form } from "./Form";
 
 interface ResetPasswordProps {
   params: Promise<{ token: string }>;
 }
 
-async function page(props: ResetPasswordProps) {
+const ResetPassword = async (props: ResetPasswordProps) => {
+  const session = await auth();
+
+  if (session?.user.role === "CUSTOMER") return redirect("/dashboard");
+  if (session?.user.role === "WORKER") return redirect("/worker");
+  if (session?.user.role === "DRIVER") return redirect("/driver");
+  if (session?.user.role === "OUTLET_ADMIN") return redirect("/admin");
+  if (session?.user.role === "SUPER_ADMIN") return redirect("/super-admin");
+  else if (session?.user.id) return redirect("/");
+
   const { token } = await props.params;
   return (
     <main
@@ -22,6 +33,6 @@ async function page(props: ResetPasswordProps) {
       </section>
     </main>
   );
-}
+};
 
-export default page;
+export default ResetPassword;
