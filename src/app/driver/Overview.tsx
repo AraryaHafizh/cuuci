@@ -1,14 +1,11 @@
 "use client";
 
 import { SectionTitle } from "@/components/ui/section-title";
+import { useHistory } from "@/hooks/driver/useHIstory";
 import { useAvailablePickup } from "@/hooks/order/useAvailablePickup";
-import { useHistory } from "@/hooks/worker/useHistory";
-import { useStatus } from "@/hooks/worker/useStatus";
-import { CircleCheck, CircleMinus } from "lucide-react";
 
 export function Overview() {
   const { data: deliveries, isPending } = useAvailablePickup();
-  const { data: status } = useStatus();
   const { data: completed } = useHistory({
     params: { status: "COMPLETED" },
   });
@@ -53,18 +50,7 @@ export function Overview() {
 
       <div className="mt-5 flex gap-5">
         <Widget title="Available Deliveries" data={deliveries?.length ?? 0} />
-        <Widget title="Completed" data={completed?.length ?? 0} />
-        <Widget
-          title="Status"
-          tooltip={status?.isBypass ? "You have bypass request" : "All good"}
-          data={
-            status?.isBypass ? (
-              <CircleMinus className="text-destructive h-10 w-10 md:h-10 md:w-10 xl:h-14 xl:w-14" />
-            ) : (
-              <CircleCheck className="h-10 w-10 md:h-10 md:w-10 xl:h-14 xl:w-14" />
-            )
-          }
-        />
+        <Widget title="Completed" data={completed?.data?.length ?? 0} />
       </div>
     </section>
   );

@@ -12,6 +12,7 @@ import { LogOut, Menu } from "lucide-react";
 import Link from "next/link";
 import { NotificationBadge } from "../NotificationBandge";
 import { SignoutConfirmation } from "../popupConfirmation";
+import { SignoutPopup } from "./SignoutPopup";
 
 const WorkerNavbar = () => {
   return (
@@ -26,6 +27,7 @@ const WorkerNavbar = () => {
             <DesktopNav />
             <MobileNav />
           </div>
+          <SignoutPopup />
           <NotificationBadge />
         </section>
       </div>
@@ -39,7 +41,6 @@ const DesktopNav = () => {
   return (
     <section className="hidden items-center space-x-5 md:flex">
       <Link href={"/worker/tasks"}>History</Link>
-      <Link href={"/worker/account"}>Account</Link>
     </section>
   );
 };
@@ -57,9 +58,6 @@ const MobileNav = () => {
         <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2">
           <DropdownMenuItem asChild>
             <Link href="/worker/tasks">History</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href="/worker/account">Account</Link>
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />

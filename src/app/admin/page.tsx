@@ -18,7 +18,7 @@ export default function Admin() {
           <OrderOverview />
         </div>
         <WorkerActivities />
-        <div className="flex-1 space-y-5">
+        <div className="flex flex-1 flex-col space-y-5">
           <BypassOrder />
           <NewOrder />
         </div>
