@@ -104,11 +104,11 @@ export default function ClientPage({ id }: { id: string }) {
             </PickupRequest>
           ) : data.status === "READY_FOR_DELIVERY" ? (
             <AcceptRequest onSubmit={takeOrder} isPending={isPending2}>
-              <Button className="w-full">Accept Pickup</Button>
+              <Button className="w-full">Accept Delivery</Button>
             </AcceptRequest>
           ) : (
             <FinishRequest onSubmit={finishOrder} isPending={isPending4}>
-              <Button className="w-full">Finish Pickup</Button>
+              <Button className="w-full">Finish Delivery</Button>
             </FinishRequest>
           )}
         </div>

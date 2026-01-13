@@ -12,6 +12,7 @@ import { LogOut, Menu } from "lucide-react";
 import Link from "next/link";
 import { NotificationBadge } from "../NotificationBandge";
 import { SignoutConfirmation } from "../popupConfirmation";
+import { SignoutPopup } from "./SignoutPopup";
 
 const DriverNavbar = () => {
   return (
@@ -26,6 +27,7 @@ const DriverNavbar = () => {
             <DesktopNav />
             <MobileNav />
           </div>
+          <SignoutPopup />
           <NotificationBadge />
         </section>
       </div>
@@ -39,7 +41,6 @@ const DesktopNav = () => {
   return (
     <section className="hidden items-center space-x-5 md:flex">
       <Link href={"/driver/deliveries"}>My Deliveries</Link>
-      <Link href={"/driver/account"}>Account</Link>
     </section>
   );
 };
@@ -57,9 +58,6 @@ const MobileNav = () => {
         <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2">
           <DropdownMenuItem asChild>
             <Link href="/driver/deliveries">My Deliveries</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href="/driver/account">Account</Link>
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />
