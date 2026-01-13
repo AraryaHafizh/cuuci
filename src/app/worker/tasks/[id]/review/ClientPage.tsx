@@ -34,6 +34,9 @@ export default function ClientPage({ id }: { id: string }) {
 
   const [note, setNote] = useState("");
   const [items, setItems] = useState<{ id: string; qty: number }[]>([]);
+  const [bpyassItems, setBypassItems] = useState<{ id: string; qty: number }[]>(
+    [],
+  );
 
   useEffect(() => {
     if (data?.order?.orderItems) {
@@ -43,11 +46,22 @@ export default function ClientPage({ id }: { id: string }) {
           qty: 0,
         })),
       );
+      setBypassItems(
+        data.order.orderItems.map((item: OrderItem) => ({
+          id: item.laundryItemId,
+          name: item.laundryItem.name,
+          qty: 0,
+        })),
+      );
     }
   }, [data]);
 
   const updateQty = (i: number, qty: number) =>
     setItems((prev) =>
+      prev.map((v, idx) => (idx === i ? { ...v, qty: Math.max(qty, 0) } : v)),
+    );
+  const updateBypassQty = (i: number, qty: number) =>
+    setBypassItems((prev) =>
       prev.map((v, idx) => (idx === i ? { ...v, qty: Math.max(qty, 0) } : v)),
     );
 
@@ -60,10 +74,13 @@ export default function ClientPage({ id }: { id: string }) {
       <section className="mt-10 gap-5 space-y-5 lg:flex lg:space-y-0">
         <Items data={data} items={items} updateQty={updateQty} />
         <div className="flex-1 space-y-5">
-          <Action data={data} note={note} setNote={setNote} />
-          <FinishTask id={data.id} body={items}>
-            <Button className="w-full py-5">Finish task</Button>
-          </FinishTask>
+          <Action
+            data={data}
+            items={bpyassItems}
+            note={note}
+            setNote={setNote}
+            updateBypassQty={updateBypassQty}
+          />
         </div>
       </section>
     </main>
@@ -111,15 +128,66 @@ function Items({
   updateQty: (i: number, val: number) => void;
 }) {
   return (
-    <section className="flex-2 rounded-2xl border bg-(--container-bg) p-5">
-      <SectionTitle title="Order Items" className="mb-5" />
+    <section className="flex flex-2 flex-col justify-between gap-15 rounded-2xl border bg-(--container-bg) p-5 md:gap-0">
+      <div>
+        <div className="mb-5">
+          <SectionTitle title="Order Items" />
+          <p className="text-sm opacity-50">
+            Please re-enter the items before finishing the task.
+          </p>
+        </div>
+
+        {data.order.orderItems.map((item: OrderItem, i: number) => (
+          <div key={i}>
+            <div className="flex items-center justify-between">
+              <p className="md:text-lg">{item.laundryItem.name}</p>
+              <Counter
+                number={items[i]?.qty ?? 0}
+                setNumber={(num) => (num < 0 ? null : updateQty(i, num))}
+              />
+            </div>
+            {i !== data.order.orderItems.length - 1 && (
+              <Separator className="my-3" />
+            )}
+          </div>
+        ))}
+      </div>
+      <FinishTask id={data.id} body={items}>
+        <Button>Finish task</Button>
+      </FinishTask>
+    </section>
+  );
+}
+
+function Action({
+  data,
+  items,
+  note,
+  setNote,
+  updateBypassQty,
+}: {
+  data: OrderWorkProcess;
+  items: { id: string; qty: number }[];
+  note: string;
+  setNote: (note: string) => void;
+  updateBypassQty: (i: number, val: number) => void;
+}) {
+  return (
+    <section className="h-fit rounded-2xl border bg-(--container-bg) p-5">
+      <div className="mb-5">
+        <SectionTitle title="Request Bypass" />
+        <p className="text-sm opacity-50">
+          Please re-enter the items before submitting bypass.
+        </p>
+      </div>
+
       {data.order.orderItems.map((item: OrderItem, i: number) => (
         <div key={i}>
           <div className="flex items-center justify-between">
             <p className="md:text-lg">{item.laundryItem.name}</p>
             <Counter
               number={items[i]?.qty ?? 0}
-              setNumber={(num) => (num < 0 ? null : updateQty(i, num))}
+              setNumber={(num) => (num < 0 ? null : updateBypassQty(i, num))}
             />
           </div>
           {i !== data.order.orderItems.length - 1 && (
@@ -127,22 +195,6 @@ function Items({
           )}
         </div>
       ))}
-    </section>
-  );
-}
-
-function Action({
-  data,
-  note,
-  setNote,
-}: {
-  data: OrderWorkProcess;
-  note: string;
-  setNote: (note: string) => void;
-}) {
-  return (
-    <section className="h-fit rounded-2xl border bg-(--container-bg) p-5">
-      <SectionTitle title="Request Bypass" />
 
       <Textarea
         className="my-3 h-[20vh]"
@@ -150,7 +202,7 @@ function Action({
         onChange={(e) => setNote(e.target.value)}
       ></Textarea>
 
-      <RequestBypass id={data.id} note={note}>
+      <RequestBypass id={data.id} note={note} items={items}>
         <Button className="mt-5 w-full" variant={"destructive"}>
           Request Bypass
         </Button>
@@ -162,10 +214,12 @@ function Action({
 const RequestBypass = ({
   id,
   note,
+  items,
   children,
 }: {
   id: string;
   note: string;
+  items: any;
   children: ReactNode;
 }) => {
   const [open, setOpen] = useState(false);
@@ -191,11 +245,15 @@ const RequestBypass = ({
           <Button
             disabled={isPending}
             onClick={async () => {
-              if (!note || !note.trim()) {
+              if (!note?.trim()) {
                 toast.error("Please provide a reason for the bypass request");
                 return;
               }
-              await bypassTask({ jobId: id, note });
+
+              const payload = { item: items, note };
+              const payloadString = JSON.stringify(payload);
+
+              await bypassTask({ jobId: id, note: payloadString });
               setOpen(false);
             }}
           >

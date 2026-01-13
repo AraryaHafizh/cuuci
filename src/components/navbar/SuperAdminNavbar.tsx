@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOut, Menu } from "lucide-react";
 import Link from "next/link";
-import { NotificationBadge } from "../NotificationBandge";
 import { SignoutConfirmation } from "../popupConfirmation";
+import { SignoutPopup } from "./SignoutPopup";
 
 const SuperAdminNavbar = () => {
   return (
@@ -81,22 +81,6 @@ const MobileNav = () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </div>
-  );
-};
-
-const SignoutPopup = () => {
-  return (
-    <div className="hidden md:block">
-      <SignoutConfirmation>
-        <Button
-          variant="destructive"
-          className="flex w-fit justify-center gap-3"
-        >
-          <LogOut className="h-4 w-4" />
-          Sign out
-        </Button>
-      </SignoutConfirmation>
     </div>
   );
 };

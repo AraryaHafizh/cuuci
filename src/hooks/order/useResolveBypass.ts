@@ -14,16 +14,11 @@ export const useResolveBypass = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async ({ id, items }: { id: string; items: any }) => {
       const { data } = await cuuciApi.post(
         `/admins/orders/bypass/resolve/${id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        },
+        { items },
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       return data;

@@ -10,7 +10,7 @@ export default function BypassOrder() {
   const { data, isPending } = useBypassorder();
   const router = useRouter();
   return (
-    <section className="flex h-[350px] flex-col rounded-2xl border bg-(--container-bg) p-5">
+    <section className="flex flex-1 flex-col rounded-2xl border bg-(--container-bg) p-5">
       <SectionTitle title="Bypass Request" />
       <div className="mb-3"></div>
       {isPending ? (

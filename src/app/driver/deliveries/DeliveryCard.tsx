@@ -67,7 +67,7 @@ export interface Outlet {
 }
 
 export interface AvailableDeliveryProps {
-   id: string;
+  id: string;
   customerId: string;
   outletId: string;
   driverId: string | null;
@@ -114,7 +114,7 @@ export function DeliveryCard({
     <div className="flex min-h-65 flex-col justify-between rounded-2xl border bg-(--container-bg) p-5">
       <div>
         <p className="text-lg font-bold lg:text-xl">
-          {data.status === "WAITING_FOR_PICKUP"
+          {data.status === "LOOKING_FOR_DRIVER"
             ? `Pickup from ${data.customer.name}`
             : `Delivery to ${data.customer.name}`}
         </p>
