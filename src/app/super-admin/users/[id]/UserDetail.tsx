@@ -16,6 +16,7 @@ export default function UserDetail({ userId }: { userId: string }) {
 
   const userData = data.data.user;
   const taskData = data.data.task;
+  const summaryData = data.data.summary;
   const meta = data.meta;
 
   return (
@@ -23,7 +24,7 @@ export default function UserDetail({ userId }: { userId: string }) {
       <Greeting data={userData} />
       <section className="mt-10 gap-5 space-y-5 lg:flex lg:space-y-0 xl:mt-20">
         <UserInfo data={userData} />
-        <UserStats data={userData} task={taskData} />
+        <UserStats role={userData.role} summaryData={summaryData} />
       </section>
       <UserDetailTable
         userId={userId}
@@ -63,7 +64,7 @@ export default function UserDetail({ userId }: { userId: string }) {
     );
   }
 
-  function UserStats({ data, task }: { data: any; task: any }) {
+  function UserStats({ role, summaryData }: { role: any; summaryData: any }) {
     function Widget({ title, data }: any) {
       return (
         <div className="bg-foreground/3 flex w-full flex-col items-center justify-center space-y-3 rounded-lg border py-5 text-center lg:py-10 2xl:p-10">
@@ -73,17 +74,29 @@ export default function UserDetail({ userId }: { userId: string }) {
       );
     }
 
-    if (data.role === "CUSTOMER") {
+    if (role === "CUSTOMER") {
       return (
         <section className="flex flex-2 gap-5 rounded-2xl border bg-(--container-bg) p-5">
-          <Widget title="Total Orders" data={task.length} />
+          <Widget title="Total Orders" data={summaryData.totalOrders} />
         </section>
       );
     }
-    if (data.role === "WORKER") {
+    if (role === "DRIVER") {
       return (
         <section className="flex flex-2 gap-5 rounded-2xl border bg-(--container-bg) p-5">
-          <Widget title="Finished tasks" data={task.length} />
+          <Widget title="Total deliveries" data={summaryData.totalDeliveries} />
+          <Widget
+            title="Finished deliveries"
+            data={summaryData.finishedDeliveries}
+          />
+        </section>
+      );
+    }
+    if (role === "WORKER") {
+      return (
+        <section className="flex flex-2 gap-5 rounded-2xl border bg-(--container-bg) p-5">
+          <Widget title="Total tasks" data={summaryData.totalTasks} />
+          <Widget title="Finished tasks" data={summaryData.finishedTasks} />
         </section>
       );
     }

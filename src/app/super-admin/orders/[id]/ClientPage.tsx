@@ -81,7 +81,7 @@ function OrderLog({ data }: { data: any }) {
                 </p>
                 <p className="opacity-50">
                   {log.name
-                    ? `${formatDate(log.at, "date")} by ${log.name ?? "-"}`
+                    ? `${formatDate(log.at, "date")} by ${log.name ?? "Not assigned"}`
                     : "Not assigned"}
                 </p>
               </div>
@@ -192,11 +192,26 @@ function AssignmentDetail({ data }: { data: any }) {
       <p>Assignments</p>
       <HorizontalDetail label="Outlet" data={data.outlet.name} />
       <HorizontalDetail label="Outlet Admin" data={data.outlet.admin.name} />
-      <HorizontalDetail label="Driver" data={data.orderLog[1]?.name || "-"} />
-      <HorizontalDetail label="Washing" data={data.orderLog[2]?.name || "-"} />
-      <HorizontalDetail label="Ironing" data={data.orderLog[3]?.name || "-"} />
-      <HorizontalDetail label="Packing" data={data.orderLog[4]?.name || "-"} />
-      <HorizontalDetail label="Delivery" data={data.orderLog[5]?.name || "-"} />
+      <HorizontalDetail
+        label="Driver"
+        data={data.orderLog[1]?.name || "Not assigned"}
+      />
+      <HorizontalDetail
+        label="Washing"
+        data={data.orderLog[2]?.name || "Not assigned"}
+      />
+      <HorizontalDetail
+        label="Ironing"
+        data={data.orderLog[3]?.name || "Not assigned"}
+      />
+      <HorizontalDetail
+        label="Packing"
+        data={data.orderLog[4]?.name || "Not assigned"}
+      />
+      <HorizontalDetail
+        label="Delivery"
+        data={data.orderLog[5]?.name || "Not assigned"}
+      />
     </section>
   );
 }
@@ -244,7 +259,7 @@ export function HorizontalDetail({
   return (
     <div className="flex items-center justify-between gap-10 text-sm font-light">
       <p className="opacity-50">{label}</p>
-      <p>{data}</p>
+      <p className={`${data === "Not assigned" ? "opacity-50" : ""}`}>{data}</p>
     </div>
   );
 }

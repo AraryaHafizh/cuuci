@@ -1,12 +1,12 @@
-import { WorkerDetail } from "./WorkerDetail";
+import UserDetail from "@/app/super-admin/users/[id]/UserDetail";
 
 interface UserDetailProps {
   params: Promise<{ id: string }>;
 }
 
-async function UserDetail(props: UserDetailProps) {
+async function Page(props: UserDetailProps) {
   const { id } = await props.params;
 
-  return <WorkerDetail userId={id} />;
+  return <UserDetail userId={id} />;
 }
-export default UserDetail;
+export default Page;
