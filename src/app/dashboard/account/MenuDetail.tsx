@@ -21,7 +21,6 @@ export function AccountMenuDetail() {
   const index = ProfileStore((state) => state.index);
   const sessionData = session!.user;
   const isPhoneEmpty = !sessionData.phoneNumber?.trim();
-
   const { data: addresses, isPending } = useAddress({ index });
 
   function Profile() {
