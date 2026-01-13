@@ -17,6 +17,7 @@ import { ReactNode, useState } from "react";
 import { useAcceptTask } from "@/hooks/worker/useAcceptTask";
 import { LoadingAnimation } from "./ui/loading-animation";
 import { formatDate } from "@/lib/utils";
+import { statusMap } from "@/app/admin/WorkerActivity";
 
 export type WorkStation = "WASHING" | "IRONING" | "PACKING";
 export type WorkStatus =
@@ -92,28 +93,10 @@ export interface OrderWorkProcess {
   order: Order;
 }
 
-export const workStatusStyle: Record<
-  WorkStation,
-  { bgColor: string; textColor: string }
-> = {
-  WASHING: {
-    bgColor: "bg-blue-200",
-    textColor: "text-blue-700",
-  },
-  IRONING: {
-    bgColor: "bg-foreground/20",
-    textColor: "text-foreground",
-  },
-  PACKING: {
-    bgColor: "bg-emerald-200",
-    textColor: "text-emerald-700",
-  },
-};
-
 export default function TaskCard(data: any) {
   const router = useRouter();
   const station: WorkStation = data.station;
-  const stationData = workStatusStyle[station];
+  const stationData = statusMap[station];
 
   return (
     <div
@@ -130,7 +113,7 @@ export default function TaskCard(data: any) {
             </p>
           </div>
           <div
-            className={`rounded-2xl px-3 py-1 text-xs 2xl:text-sm ${stationData.bgColor} ${stationData.textColor} `}
+            className={`bg-foreground/10 rounded-2xl px-3 py-1 text-xs 2xl:text-sm ${stationData.text} font-bold`}
           >
             {station}
           </div>

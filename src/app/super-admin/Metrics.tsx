@@ -3,6 +3,14 @@
 import { useMetrics } from "@/hooks/summary/useMetrics";
 import { formatNumber } from "@/lib/utils";
 
+export function formatKey(key: string): string {
+  let result = key.replace(/_/g, " ");
+  result = result.replace(/([a-z])([A-Z])/g, "$1 $2");
+  result = result.replace(/\b\w/g, (char) => char.toUpperCase());
+
+  return result;
+}
+
 export default function Metrics() {
   const { data, isPending } = useMetrics();
 
@@ -29,7 +37,7 @@ export default function Metrics() {
               className="flex min-w-fit flex-1 flex-col items-center justify-between space-y-4 rounded-2xl border bg-(--container-bg) px-7 py-5"
             >
               <p className="text-3xl font-bold">{formatted}</p>
-              <p className="text-sm">{key}</p>
+              <p className="text-sm">{formatKey(key)}</p>
             </section>
           );
         })

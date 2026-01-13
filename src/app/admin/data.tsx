@@ -468,40 +468,6 @@ export const dummyNew = [
   },
 ];
 
-export const workerStatus = {
-  AVAILABLE: {
-    text: "text-emerald-600",
-    bg: "bg-emerald-600/20",
-    label: "Available",
-  },
-  INACTIVE: {
-    text: "text-foreground/50",
-    bg: "bg-foreground/20",
-    label: "Inactive",
-  },
-  WASHING: {
-    text: "text-primary",
-    bg: "bg-primary/20",
-    label: "Washing",
-  },
-  IRONING: {
-    text: "text-amber-600",
-    bg: "bg-amber-600/20",
-    label: "Ironing",
-  },
-  PACKING: {
-    text: "text-indigo-400",
-    bg: "bg-indigo-600/20",
-    label: "Packing",
-  },
-
-  ON_DELIVERY: {
-    text: "text-amber-600",
-    bg: "bg-amber-600/20",
-    label: "On Delivery",
-  },
-};
-
 export const todayActivityKey = {
   newOrders: "New Orders",
   washing: "Washing",

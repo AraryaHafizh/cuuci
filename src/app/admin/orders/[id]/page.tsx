@@ -1,4 +1,4 @@
-import ClientPage from "./ClientPage";
+import ClientPage from "@/app/super-admin/orders/[id]/ClientPage";
 
 interface OrderDetailProps {
   params: Promise<{ id: string }>;

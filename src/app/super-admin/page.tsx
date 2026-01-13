@@ -1,7 +1,7 @@
 import SectionInfo from "@/components/SectionInfo";
 import { LaundryItems } from "./LaundryItems";
 import Metrics from "./Metrics";
-import OrderOverview from "./OrderOvervew";
+import OrderOverview from "./OrderOverview";
 import OutletOverview from "./OutletOverview";
 import { TodayActivities } from "./TodayActivity";
 
