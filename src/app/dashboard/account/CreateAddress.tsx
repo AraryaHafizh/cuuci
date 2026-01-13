@@ -100,6 +100,7 @@ export default function CreateAddress({
           )}
         />
       </FieldGroup>
+      
       <div className="mt-5 space-y-5 overflow-hidden rounded-lg">
         <Label>Select Location</Label>
         <MapSelect centerLat={-6.2} centerLng={106.8} onSelect={handleSelect} />

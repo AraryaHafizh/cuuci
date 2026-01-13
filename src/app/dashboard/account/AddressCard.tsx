@@ -13,6 +13,7 @@ import { LoadingAnimation } from "@/components/ui/loading-animation";
 import { useDefault } from "@/hooks/address/useDefault";
 import { useRemove } from "@/hooks/address/useRemove";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
 
 type AddressProps = {
@@ -30,6 +31,7 @@ export function AddressCard({
   index: number;
   data: AddressProps;
 }) {
+  const router = useRouter()
   const { mutateAsync: setDefault, isPending } = useDefault();
 
   return (
@@ -59,7 +61,7 @@ export function AddressCard({
       </div>
       <div className="flex justify-end gap-3 text-xs">
         <Link
-          href={"#"}
+          href={`/dashboard/account/${data.id}`}
           className="opacity-50 transition duration-300 hover:opacity-100 active:opacity-100"
         >
           Edit
