@@ -17,17 +17,21 @@ const SectionInfo = ({
     <div className={`space-y-2 ${className}`}>
       <div className="flex flex-col justify-between gap-2 md:flex-row md:items-center md:justify-start md:gap-5">
         {loading ? (
-          <div className="bg-foreground/10 h-8 w-64 animate-pulse rounded-lg lg:h-10 2xl:h-14" />
+          <div className="bg-foreground/10 h-8 w-82 animate-pulse rounded-lg lg:h-10 2xl:h-14" />
         ) : (
           <h2 className="w-50 text-2xl font-bold md:w-auto lg:text-3xl 2xl:text-5xl">
             {title}
           </h2>
         )}
 
-        {!loading && role !== "" && (
-          <p className="bg-foreground/10 text-primary w-fit rounded-2xl px-3 py-1 text-sm lg:text-base 2xl:text-xl">
-            {role}
-          </p>
+        {loading ? (
+          <div className="bg-foreground/10 h-8 w-42 animate-pulse rounded-lg lg:h-10 2xl:h-14" />
+        ) : (
+          role && (
+            <p className="bg-foreground/10 text-primary w-fit rounded-2xl px-3 py-1 text-sm lg:text-base 2xl:text-xl">
+              {role}
+            </p>
+          )
         )}
       </div>
 
