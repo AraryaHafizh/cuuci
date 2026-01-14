@@ -17,6 +17,10 @@ export function ActiveOrders() {
         <div className="flex h-[40vh] w-full items-center justify-center">
           <LoadingAnimation />
         </div>
+      ) : data === null || data.length === 0 ? (
+        <div className="flex h-[40vh] w-full items-center justify-center rounded-lg border-2 border-dashed">
+          <p className="text-sm opacity-50">No active orders.</p>
+        </div>
       ) : (
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
           {data.map((order: any, i: number) => {

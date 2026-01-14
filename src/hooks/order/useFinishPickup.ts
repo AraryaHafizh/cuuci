@@ -40,6 +40,12 @@ export const useFinishPickup = () => {
         queryKey: ["get_available_pickup"],
         exact: false,
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ["get_driver_history"],
+        exact: false,
+      });
+
       toast.success(data.message ?? "Pickup finish");
     },
 

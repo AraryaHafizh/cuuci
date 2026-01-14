@@ -62,14 +62,17 @@ export default function ClientPage({ id }: { id: string }) {
 
   if (isPending) return <LoadingScreen />;
 
-  const isOnTheWayToOutlet = data.status === "LAUNDRY_ON_THE_WAY";
+  const isOnTheWayToOutlet = [
+    "LAUNDRY_ON_THE_WAY",
+    "READY_FOR_DELIVERY",
+  ].includes(data.status);
 
   const destinationLat = isOnTheWayToOutlet
-    ? Number(data.address.latitude)
+    ? Number(data.outlet.latitude)
     : Number(data.address.latitude);
 
   const destinationLng = isOnTheWayToOutlet
-    ? Number(data.address.longitude)
+    ? Number(data.outlet.longitude)
     : Number(data.address.longitude);
 
   return (
@@ -161,14 +164,17 @@ function CustomerDetail({
   driverLat: number;
   driverLng: number;
 }) {
-  const isOnTheWayToOutlet = data.status === "LAUNDRY_ON_THE_WAY";
+  const isOnTheWayToOutlet = [
+    "LAUNDRY_ON_THE_WAY",
+    "READY_FOR_DELIVERY",
+  ].includes(data.status);
 
   const destinationLat = isOnTheWayToOutlet
-    ? Number(data.address.latitude)
+    ? Number(data.outlet.latitude)
     : Number(data.address.latitude);
 
   const destinationLng = isOnTheWayToOutlet
-    ? Number(data.address.longitude)
+    ? Number(data.outlet.longitude)
     : Number(data.address.longitude);
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
@@ -186,7 +192,11 @@ function CustomerDetail({
             {getDistance(driverLat, driverLng, destinationLat, destinationLng)}
           </span>
         </div>
-        <CustomerButton data={data} />
+        {[
+          "WAITING_FOR_PICKUP",
+          "LAUNDRY_ON_THE_WAY",
+          "DELIVERY_ON_THE_WAY",
+        ].includes(data.status) && <CustomerButton data={data} />}
       </div>
     </section>
   );
@@ -201,6 +211,10 @@ function DeliverySummary({
   lat: number;
   lng: number;
 }) {
+  const showButton = ["LAUNDRY_ON_THE_WAY", "READY_FOR_DELIVERY"].includes(
+    data.status,
+  );
+
   return (
     <section className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
       <SectionTitle title="Delivery Details" />
@@ -212,12 +226,16 @@ function DeliverySummary({
         value={data.address.address}
         endButtonIcon={<Navigation className="text-primary fill-current" />}
         endButtonUrl={`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=two-wheeler`}
+        showButton={!showButton}
       />
       <InfoCard
         icon={<Store />}
         label="Outlet Address"
         title={data.outlet.name}
         value={data.outlet.address}
+        endButtonIcon={<Navigation className="text-primary fill-current" />}
+        endButtonUrl={`https://www.google.com/maps/dir/?api=1&destination=${data.outlet.latitude},${data.outlet.longitude}&travelmode=two-wheeler`}
+        showButton={showButton}
       />
     </section>
   );

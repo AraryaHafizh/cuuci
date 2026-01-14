@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Phone } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function CustomerButton({ data }: { data: any }) {
@@ -16,7 +16,7 @@ export function CustomerButton({ data }: { data: any }) {
         window.open(url, "_blank");
       }}
     >
-      <Phone className="text-primary fill-current" />
+      <MessageCircle className="text-primary fill-current" />
     </Button>
   );
 }

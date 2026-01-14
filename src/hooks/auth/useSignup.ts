@@ -37,6 +37,9 @@ export const useAdminSignup = () => {
     },
     onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ["get-users"], exact: false });
+      queryClient.invalidateQueries({ queryKey: ["get_outlets"] });
+      queryClient.invalidateQueries({ queryKey: ["get_metrics"] });
+
       setOpenDialog(true);
     },
     onError: (error: AxiosError<{ message: string }>) => {

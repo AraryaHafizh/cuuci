@@ -57,8 +57,12 @@ function Addresses({
       </div>
       <Separator className="my-5" />
       {isPending ? (
-        <div className="h-[500px]">
+        <div className="h-[40vh]">
           <LoadingScreen isDashboard={true} />
+        </div>
+      ) : addresses === null || addresses.length === 0 ? (
+        <div className="flex h-[40vh] w-full items-center justify-center rounded-lg border-2 border-dashed">
+          <p className="text-sm opacity-50">No saved address.</p>
         </div>
       ) : (
         <div className="grid gap-2 lg:grid-cols-2">

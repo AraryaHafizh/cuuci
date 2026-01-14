@@ -1,7 +1,7 @@
 "use client";
 
 import { cuuciApi } from "@/lib/axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -16,6 +16,7 @@ export type PickupProps = {
 
 export const useCreate = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { data: session } = useSession();
   const token = session?.user?.accessToken;
 
@@ -30,6 +31,11 @@ export const useCreate = () => {
     },
 
     onSuccess: async (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["get_customer_history"],
+        exact: false,
+      });
+
       router.back();
       toast.success(data.message ?? "Pickup request created");
     },

@@ -9,6 +9,7 @@ interface InfoRowProps {
   value: string;
   endButtonIcon?: React.ReactNode;
   endButtonUrl?: string;
+  showButton?: boolean;
 }
 
 export function InfoCard({
@@ -18,6 +19,7 @@ export function InfoCard({
   value,
   endButtonIcon,
   endButtonUrl,
+  showButton = true,
 }: InfoRowProps) {
   return (
     <div className="flex items-center gap-4 text-sm font-light">
@@ -27,7 +29,7 @@ export function InfoCard({
         <p>{title}</p>
         <p>{value}</p>
       </div>
-      {endButtonIcon && (
+      {showButton && endButtonIcon && (
         <Button
           onClick={() => {
             const url = endButtonUrl;

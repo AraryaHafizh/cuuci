@@ -39,10 +39,14 @@ export default function ClientPage({ id }: { id: string }) {
         <OrderLog data={data} />
 
         <div className="gap-5 md:flex">
-          <ItemTable data={data} />
+          <div className="flex-3 space-y-5">
+            <ItemTable data={data} />
+            <div className="gap-5 space-y-5 md:flex md:space-y-0">
+              <PaymentDetail data={data} />
+              <CustomerDetail data={data} />
+            </div>
+          </div>
           <div className="mt-5 flex-1 space-y-5 md:mt-0">
-            <PaymentDetail data={data} />
-            <CustomerDetail data={data} />
             <OutletDetail data={data} />
             <AddressDetail data={data} />
           </div>
@@ -154,7 +158,7 @@ function ItemTable({ data }: { data: any }) {
 
 function CustomerDetail({ data }: { data: any }) {
   return (
-    <section className="h-fit rounded-2xl border bg-(--container-bg) p-5">
+    <section className="flex flex-1 flex-col rounded-2xl border bg-(--container-bg) p-5">
       <p className="mb-2">Customer Details</p>
       <HorizontalDetail label="Order id" data={data.orderNumber} />
       <HorizontalDetail label="Customer" data={data.customer.name} />
@@ -197,27 +201,33 @@ function AddressDetail({ data }: { data: any }) {
 
 function PaymentDetail({ data }: { data: any }) {
   const nf = new Intl.NumberFormat("id-ID");
+  const paymentStatus = data?.payment?.status;
 
   return (
-    <section className="h-fit rounded-2xl border bg-(--container-bg) p-5">
+    <section className="flex flex-1 flex-col rounded-2xl border bg-(--container-bg) p-5">
       <p className="mb-2">Payment Summary</p>
-      <HorizontalDetail
-        label="Status"
-        data={formatOrderStatus(data.payment?.status || "Price Pending")}
-      />
-      <HorizontalDetail
-        label="Laundry price"
-        data={`Rp ${nf.format(data.totalPrice)}`}
-      />
-      <HorizontalDetail label="Delivery price" data={`Rp 10.000`} />
-      <HorizontalDetail
-        label="Subtotal"
-        data={`Rp ${nf.format(data.totalPrice)}`}
-      />
-      <HorizontalDetail
-        label="Subtotal"
-        data={`Rp ${nf.format(data.totalPrice)}`}
-      />
+
+      {!paymentStatus ? (
+        <div className="flex min-h-32 flex-1 items-center justify-center rounded-2xl border-3 border-dashed text-sm md:min-h-0">
+          <p className="opacity-50">Price Pending</p>
+        </div>
+      ) : (
+        <>
+          <HorizontalDetail
+            label="Status"
+            data={formatOrderStatus(paymentStatus)}
+          />
+          <HorizontalDetail
+            label="Laundry price"
+            data={`Rp ${nf.format(data.totalPrice)}`}
+          />
+          <HorizontalDetail label="Delivery price" data="Rp 10.000" />
+          <HorizontalDetail
+            label="Subtotal"
+            data={`Rp ${nf.format(data.totalPrice)}`}
+          />
+        </>
+      )}
     </section>
   );
 }

@@ -26,6 +26,8 @@ export const useCreate = () => {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["get_outlets"] });
+      queryClient.invalidateQueries({ queryKey: ["get_metrics"] });
+      queryClient.invalidateQueries({ queryKey: ["get_outlet_overview"] });
       toast(data.message);
 
       router.back();

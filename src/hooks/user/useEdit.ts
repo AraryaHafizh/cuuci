@@ -49,18 +49,16 @@ export const useEditAdmin = (id: string) => {
 
   return useMutation({
     mutationFn: async (body: userUpdateProps) => {
-      const { data } = await cuuciApi.patch(
-        `/users/update/${id}`,
-        body ,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const { data } = await cuuciApi.patch(`/users/update/${id}`, body, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       return data;
     },
 
     onSuccess: async (data) => {
       queryClient.invalidateQueries({ queryKey: ["get-users"] });
+      queryClient.invalidateQueries({ queryKey: ["get_outlets"] });
+
       toast(data.message);
 
       router.back();
