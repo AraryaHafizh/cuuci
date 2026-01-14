@@ -1,5 +1,15 @@
 "use client";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,13 +39,30 @@ export function AccountMenuDetail() {
     const [phone, setPhone] = useState(
       sessionData.phoneNumber?.replace(/^(\+62|62)/, "") ?? "",
     );
+    const [email, setEmail] = useState(sessionData.email ?? "");
+    const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
+
+    const hasChanges =
+      name !== sessionData.name ||
+      `+62${phone}` !== sessionData.phoneNumber ||
+      email !== sessionData.email;
+
+    const emailChanged = email !== sessionData.email;
+    const isEmailUnverified = !sessionData.emailVerified;
+    const hasPendingEmail = sessionData.pendingEmail;
 
     async function onSave() {
       const payload: userUpdateProps = {};
 
       if (name !== sessionData.name) payload.name = name;
-      if (phone !== sessionData.phoneNumber)
+      if (`+62${phone}` !== sessionData.phoneNumber) {
         payload.phoneNumber = `+62${phone}`;
+      }
+
+      if (emailChanged) {
+        setIsEmailDialogOpen(true);
+        return;
+      }
 
       if (Object.keys(payload).length === 0) {
         toast("Nothing to update");
@@ -45,49 +72,125 @@ export function AccountMenuDetail() {
       await edit(payload);
     }
 
+    async function confirmEmailChange() {
+      const payload: userUpdateProps = {
+        email: email,
+      };
+
+      if (name !== sessionData.name) payload.name = name;
+      if (`+62${phone}` !== sessionData.phoneNumber) {
+        payload.phoneNumber = `+62${phone}`;
+      }
+
+      try {
+        await edit(payload);
+        setIsEmailDialogOpen(false);
+      } catch (error) {
+        setIsEmailDialogOpen(false);
+      }
+    }
+
     return (
-      <div className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
-        <div>
-          <p>Profile Setting</p>
-          <p className="text-sm font-light opacity-50">
-            View and manage your personal information and account details.
-          </p>
-        </div>
-
-        <Separator />
-
-        <div className="gap-5 space-y-5 md:flex md:space-y-0">
-          <div className="w-full space-y-4">
-            <Label>Full Name</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} />
+      <>
+        <div className="space-y-5 rounded-2xl border bg-(--container-bg) p-5">
+          <div>
+            <p>Profile Setting</p>
+            <p className="text-sm font-light opacity-50">
+              View and manage your personal information and account details.
+            </p>
           </div>
-          <div className="w-full space-y-4">
-            <Label>Phone Number</Label>
-            <div className="relative flex-2">
-              <span className="absolute top-1/2 left-3 -translate-y-1/2 text-xs opacity-60 md:text-sm">
-                +62
-              </span>
+
+          <Separator />
+
+          <div className="gap-5 space-y-5 md:flex md:space-y-0">
+            <div className="w-full space-y-4">
+              <Label>Full Name</Label>
               <Input
-                placeholder={phone}
-                className="pl-10"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                value={formatPhone(phone ?? "")}
-                onChange={(e) => {
-                  const raw = e.target.value.replace(/\D/g, "");
-                  setPhone(raw);
-                }}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={isEmailUnverified}
+              />
+            </div>
+
+            <div className="w-full space-y-4">
+              <Label>Phone Number</Label>
+              <div className="relative flex-2">
+                <span className="absolute top-1/2 left-3 -translate-y-1/2 text-xs opacity-60 md:text-sm">
+                  +62
+                </span>
+                <Input
+                  placeholder={phone}
+                  className="pl-10"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={formatPhone(phone ?? "")}
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/\D/g, "");
+                    setPhone(raw);
+                  }}
+                  disabled={isEmailUnverified}
+                />
+              </div>
+            </div>
+
+            <div className="w-full space-y-4">
+              <Label>
+                Email
+                {emailChanged && (
+                  <span className="ml-2 text-xs text-yellow-600">
+                    (Requires verification)
+                  </span>
+                )}
+              </Label>
+              <Input
+                className="w-full"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isEmailUnverified}
               />
             </div>
           </div>
+
+          <div className="flex justify-end">
+            <Button
+              onClick={onSave}
+              disabled={isPending || !hasChanges || isEmailUnverified}
+            >
+              {isPending ? <LoadingAnimation /> : "Save Changes"}
+            </Button>
+          </div>
         </div>
 
-        <div className="flex justify-end">
-          <Button onClick={onSave} disabled={isPending}>
-            {isPending ? <LoadingAnimation /> : "Save"}
-          </Button>
-        </div>
-      </div>
+        <AlertDialog
+          open={isEmailDialogOpen}
+          onOpenChange={setIsEmailDialogOpen}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Confirm Email Change</AlertDialogTitle>
+              <AlertDialogDescription>
+                You're about to change your email from{" "}
+                <strong>{sessionData.email}</strong> to <strong>{email}</strong>
+                .
+                <br />
+                <br />A verification link will be sent to your new email
+                address. Your email will only be updated after you verify it.
+                You won't be able to use the app until verification is complete.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={confirmEmailChange}
+                disabled={isPending}
+              >
+                {isPending ? <LoadingAnimation /> : "Send Verification Email"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </>
     );
   }
 
@@ -180,7 +283,6 @@ export function AccountMenuDetail() {
             </Button>
           </div>
         </form>
-        
       </>
     );
   }

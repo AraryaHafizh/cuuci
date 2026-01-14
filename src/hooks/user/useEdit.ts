@@ -3,13 +3,14 @@
 import { cuuciApi } from "@/lib/axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export interface userUpdateProps {
   name?: string;
   phoneNumber?: string;
+  email?: string;
   password?: string;
 }
 
@@ -19,10 +20,10 @@ export const useEdit = () => {
   const id = session?.user?.id;
 
   return useMutation({
-    mutationFn: async ({ name, phoneNumber }: userUpdateProps) => {
+    mutationFn: async (payload: userUpdateProps) => {
       const { data } = await cuuciApi.patch(
         `/users/update/${id}`,
-        { name, phoneNumber },
+        payload,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -32,8 +33,8 @@ export const useEdit = () => {
 
     onSuccess: async (data) => {
       await update({ reason: "profile-updated" });
-
       toast(data.message);
+      // signOut({ callbackUrl: "/" });
     },
     onError: (error: AxiosError<{ message: string }>) => {
       toast.error(error.response?.data.message ?? "Oops, something went wrong");

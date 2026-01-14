@@ -13,6 +13,8 @@ declare module "next-auth" {
       profilePictureUrl: string;
       outletId: string;
       accessToken: string;
+      emailVerified: boolean;
+      pendingEmail: string;
     };
   }
 }
