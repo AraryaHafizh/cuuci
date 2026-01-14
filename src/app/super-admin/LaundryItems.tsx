@@ -123,7 +123,7 @@ const CreatePopup = ({ children }: { children: ReactNode }) => {
               setOpen(false);
             }}
           >
-            {isPending ? <LoadingAnimation /> : "Submit request"}
+            {isPending ? <LoadingAnimation /> : "Add item"}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

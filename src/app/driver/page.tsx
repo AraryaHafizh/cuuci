@@ -1,6 +1,6 @@
-import SectionInfo from "@/components/SectionInfo";
-import DeliverySection from "./DeliverySection";
 import { Attendance } from "./attendance";
+import DeliverySection from "./DeliverySection";
+import { Greeting } from "./Greeting";
 import { Overview } from "./Overview";
 
 const driverStatus = "inactive";
@@ -18,13 +18,4 @@ export default function Driver() {
   );
 }
 
-function Greeting() {
-  return (
-    <section className="flex space-y-10">
-      <SectionInfo
-        title="Welcome, Driver"
-        description="Manage your pickups and deliveries, track active tasks, and stay updated with new requests."
-      />
-    </section>
-  );
-}
+

@@ -217,11 +217,12 @@ function PaymentDetail({ data }: { data: any }) {
             label="Status"
             data={formatOrderStatus(paymentStatus)}
           />
+          <div className="mt-1" />
           <HorizontalDetail
-            label="Laundry price"
-            data={`Rp ${nf.format(data.totalPrice)}`}
+            label="Laundry"
+            data={`Rp ${nf.format(data.totalPrice - 10000)}`}
           />
-          <HorizontalDetail label="Delivery price" data="Rp 10.000" />
+          <HorizontalDetail label="Delivery fee" data="Rp 10.000" />
           <HorizontalDetail
             label="Subtotal"
             data={`Rp ${nf.format(data.totalPrice)}`}

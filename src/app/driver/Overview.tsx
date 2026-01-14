@@ -1,14 +1,13 @@
 "use client";
 
 import { SectionTitle } from "@/components/ui/section-title";
+import { useCompleted } from "@/hooks/driver/useCompleted";
 import { useHistory } from "@/hooks/driver/useHIstory";
 import { useAvailablePickup } from "@/hooks/order/useAvailablePickup";
 
 export function Overview() {
   const { data: deliveries, isPending } = useAvailablePickup();
-  const { data: completed } = useHistory({
-    params: { status: "COMPLETED" },
-  });
+  const { data: completed } = useCompleted();
 
   function Widget({
     title,
@@ -50,7 +49,7 @@ export function Overview() {
 
       <div className="mt-5 flex gap-5">
         <Widget title="Available Deliveries" data={deliveries?.length ?? 0} />
-        <Widget title="Completed" data={completed?.data?.length ?? 0} />
+        <Widget title="Completed" data={completed?.data ?? 0} />
       </div>
     </section>
   );

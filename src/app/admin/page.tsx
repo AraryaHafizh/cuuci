@@ -1,6 +1,5 @@
 import Metrics from "../super-admin/Metrics";
 import { TodayActivities } from "../super-admin/TodayActivity";
-import { Attendance } from "./attendance";
 import BypassOrder from "./BypassOrder";
 import { Greeting } from "./Greeting";
 import NewOrder from "./NewOrder";
@@ -14,7 +13,6 @@ export default function Admin() {
       <Metrics />
       <section className="mt-5 gap-5 space-y-5 lg:flex lg:space-y-0">
         <div className="flex flex-1 flex-col space-y-5">
-          <Attendance />
           <OrderOverview />
         </div>
         <WorkerActivities />

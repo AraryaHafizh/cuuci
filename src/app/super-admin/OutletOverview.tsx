@@ -25,7 +25,7 @@ export default function OutletOverview() {
               className="mt-5 flex w-full items-center space-x-4"
             >
               <p className="shrink-0">{item.name}</p>
-              <div className="bg-foreground/10 h-0.5 w-30 shrink-0" />
+              <div className="bg-foreground/10 h-0.5 flex-1 shrink-0" />
               <div className="flex space-x-4 font-light">
                 <p className="shrink-0">
                   total orders: {formatNumber(item.orders)}
