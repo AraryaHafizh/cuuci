@@ -33,8 +33,7 @@ export const useEdit = () => {
 
     onSuccess: async (data) => {
       await update({ reason: "profile-updated" });
-      toast(data.message);
-      signOut({ callbackUrl: "/" });
+      toast.success(data.message);
     },
     onError: (error: AxiosError<{ message: string }>) => {
       toast.error(error.response?.data.message ?? "Oops, something went wrong");

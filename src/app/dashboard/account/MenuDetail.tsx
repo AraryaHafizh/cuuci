@@ -19,7 +19,7 @@ import { useAddress } from "@/hooks/address/useAddress";
 import { useEditPassword } from "@/hooks/auth/useEditPassword";
 import { useEdit, userUpdateProps } from "@/hooks/user/useEdit";
 import { formatPhone } from "@/lib/utils";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import Address from "./AddressMenu";
@@ -48,8 +48,7 @@ export function AccountMenuDetail() {
       email !== sessionData.email;
 
     const emailChanged = email !== sessionData.email;
-    const isEmailUnverified = !sessionData.emailVerified;
-    const hasPendingEmail = sessionData.pendingEmail;
+    const hasPendingEmail = !!sessionData.pendingEmail;
 
     async function onSave() {
       const payload: userUpdateProps = {};
@@ -85,6 +84,9 @@ export function AccountMenuDetail() {
       try {
         await edit(payload);
         setIsEmailDialogOpen(false);
+        setTimeout(async () => {
+        await signOut({ redirect: true, callbackUrl: "/signin" });
+      }, 2000);
       } catch (error) {
         setIsEmailDialogOpen(false);
       }
@@ -108,7 +110,7 @@ export function AccountMenuDetail() {
               <Input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                disabled={isEmailUnverified}
+                // disabled={hasPendingEmail}
               />
             </div>
 
@@ -128,7 +130,7 @@ export function AccountMenuDetail() {
                     const raw = e.target.value.replace(/\D/g, "");
                     setPhone(raw);
                   }}
-                  disabled={isEmailUnverified}
+                  // disabled={hasPendingEmail}
                 />
               </div>
             </div>
@@ -147,7 +149,7 @@ export function AccountMenuDetail() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                disabled={isEmailUnverified}
+                // disabled={hasPendingEmail}
               />
             </div>
           </div>
@@ -155,7 +157,7 @@ export function AccountMenuDetail() {
           <div className="flex justify-end">
             <Button
               onClick={onSave}
-              disabled={isPending || !hasChanges || isEmailUnverified}
+              disabled={isPending || !hasChanges}
             >
               {isPending ? <LoadingAnimation /> : "Save Changes"}
             </Button>
